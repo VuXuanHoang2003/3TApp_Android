@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:three_tapp_app/view/common_view/product_details_screen.dart';
 

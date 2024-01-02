@@ -9,12 +9,14 @@ import 'package:three_tapp_app/viewmodel/auth_viewmodel.dart';
 import 'package:three_tapp_app/viewmodel/order_viewmodel.dart';
 import 'package:three_tapp_app/viewmodel/post_viewmodel.dart';
 import 'package:three_tapp_app/viewmodel/product_viewmodel.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 GlobalKey<NavigatorState> navigationKey = GlobalKey();
 
-final formatCurrency = NumberFormat.currency(locale: 'vi',decimalDigits: 0,symbol: 'đ');
+final formatCurrency =
+    NumberFormat.currency(locale: 'vi', decimalDigits: 0, symbol: 'đ');
 
 Future<void> main() async {
   await WidgetsFlutterBinding.ensureInitialized();
@@ -56,6 +58,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
       builder: EasyLoading.init(),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'), // English
+        Locale('vi'), // Vietnamese
+      ],
     );
   }
 }

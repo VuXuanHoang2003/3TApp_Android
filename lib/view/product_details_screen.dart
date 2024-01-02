@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:three_tapp_app/view/common_view/product_details_screen.dart';
 import '../../../model/product.dart';
-import 'product_details_screen.dart'; // Import the ProductDetailsScreen
+// Import the ProductDetailsScreen
 
 class ProductListScreen extends StatelessWidget {
   final List<Product> products;

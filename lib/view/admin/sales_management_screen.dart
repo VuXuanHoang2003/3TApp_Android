@@ -1,5 +1,4 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../model/status.dart';

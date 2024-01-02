@@ -67,7 +67,7 @@ class ProductRepoImpl with ProductRepo {
         });
 
         return Future.value(true);
-      } on FirebaseException catch (e) {
+      } on FirebaseException {
         CommonFunc.showToast("Đã có lỗi xảy ra.");
       } catch (e) {
         CommonFunc.showToast("Đã có lỗi xảy ra.");
@@ -100,7 +100,7 @@ class ProductRepoImpl with ProductRepo {
             return Future.value(false);
           });
         return Future.value(true);
-      } on FirebaseException catch (e) {
+      } on FirebaseException {
         CommonFunc.showToast("Đã có lỗi xảy ra.");
       } catch (e) {
         CommonFunc.showToast("Đã có lỗi xảy ra.");
@@ -144,7 +144,7 @@ class ProductRepoImpl with ProductRepo {
             .update(productMap);
 
         return Future.value(true);
-      } on FirebaseException catch (e) {
+      } on FirebaseException {
         CommonFunc.showToast("Đã có lỗi xảy ra.");
       } catch (e) {
         CommonFunc.showToast("Đã có lỗi xảy ra.");
@@ -170,7 +170,7 @@ class ProductRepoImpl with ProductRepo {
             .doc(product.id)
             .update(productMap);
         return Future.value(true);
-      } on FirebaseException catch (e) {
+      } on FirebaseException {
         CommonFunc.showToast("Đã có lỗi xảy ra.");
       } catch (e) {
         CommonFunc.showToast("Đã có lỗi xảy ra.");
