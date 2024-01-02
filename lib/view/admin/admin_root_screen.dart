@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:three_tapp_app/view/admin/product_management_screen.dart';
 import 'package:three_tapp_app/view/admin/sales_management_screen.dart';
+import 'package:three_tapp_app/view/common_view/chat/chat_screen.dart';
 
 import '../../utils/common_func.dart';
 import '../customer/blogs/blogs_screen.dart';
@@ -16,6 +17,7 @@ class _AdminRootScreen extends State<AdminRootScreen> {
     ProductManagementScreen(),
     SalesManagementScreen(),
     BlogsScreen(),
+    ChatScreen()
   ];
 
   void _onItemTapped(int index) {
@@ -81,6 +83,10 @@ class _AdminRootScreen extends State<AdminRootScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.post_add_rounded),
               label: 'Bài viết',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.post_add_rounded),
+              label: 'Chats',
             ),
           ],
           currentIndex: _selectedIndex,

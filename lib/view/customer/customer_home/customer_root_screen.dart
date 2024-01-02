@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:three_tapp_app/view/common_view/chat/chat_page.dart';
+import 'package:three_tapp_app/view/common_view/chat/chat_screen.dart';
 
 import '../blogs/blogs_screen.dart';
 import 'customer_home_screen.dart';
@@ -14,7 +16,8 @@ class _CustomerRootScreen extends State<CustomerRootScreen> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     CustomerHomeScreen(),
-    BlogsScreen()
+    BlogsScreen(),
+    ChatScreen()
   ];
 
   void _onItemTapped(int index) {
@@ -50,6 +53,10 @@ class _CustomerRootScreen extends State<CustomerRootScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.note_rounded),
               label: 'Bài viết',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.note_rounded),
+              label: 'Chats',
             ),
           ],
           currentIndex: _selectedIndex,
