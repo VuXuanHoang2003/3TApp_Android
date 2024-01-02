@@ -18,7 +18,7 @@ class _AdminRootScreen extends State<AdminRootScreen> {
     ProductManagementScreen(),
     SalesManagementScreen(),
     BlogsScreen(),
-    ChatScreen()
+    ChatScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -74,20 +74,32 @@ class _AdminRootScreen extends State<AdminRootScreen> {
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.production_quantity_limits),
+              icon: Icon(
+                Icons.production_quantity_limits,
+                color: Colors.blue,
+                ),
               label: 'Sản phẩm',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.point_of_sale_rounded),
+              icon: Icon(
+                Icons.point_of_sale_rounded,
+                color: Colors.blue,
+                ),
               label: 'Bán hàng',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.post_add_rounded),
+              icon: Icon(
+                Icons.post_add_rounded,
+                color: Colors.blue,
+                ),
               label: 'Bài viết',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.post_add_rounded),
-              label: 'Chats',
+              icon: Icon(
+                Icons.chat_rounded,
+                color: Colors.blue,
+                ),
+              label: 'Chat',
             ),
           ],
           currentIndex: _selectedIndex,

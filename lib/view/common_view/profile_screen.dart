@@ -95,8 +95,6 @@ class _ProfileScreen extends State<ProfileScreen> {
                   ],
                 ),
               ),
-              // Text("khach1@gmail.com"),
-              // Divider(thickness: 0.5,color: Colors.grey,height: 8,),
               Center(
                 child: SizedBox(
                   width: 100,

@@ -6,13 +6,16 @@ import 'auth_repo.dart';
 
 class AuthRepoImpl with AuthRepo {
   @override
-  Future<User?> login(
-      {required String email,
-      required String password,
-      required bool isCheckAdmin}) async {
+  Future<User?> login({
+    required String email,
+    required String password,
+    required bool isCheckAdmin,
+  }) async {
     try {
-      final credential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
       if (isCheckAdmin) {
         bool isAdmin = false;
@@ -43,55 +46,64 @@ class AuthRepoImpl with AuthRepo {
   }
 
   @override
-  Future<bool> signUp({required String email, required String password}) async {
-    try {
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      //save to firestore database
-      if (FirebaseAuth.instance.currentUser != null) {
-        await addUser(FirebaseAuth.instance.currentUser!).then((value) {
-          print("add user success");
-          return Future.value(true);
-        }).onError((error, stackTrace) {
-          print("add user error:${error.toString()}");
-          return Future.value(false);
-        });
-      }
-      return Future.value(true);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        CommonFunc.showToast("Mật khẩu quá yếu.");
-      } else if (e.code == 'email-already-in-use') {
-        CommonFunc.showToast("Email đã tồn tại.");
-      }
-    } catch (e) {
-      print("signup error:${e.toString()}");
+  Future<bool> signUp({
+  required String email,
+  required String password,
+  required String phone,
+  required String address,
+  required String username, // Thêm trường username
+  }) async {
+  try {
+    final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    // Lưu thông tin người dùng vào Firestore
+    if (FirebaseAuth.instance.currentUser != null) {
+      await addUser(
+        FirebaseAuth.instance.currentUser!,
+        phone: phone,
+        address: address,
+        username: username, // Truyền username vào addUser
+      ).then((value) {
+        print("add user success");
+        return Future.value(true);
+      }).onError((error, stackTrace) {
+        print("add user error: ${error.toString()}");
+        return Future.value(false);
+      });
     }
-    return Future.value(false);
+
+    return Future.value(true);
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'weak-password') {
+      CommonFunc.showToast("Mật khẩu quá yếu.");
+    } else if (e.code == 'email-already-in-use') {
+      CommonFunc.showToast("Email đã tồn tại.");
+    }
+  } catch (e) {
+    print("signup error:${e.toString()}");
+  }
+  return Future.value(false);
   }
 
   @override
-  Future<bool> addUser(User user) {
+  Future<bool> addUser(User user, {String phone = '', String address = '', String username = ''}) async {
     try {
       Map<String, dynamic> userMap = {
-        'username': user.email?.split("@").first, // John Doe
+        'username': username, // Sử dụng giá trị username được truyền từ signUp
         'email': user.email,
-        'isAdmin': false
+        'isAdmin': false,
+        'phone': phone,
+        'address': address,
       };
 
-      FirebaseFirestore.instance.collection('USERS').doc(user.uid).set(userMap)
-        ..then((value) {
-          return Future.value(true);
-        }).catchError((error) {
-          CommonFunc.showToast("Lỗi thêm người dùng.");
-          return Future.value(false);
-        });
+      await FirebaseFirestore.instance.collection('USERS').doc(user.uid).set(userMap);
+      return Future.value(true);
     } on FirebaseAuthException catch (e) {
       CommonFunc.showToast("Đã có lỗi xảy ra.");
-      print("add user eror:${e.toString()}");
+      print("add user error: ${e.toString()}");
     } catch (e) {
       CommonFunc.showToast("Đã có lỗi xảy ra.");
     }

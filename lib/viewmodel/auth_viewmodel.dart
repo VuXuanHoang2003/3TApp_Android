@@ -35,6 +35,10 @@ class AuthViewModel extends BaseViewModel {
     this.rolesType = rolesType;
     notifyListeners();
   }
+  String getUserEmail() {
+    User? user = FirebaseAuth.instance.currentUser;
+    return user?.email ?? ""; // Nếu user không null thì trả về email, ngược lại trả về chuỗi rỗng
+  }
 
   Future<void> login({required String email, required String password, required bool isCheckAdmin}) async {
     EasyLoading.show();
@@ -50,7 +54,7 @@ class AuthViewModel extends BaseViewModel {
             email: email,
             isAdmin: rolesType == RolesType.admin,
             fcmToken: await AwesomeNotificationsFcm().requestFirebaseAppToken());
-        //Add FCM to receive notification
+        // Add FCM to receive notification
         NotificationViewModel().addFCM(fcm: fcm);
       }
       EasyLoading.dismiss();
@@ -60,16 +64,16 @@ class AuthViewModel extends BaseViewModel {
     });
   }
 
-  Future<void> signUp(String email, String password) async {
+  Future<void> signUp(String email, String password, String phone, String address, String username) async {
     EasyLoading.show();
-    await authRepo.signUp(email: email, password: password).then((value) {
+    await authRepo.signUp(email: email, password: password, phone: phone, address: address, username: username).then((value) {
       EasyLoading.dismiss();
       if (value) {
         CommonFunc.showToast("Đăng ký thành công.");
-        //back to login screen
+        // Back to login screen
         Navigator.of(navigationKey.currentContext!).pop();
       } else {
-        print("sign up error");
+        print("Sign up error");
       }
     }).onError((error, stackTrace) {
       EasyLoading.dismiss();

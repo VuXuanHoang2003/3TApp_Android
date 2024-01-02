@@ -19,7 +19,7 @@ class _ChatScreen extends State<ChatScreen> {
   @override
 Widget build(BuildContext context) {
   // TODO: implement build
-  return Scaffold(
+  return Scaffold( 
     appBar: AppBar(
       title: const Text("Chat"),
       automaticallyImplyLeading: false, // Tắt nút back

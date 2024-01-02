@@ -6,7 +6,6 @@ import '../base/baseviewmodel/base_viewmodel.dart';
 import '../data/repositories/notification_repo/notification_repo.dart';
 import '../data/repositories/notification_repo/notification_repo_impl.dart';
 import '../model/fcm.dart';
-import '../utils/common_func.dart';
 
 class NotificationViewModel extends BaseViewModel {
   static final NotificationViewModel _instance = NotificationViewModel._internal();
