@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "118629807487",
-    "project_id": "tmarkettest-b8db7",
-    "storage_bucket": "tmarkettest-b8db7.appspot.com"
+    "project_number": "491439893951",
+    "project_id": "tmarkettest-3ab1b",
+    "storage_bucket": "tmarkettest-3ab1b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:118629807487:android:1cc0372916537c86a3d64a",
+        "mobilesdk_app_id": "1:491439893951:android:3a4ddafe3ea9921b54450a",
         "android_client_info": {
           "package_name": "com.vjppro.three_tapp_app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCeVnDmygfns_5cQrQk6id9tLj2izlFka4"
+          "current_key": "AIzaSyAQJdKB9zZR1Wb6FxFBp5T-TWbQjm7OGYo"
         }
       ],
       "services": {

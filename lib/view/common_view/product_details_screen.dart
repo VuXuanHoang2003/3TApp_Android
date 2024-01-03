@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../main.dart';
 import '../../model/product.dart';
 import '../../utils/common_func.dart';
@@ -13,10 +12,10 @@ class ProductDetailsScreen extends StatefulWidget {
   ProductDetailsScreen({required this.product});
 
   @override
-  State<StatefulWidget> createState() => _ProductDetailsScreen();
+  State<StatefulWidget> createState() => _ProductDetailsScreenState();
 }
 
-class _ProductDetailsScreen extends State<ProductDetailsScreen> {
+class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   AuthViewModel authViewModel = AuthViewModel();
 
   @override
@@ -26,73 +25,74 @@ class _ProductDetailsScreen extends State<ProductDetailsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           "Chi tiết sản phẩm",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontSize: 18),
         ),
         leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.grey,
-              size: 20,
-            )),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.grey,
+            size: 20,
+          ),
+        ),
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
+        physics: AlwaysScrollableScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Center(
-                child: ClipRRect(borderRadius: BorderRadius.circular(10), child: productItemImage()),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: productItemImage(),
               ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(widget.product.name,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold)),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Text(
+                  widget.product.name,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
               const Divider(
-                thickness: 0.5,
+                thickness: 1,
                 color: Colors.green,
                 height: 16,
               ),
-              Center(
-                child: Text(
-                    "${formatCurrency.format(widget.product.price)}",
-                  style: TextStyle(color: Colors.redAccent, fontSize: 16, fontStyle: FontStyle.italic),
-                ),
+              Text(
+                "${formatCurrency.format(widget.product.price)}",
+                style: TextStyle(color: Colors.redAccent, fontSize: 22, fontStyle: FontStyle.italic),
               ),
-              Center(
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Text(
                   "Thể loại: ${CommonFunc.getSenDaNameByType(widget.product.type)}",
-                  style: TextStyle(color: Colors.black, fontSize: 12, fontStyle: FontStyle.italic),
+                  style: TextStyle(color: Colors.black, fontSize: 16, fontStyle: FontStyle.italic),
                 ),
               ),
               const Divider(
-                thickness: 0.5,
+                thickness: 1,
                 color: Colors.green,
                 height: 16,
               ),
-              const Text(
+              Text(
                 "Mô tả",
-                style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const Padding(padding: EdgeInsets.only(top: 8)),
               Text(
                 widget.product.description,
+                textAlign: TextAlign.justify,
                 style: TextStyle(
                   color: Colors.black87,
-                  fontSize: 12,
+                  fontSize: 16,
                 ),
               ),
             ],
@@ -106,8 +106,9 @@ class _ProductDetailsScreen extends State<ProductDetailsScreen> {
     if (widget.product.image.isNotEmpty) {
       return Image.network(
         widget.product.image,
-        width: 76,
-        height: 76,
+        width: 200,
+        height: 200,
+        fit: BoxFit.cover,
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
           return Center(
@@ -122,8 +123,9 @@ class _ProductDetailsScreen extends State<ProductDetailsScreen> {
     } else {
       return Image.asset(
         ImagePath.imgImageUpload,
-        width: 76,
-        height: 76,
+        width: 200,
+        height: 200,
+        fit: BoxFit.cover,
       );
     }
   }

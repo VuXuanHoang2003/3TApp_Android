@@ -68,6 +68,7 @@ class AuthRepoImpl with AuthRepo {
         username: username, // Truyền username vào addUser
       ).then((value) {
         print("add user success");
+        CommonFunc.showToast("Thêm người dùng thành công");
         return Future.value(true);
       }).onError((error, stackTrace) {
         print("add user error: ${error.toString()}");

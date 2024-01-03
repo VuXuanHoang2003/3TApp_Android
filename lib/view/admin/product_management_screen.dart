@@ -71,8 +71,8 @@ class _ProductManagementScreen extends State<ProductManagementScreen> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         floatingActionButton: SizedBox(
-          width: 36,
-          height: 36,
+          width: 56,
+          height: 56,
           child: FloatingActionButton(
             child: const Icon(Icons.add),
             backgroundColor: Colors.green,
