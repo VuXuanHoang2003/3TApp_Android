@@ -58,7 +58,7 @@ class OrderViewModel extends BaseViewModel {
   Future<void> createOrder({required MyOrder order}) async {
     orderRepo.createOrder(order: order).then((value) async {
       if (value == true) {
-        CommonFunc.showToast("Lên đơn thành công.");
+        CommonFunc.showToast("Tạo đơn thành công.");
         NotificationViewModel().newOrderNotification();
       }
     }).onError((error, stackTrace) {

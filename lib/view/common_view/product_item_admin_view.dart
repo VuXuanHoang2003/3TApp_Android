@@ -70,7 +70,6 @@ class _ProductItemAdminViewState extends State<ProductItemAdminView> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -158,29 +157,35 @@ class _ProductItemAdminViewState extends State<ProductItemAdminView> {
   }
 
   Widget productItemImage() {
-    if (widget.product.image.isNotEmpty) {
-      return Image.network(
-        widget.product.image,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: SizedBox(
         width: 48,
         height: 48,
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-          return Center(
-            child: CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes!
-                  : null,
-            ),
-          );
-        },
-      );
-    } else {
-      return Image.asset(
-        ImagePath.imgImageUpload,
-        width: 48,
-        height: 48,
-      );
-    }
+        child: Image.network(
+          widget.product.image,
+          fit: BoxFit.cover,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return Center(
+              child: CircularProgressIndicator(
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes!
+                    : null,
+              ),
+            );
+          },
+          errorBuilder: (context, error, stackTrace) {
+            return Image.asset(
+              ImagePath.imgImageUpload,
+              width: 48,
+              height: 48,
+              fit: BoxFit.cover,
+            );
+          },
+        ),
+      ),
+    );
   }
 }

@@ -8,15 +8,19 @@ class ProductListScreen extends StatelessWidget {
 
   ProductListScreen({required this.category, required this.products});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('$category - Danh sách sản phẩm'),
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text(
+        '$category - Danh sách sản phẩm',
+        style: TextStyle(fontSize: 15.0),
       ),
-      body: buildProductList(context),
-    );
-  }
+    ),
+    body: buildProductList(context),
+  );
+}
+
 
  Widget buildProductList(BuildContext context) {
   return SizedBox(

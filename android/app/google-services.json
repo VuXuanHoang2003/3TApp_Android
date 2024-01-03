@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "491439893951",
-    "project_id": "tmarkettest-3ab1b",
-    "storage_bucket": "tmarkettest-3ab1b.appspot.com"
+    "project_number": "317719273719",
+    "project_id": "tappmarket-7d726",
+    "storage_bucket": "tappmarket-7d726.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:491439893951:android:3a4ddafe3ea9921b54450a",
+        "mobilesdk_app_id": "1:317719273719:android:537fdd9965371bf0dbb3f2",
         "android_client_info": {
           "package_name": "com.vjppro.three_tapp_app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAQJdKB9zZR1Wb6FxFBp5T-TWbQjm7OGYo"
+          "current_key": "AIzaSyD1_fZ4LOi1N0xsc2wf3E2H7qw-uAOYaQU"
         }
       ],
       "services": {
