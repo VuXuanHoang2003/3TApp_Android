@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -6,7 +8,14 @@ import '../../../utils/validator.dart';
 import '../../../viewmodel/auth_viewmodel.dart';
 import '../../common_view/custom_button.dart';
 
+bool isadminProp = false;
+
 class SignUpScreen extends StatefulWidget {
+  SignUpScreen(bool isAdmin) {
+    isadminProp = isAdmin;
+    print(isadminProp);
+  }
+
   @override
   State<StatefulWidget> createState() => _LoginScreen();
 }
@@ -253,6 +262,7 @@ class _LoginScreen extends State<SignUpScreen> {
                       String username = usernameController.text
                           .toString()
                           .trim(); // New field
+                      bool isAdmin = isadminProp;
                       if (!Validators.isValidEmail(email)) {
                         Fluttertoast.showToast(
                           msg: "Vui lòng nhập đúng định dạng email.",
@@ -275,7 +285,13 @@ class _LoginScreen extends State<SignUpScreen> {
                         );
                       } else {
                         authViewModel.signUp(
-                            email, password, phone, address, username);
+                          email,
+                          password,
+                          phone,
+                          address,
+                          username,
+                          isAdmin,
+                        );
                       }
                     } else {
                       Fluttertoast.showToast(
