@@ -4,7 +4,7 @@
     "chats": "Trò chuyện",
     "maps": "Bản đồ",
     "hello": "Xin chào",
-    "whatSearch?": "Bạn muốn tìm gì?",
+    "whatSearch": "Bạn muốn tìm gì?",
     "search": "Tìm kiếm",
     "pleaseEnterKeywords": "Vui lòng nhập từ khóa tìm kiếm.",
     "noData": "Không có dữ liệu",
@@ -26,6 +26,5 @@
     "confirmPassword": "Xác nhận mật khẩu",
     "email": "Email",
     "phone": "Số điện thoại",
-    "address": "Địa chỉ",
-    
+    "address": "Địa chỉ"
 }
