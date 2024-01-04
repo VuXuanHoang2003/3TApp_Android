@@ -6,6 +6,10 @@ import 'auth_repo.dart';
 
 class AuthRepoImpl with AuthRepo {
   @override
+  String? _currentUid;
+
+  // Getter để lấy giá trị uid
+  String? get currentUid => _currentUid;
   Future<User?> login({
     required String email,
     required String password,
@@ -16,7 +20,8 @@ class AuthRepoImpl with AuthRepo {
         email: email,
         password: password,
       );
-
+      
+            _currentUid = credential.user?.uid;
       if (isCheckAdmin) {
         bool isAdmin = false;
         await FirebaseFirestore.instance

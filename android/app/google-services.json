@@ -1,52 +1,26 @@
 {
   "project_info": {
-    "project_number": "118629807487",
-    "project_id": "tmarkettest-b8db7",
-    "storage_bucket": "tmarkettest-b8db7.appspot.com"
+    "project_number": "491439893951",
+    "project_id": "tmarkettest-3ab1b",
+    "storage_bucket": "tmarkettest-3ab1b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:118629807487:android:1cc0372916537c86a3d64a",
+        "mobilesdk_app_id": "1:491439893951:android:3a4ddafe3ea9921b54450a",
         "android_client_info": {
           "package_name": "com.vjppro.three_tapp_app"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "118629807487-qcp2fmj039ct68tg8hbc7i32de16uncf.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.vjppro.three_tapp_app",
-            "certificate_hash": "e135390483a6c14558c3fe69634d0c8ea63e05b2"
-          }
-        },
-        {
-          "client_id": "118629807487-tn231gve1cjpuqld84im7r5l4rtpuifh.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.vjppro.three_tapp_app",
-            "certificate_hash": "2bb52a324dc59084fc8b97564d1d3f785dd626f7"
-          }
-        },
-        {
-          "client_id": "118629807487-ejq76rb3au5bfq49qaqls711jr0ku42h.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCeVnDmygfns_5cQrQk6id9tLj2izlFka4"
+          "current_key": "AIzaSyAQJdKB9zZR1Wb6FxFBp5T-TWbQjm7OGYo"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "118629807487-ejq76rb3au5bfq49qaqls711jr0ku42h.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
