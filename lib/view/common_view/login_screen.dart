@@ -10,8 +10,6 @@ import '../../viewmodel/auth_viewmodel.dart';
 import '../customer/authentication/signup_screen.dart';
 import 'custom_button.dart';
 
-
-
 class LoginScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _LoginScreen();
@@ -24,27 +22,28 @@ class _LoginScreen extends State<LoginScreen> {
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
   AuthViewModel authViewModel = AuthViewModel();
-  final _auth=FirebaseAuth.instance;
-  final _googleSignIn=GoogleSignIn();
-  void goToSignUpScreen() {
+  final _auth = FirebaseAuth.instance;
+  final _googleSignIn = GoogleSignIn();
+  void goToSignUpScreen(bool isAdmin) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SignUpScreen()),
+      MaterialPageRoute(builder: (context) => SignUpScreen(isAdmin)),
     );
   }
-  signInWithGoogle() async{
-    try{
-      final GoogleSignInAccount? googleSignInAccount=
-        await _googleSignIn.signIn();
-      if(googleSignInAccount!=null){
-        final GoogleSignInAuthentication googleSignInAuthentication=
-          await googleSignInAccount.authentication;
-        final AuthCredential authCredential=GoogleAuthProvider.credential(
-          accessToken:googleSignInAuthentication.accessToken,
-          idToken:googleSignInAuthentication.idToken);
+
+  signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+        final AuthCredential authCredential = GoogleAuthProvider.credential(
+            accessToken: googleSignInAuthentication.accessToken,
+            idToken: googleSignInAuthentication.idToken);
         await _auth.signInWithCredential(authCredential);
       }
-    } on FirebaseAuthException catch(e){
+    } on FirebaseAuthException catch (e) {
       print(e.message);
       throw e;
     }
@@ -206,7 +205,7 @@ class _LoginScreen extends State<LoginScreen> {
                           email: email,
                           password: password,
                           isCheckAdmin:
-                              authViewModel.rolesType == RolesType.admin,
+                              authViewModel.rolesType == RolesType.seller,
                         );
                       }
                     } else {
@@ -230,14 +229,16 @@ class _LoginScreen extends State<LoginScreen> {
               GestureDetector(
                 onTap: () {
                   print('Đăng nhập');
-                  goToSignUpScreen();
+                  if (authViewModel.rolesType == RolesType.seller) {
+                    goToSignUpScreen(true);
+                  } else {
+                    goToSignUpScreen(false);
+                  }
                 },
-                child: authViewModel.rolesType != RolesType.admin
-                    ? const Text(
-                        'Bạn chưa có tài khoản? Đăng ký',
-                        style: TextStyle(color: Colors.black, fontSize: 12),
-                      )
-                    : const SizedBox(),
+                child: const Text(
+                  'Bạn chưa có tài khoản? Đăng ký',
+                  style: TextStyle(color: Colors.black, fontSize: 12),
+                ),
               ),
               const Padding(padding: EdgeInsets.only(top: 16)),
               Row(

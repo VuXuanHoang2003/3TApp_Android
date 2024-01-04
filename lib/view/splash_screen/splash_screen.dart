@@ -47,22 +47,21 @@ class _SplashScreen extends State<SplashScreen> {
               .get()
               .then((value) {
             bool isAdmin = value['isAdmin'] as bool;
-            if(isAdmin){
-              authViewModel.onRolesChanged(RolesType.admin);
+            if (isAdmin) {
+              authViewModel.onRolesChanged(RolesType.seller);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>AdminRootScreen()),
+                MaterialPageRoute(builder: (context) => AdminRootScreen()),
               );
-            }else{
+            } else {
               authViewModel.onRolesChanged(RolesType.customer);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>CustomerRootScreen()),
+                MaterialPageRoute(builder: (context) => CustomerRootScreen()),
               );
             }
             NotificationViewModel().getAllFCMTokens();
           });
-
         }
       });
     });
