@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:three_tapp_app/view/common_view/chat/chat_page.dart';
 import 'package:three_tapp_app/view/common_view/chat/chat_screen.dart';
+import 'package:three_tapp_app/view/common_view/map/home_map_view.dart';
 
 import '../blogs/blogs_screen.dart';
 import 'customer_home_screen.dart';
@@ -17,22 +17,14 @@ class _CustomerRootScreen extends State<CustomerRootScreen> {
   static final List<Widget> _widgetOptions = <Widget>[
     CustomerHomeScreen(),
     BlogsScreen(),
-    ChatScreen()
+    ChatScreen(),
+    const MapSample(),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void reloadView() {
-    setState(() {});
   }
 
   @override
@@ -55,12 +47,18 @@ class _CustomerRootScreen extends State<CustomerRootScreen> {
               label: 'Bài viết',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.note_rounded),
-              label: 'Chats',
+              icon: Icon(Icons.chat_rounded),
+              label: 'Chat',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.map_rounded),
+              label: 'Map',
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.lightBlue,
+          selectedItemColor: Colors.green,
+          unselectedItemColor: Colors.black, // Màu của các phần chưa được chọn
+          backgroundColor: Colors.white, // Màu nền của BottomNavigationBar
           onTap: _onItemTapped,
         ),
       ),

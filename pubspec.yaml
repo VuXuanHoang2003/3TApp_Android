@@ -33,13 +33,14 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
+  google_sign_in: ^6.2.1
   cupertino_icons: ^1.0.2
   provider: ^6.0.5
   fluttertoast: ^8.1.2
   firebase_auth: ^4.2.1
   firebase_core: ^2.4.0
   flutter_easyloading: ^3.0.5
-  rxdart: ^0.27.5
+  rxdart: 0.26.0
   contained_tab_bar_view: ^0.8.0
   cloud_firestore: ^4.3.0
   image_picker: ^1.0.5
@@ -47,10 +48,17 @@ dependencies:
   awesome_notifications: ^0.8.2
   awesome_notifications_fcm: ^0.8.0
   dio: ^5.0.1
-  badges: ^3.1.1
+
   flutter_localizations:
     sdk: flutter
   intl: 0.18.1
+
+
+  google_maps_flutter: ^2.5.0
+  geolocator: ^8.0.1
+  google_place: ^0.4.3 # for autocomplete search of Google Places
+  flutter_google_places: ^0.3.0
+  url_launcher: ^6.1.5 # to launch URLs
 
 dev_dependencies:
   flutter_test:

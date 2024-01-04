@@ -43,7 +43,7 @@ class _SelectRole extends State<SelectRole> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ListTile(
-              title: const Text('Khách hàng'),
+              title: const Text('Nhà tái chế '),
               leading: Radio<int>(
                 value: 1,
                 groupValue: selectedRole,
@@ -55,7 +55,7 @@ class _SelectRole extends State<SelectRole> {
               ),
             ),
             ListTile(
-              title: const Text('Admin'),
+              title: const Text('Người phân loại'),
               leading: Radio<int>(
                 value: 2,
                 groupValue: selectedRole,
