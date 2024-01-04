@@ -104,7 +104,7 @@ class _LoginScreen extends State<LoginScreen> {
                   Flexible(
                     child: Text(
                       'Đăng nhập vào tài khoản của bạn',
-                      style: const TextStyle(color: Colors.black, fontSize: 20),
+                      style: const TextStyle(color: Colors.black, fontSize: 16),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),

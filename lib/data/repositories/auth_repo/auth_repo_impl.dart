@@ -61,6 +61,7 @@ class AuthRepoImpl with AuthRepo {
         password: password,
       );
 
+
       // Lưu thông tin người dùng vào Firestore
       if (FirebaseAuth.instance.currentUser != null) {
         await addUser(
@@ -77,6 +78,7 @@ class AuthRepoImpl with AuthRepo {
           return Future.value(false);
         });
       }
+
 
       return Future.value(true);
     } on FirebaseAuthException catch (e) {

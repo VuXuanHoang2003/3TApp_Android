@@ -34,7 +34,7 @@ class _SplashScreen extends State<SplashScreen> {
     notifController.checkPermission();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Future.delayed(const Duration(milliseconds: 15000), () {
+      Future.delayed(const Duration(milliseconds: 5000), () {
         if (FirebaseAuth.instance.currentUser == null) {
           Navigator.push(
             context,
