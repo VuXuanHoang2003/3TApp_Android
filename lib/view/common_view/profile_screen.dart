@@ -96,7 +96,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                 ),
               ),
 
-              Center(child: Text(authViewModel.rolesType == RolesType.admin ? "(Người bán)" : "(Người mua)")),
+              Center(child: Text(authViewModel.rolesType == RolesType.seller ? "(Người bán)" : "(Người mua)")),
 
               const Divider(
                 thickness: 0.5,
