@@ -52,59 +52,71 @@ class AuthRepoImpl with AuthRepo {
 
   @override
   Future<bool> signUp({
-  required String email,
-  required String password,
-  required String phone,
-  required String address,
-  required String username, // Thêm trường username
+    required String email,
+    required String password,
+    required String phone,
+    required String address,
+    required String username, // Thêm trường username
+    required bool isAdmin,
   }) async {
-  try {
-    final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    try {
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
-    // Lưu thông tin người dùng vào Firestore
-    if (FirebaseAuth.instance.currentUser != null) {
-      await addUser(
-        FirebaseAuth.instance.currentUser!,
-        phone: phone,
-        address: address,
-        username: username, // Truyền username vào addUser
-      ).then((value) {
-        print("add user success");
-        return Future.value(true);
-      }).onError((error, stackTrace) {
-        print("add user error: ${error.toString()}");
-        return Future.value(false);
-      });
-    }
 
-    return Future.value(true);
-  } on FirebaseAuthException catch (e) {
-    if (e.code == 'weak-password') {
-      CommonFunc.showToast("Mật khẩu quá yếu.");
-    } else if (e.code == 'email-already-in-use') {
-      CommonFunc.showToast("Email đã tồn tại.");
+      // Lưu thông tin người dùng vào Firestore
+      if (FirebaseAuth.instance.currentUser != null) {
+        await addUser(
+          FirebaseAuth.instance.currentUser!,
+          phone: phone,
+          address: address,
+          username: username,
+          isAdmin: isAdmin, // Truyền username vào addUser
+        ).then((value) {
+          print("add user success");
+          return Future.value(true);
+        }).onError((error, stackTrace) {
+          print("add user error: ${error.toString()}");
+          return Future.value(false);
+        });
+      }
+
+
+      return Future.value(true);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        CommonFunc.showToast("Mật khẩu quá yếu.");
+      } else if (e.code == 'email-already-in-use') {
+        CommonFunc.showToast("Email đã tồn tại.");
+      }
+    } catch (e) {
+      print("signup error:${e.toString()}");
     }
-  } catch (e) {
-    print("signup error:${e.toString()}");
-  }
-  return Future.value(false);
+    return Future.value(false);
   }
 
   @override
-  Future<bool> addUser(User user, {String phone = '', String address = '', String username = ''}) async {
+  Future<bool> addUser(User user,
+      {String phone = '',
+      String address = '',
+      String username = '',
+      bool isAdmin = false}) async {
     try {
       Map<String, dynamic> userMap = {
         'username': username, // Sử dụng giá trị username được truyền từ signUp
         'email': user.email,
-        'isAdmin': false,
+        'isAdmin': isAdmin,
         'phone': phone,
         'address': address,
       };
 
-      await FirebaseFirestore.instance.collection('USERS').doc(user.uid).set(userMap);
+      await FirebaseFirestore.instance
+          .collection('USERS')
+          .doc(user.uid)
+          .set(userMap);
       return Future.value(true);
     } on FirebaseAuthException catch (e) {
       CommonFunc.showToast("Đã có lỗi xảy ra.");

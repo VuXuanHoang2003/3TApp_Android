@@ -43,7 +43,7 @@ class _SelectRole extends State<SelectRole> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ListTile(
-              title: const Text('Nhà tái chế '),
+              title: const Text('Người mua'),
               leading: Radio<int>(
                 value: 1,
                 groupValue: selectedRole,
@@ -55,7 +55,7 @@ class _SelectRole extends State<SelectRole> {
               ),
             ),
             ListTile(
-              title: const Text('Người phân loại'),
+              title: const Text('Người bán'),
               leading: Radio<int>(
                 value: 2,
                 groupValue: selectedRole,
@@ -75,13 +75,13 @@ class _SelectRole extends State<SelectRole> {
                     if (selectedRole == 1) {
                       rolesType = RolesType.customer;
                     } else if (selectedRole == 2) {
-                      rolesType = RolesType.admin;
+                      rolesType = RolesType.seller;
                     } else {
                       rolesType = RolesType.none;
                     }
 
                     if (rolesType == RolesType.customer ||
-                        rolesType == RolesType.admin) {
+                        rolesType == RolesType.seller) {
                       //set roles type and move to login screen
                       moveToLoginScreen(rolesType);
                     } else {

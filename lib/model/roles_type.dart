@@ -1,4 +1,4 @@
-enum RolesType { none, customer, admin }
+enum RolesType { none, customer, seller }
 
 extension ParseToString on RolesType {
   String toShortString() {
