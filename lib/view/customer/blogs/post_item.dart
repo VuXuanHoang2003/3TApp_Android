@@ -160,7 +160,7 @@ class _PostItem extends State<PostItem> {
                               )),
                         )
                       : const SizedBox(),
-                  ((currentUser?.email == widget.post.authorEmail) || (AuthViewModel().rolesType == RolesType.admin))
+                  ((currentUser?.email == widget.post.authorEmail) || (AuthViewModel().rolesType == RolesType.seller))
                       ? SizedBox(
                           width: 48,
                           child: TextButton(

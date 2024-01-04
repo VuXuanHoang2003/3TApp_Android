@@ -74,7 +74,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                   style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
                 ),
               ),
-              Center(child: Text(authViewModel.rolesType == RolesType.admin ? "(Admin)" : "(Khách hàng)")),
+              Center(child: Text(authViewModel.rolesType == RolesType.seller ? "(seller)" : "(Khách hàng)")),
               const Divider(
                 thickness: 0.5,
                 color: Colors.grey,
