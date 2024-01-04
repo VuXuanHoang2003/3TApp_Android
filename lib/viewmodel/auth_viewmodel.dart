@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:awesome_notifications_fcm/awesome_notifications_fcm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -40,17 +41,23 @@ class AuthViewModel extends BaseViewModel {
     this.rolesType = rolesType;
     notifyListeners();
   }
+
   String getUserEmail() {
     User? user = FirebaseAuth.instance.currentUser;
-    return user?.email ?? ""; // Nếu user không null thì trả về email, ngược lại trả về chuỗi rỗng
+    return user?.email ??
+        ""; // Nếu user không null thì trả về email, ngược lại trả về chuỗi rỗng
   }
 
-  Future<void> login({required String email, required String password, required bool isCheckAdmin}) async {
+  Future<void> login(
+      {required String email,
+      required String password,
+      required bool isCheckAdmin}) async {
     EasyLoading.show();
-    await authRepo.login(email: email, password: password, isCheckAdmin: isCheckAdmin).then((value) async {
+    await authRepo
+        .login(email: email, password: password, isCheckAdmin: isCheckAdmin)
+        .then((value) async {
       if (value != null) {
-         _currentUid = FirebaseAuth.instance.currentUser?.uid;
-        if (rolesType == RolesType.admin) {
+        if (rolesType == RolesType.seller) {
           CommonFunc.goToAdminRootScreen();
         } else {
           CommonFunc.goToCustomerRootScreen();
@@ -58,8 +65,9 @@ class AuthViewModel extends BaseViewModel {
         FCM fcm = FCM(
             id: UniqueKey().toString(),
             email: email,
-            isAdmin: rolesType == RolesType.admin,
-            fcmToken: await AwesomeNotificationsFcm().requestFirebaseAppToken());
+            isAdmin: rolesType == RolesType.seller,
+            fcmToken:
+                await AwesomeNotificationsFcm().requestFirebaseAppToken());
         // Add FCM to receive notification
         NotificationViewModel().addFCM(fcm: fcm);
       }
@@ -73,6 +81,7 @@ class AuthViewModel extends BaseViewModel {
   try {
     // Connect to Firestore collection 'USERS'
     final CollectionReference usersCollection = FirebaseFirestore.instance.collection('USERS');
+
 
     // Query users with the corresponding email
     QuerySnapshot querySnapshot = await usersCollection.where('email', isEqualTo: email).get();
@@ -99,10 +108,35 @@ Future<String> getUsername() async {
   return await getUsernameByEmail(email) ?? "Unknown username";
 }
 
-
 String getUsernameByEmail1(String? email) {
   if (email == null) {
     return "Unknown username";
+ 
+  Future<void> signUp(String email, String password, String phone,
+      String address, String username, bool isAdmin) async {
+    EasyLoading.show();
+    await authRepo
+        .signUp(
+            email: email,
+            password: password,
+            phone: phone,
+            address: address,
+            username: username,
+            isAdmin: isAdmin)
+        .then((value) {
+      EasyLoading.dismiss();
+      if (value) {
+        CommonFunc.showToast("Đăng ký thành công.");
+        // Back to login screen
+        Navigator.of(navigationKey.currentContext!).pop();
+      } else {
+        print("Sign up error");
+      }
+    }).onError((error, stackTrace) {
+      EasyLoading.dismiss();
+      CommonFunc.showToast("Đăng ký thất bại!");
+    });
+
   }
   return email.split("@").first;
 }
@@ -129,7 +163,8 @@ String getUsernameByEmail1(String? email) {
     notifyListeners();
     EasyLoading.dismiss();
     if (FirebaseAuth.instance.currentUser == null) {
-      Navigator.pushReplacement(navigationKey.currentContext!, MaterialPageRoute(builder: (context) => SelectRole()));
+      Navigator.pushReplacement(navigationKey.currentContext!,
+          MaterialPageRoute(builder: (context) => SelectRole()));
     }
   }
 }

@@ -15,11 +15,30 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreen extends State<ProfileScreen> {
   AuthViewModel authViewModel = AuthViewModel();
   User? user;
+  Map<String, dynamic>? userInfo;
 
   @override
   void initState() {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
+    // Lấy thông tin từ Cloud Firestore
+    getUserAdditionalInfo();
+  }
+
+  Future<void> getUserAdditionalInfo() async {
+    try {
+      // Lấy thông tin từ Firestore
+      Map<String, dynamic>? additionalInfo = await CommonFunc.getUserInfoFromFirebase(user?.uid ?? "");
+      print(additionalInfo);
+      if (additionalInfo != null) {
+        setState(() {
+          // Cập nhật thông tin người dùng
+          userInfo = additionalInfo;
+        });
+      }
+    } catch (e) {
+      print('Error fetching additional user info: $e');
+    }
   }
 
   @override
@@ -38,22 +57,24 @@ class _ProfileScreen extends State<ProfileScreen> {
             style: TextStyle(color: Colors.black),
           ),
           leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios,
-                color: Colors.grey,
-                size: 20,
-              )),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.grey,
+              size: 20,
+            ),
+          ),
           elevation: 0,
         ),
         body: Padding(
           padding: EdgeInsets.only(
-              left: 16,
-              top: MediaQuery.of(context).padding.top + 8,
-              right: 16,
-              bottom: MediaQuery.of(context).padding.bottom + 16),
+            left: 16,
+            top: MediaQuery.of(context).padding.top + 8,
+            right: 16,
+            bottom: MediaQuery.of(context).padding.bottom + 16,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,11 +91,13 @@ class _ProfileScreen extends State<ProfileScreen> {
               ),
               Center(
                 child: Text(
-                  CommonFunc.getUsernameByEmail(user?.email),
+                  userInfo?['username'] ?? "Unknown username",
                   style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
                 ),
               ),
-              Center(child: Text(authViewModel.rolesType == RolesType.admin ? "(Admin)" : "(Khách hàng)")),
+
+              Center(child: Text(authViewModel.rolesType == RolesType.admin ? "(Người bán)" : "(Người mua)")),
+
               const Divider(
                 thickness: 0.5,
                 color: Colors.grey,
@@ -82,16 +105,13 @@ class _ProfileScreen extends State<ProfileScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Row(
+                child: Column(
                   children: [
-                    const Icon(
-                      Icons.email,
-                      size: 18,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(user?.email ?? "Unknown email"),
-                    ),
+                    buildUserInfoRow(Icons.email, "Email", userInfo?['email'] ?? "Unknown email"),
+                    const SizedBox(height: 8),
+                    buildUserInfoRow(Icons.phone, "Phone", userInfo?['phone'] ?? "Unknown phone"),
+                    const SizedBox(height: 8),
+                    buildUserInfoRow(Icons.location_on, "Address", userInfo?['address'] ?? "Unknown address"),
                   ],
                 ),
               ),
@@ -99,16 +119,32 @@ class _ProfileScreen extends State<ProfileScreen> {
                 child: SizedBox(
                   width: 100,
                   child: TextButton(
-                      onPressed: () async {
-                        await authViewModel.logout();
-                      },
-                      child: const Text("Đăng xuất")),
+                    onPressed: () async {
+                      await authViewModel.logout();
+                    },
+                    child: const Text("Đăng xuất"),
+                  ),
                 ),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildUserInfoRow(IconData icon, String label, String value) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          size: 18,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Text(value),
+        ),
+      ],
     );
   }
 }

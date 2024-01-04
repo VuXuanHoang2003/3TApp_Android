@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../main.dart';
 import '../model/scrap_type.dart';
@@ -120,6 +121,20 @@ class CommonFunc {
     return "Unknown username";
   }
 }
+
+  static Future<Map<String, dynamic>?> getUserInfoFromFirebase(String uid) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+          await FirebaseFirestore.instance.collection('USERS').doc(uid).get();
+      if (documentSnapshot.exists) {
+        return documentSnapshot.data();
+      }
+    } catch (e) {
+      print('Error fetching user info from Firestore: $e');
+    }
+
+    return null;
+  }
 
   static String getOrderStatusName(String status) {
     switch (status) {

@@ -34,7 +34,7 @@ class _SplashScreen extends State<SplashScreen> {
     notifController.checkPermission();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Future.delayed(const Duration(milliseconds: 15000), () {
+      Future.delayed(const Duration(milliseconds: 5000), () {
         if (FirebaseAuth.instance.currentUser == null) {
           Navigator.push(
             context,
@@ -48,22 +48,21 @@ class _SplashScreen extends State<SplashScreen> {
               .get()
               .then((value) {
             bool isAdmin = value['isAdmin'] as bool;
-            if(isAdmin){
-              authViewModel.onRolesChanged(RolesType.admin);
+            if (isAdmin) {
+              authViewModel.onRolesChanged(RolesType.seller);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>AdminRootScreen()),
+                MaterialPageRoute(builder: (context) => AdminRootScreen()),
               );
-            }else{
+            } else {
               authViewModel.onRolesChanged(RolesType.customer);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>CustomerRootScreen()),
+                MaterialPageRoute(builder: (context) => CustomerRootScreen()),
               );
             }
             NotificationViewModel().getAllFCMTokens();
           });
-
         }
       });
     });
