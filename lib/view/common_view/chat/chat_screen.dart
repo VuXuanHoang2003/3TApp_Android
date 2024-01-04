@@ -1,5 +1,3 @@
-// import 'dart:js_interop';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,73 +7,88 @@ import '../../../viewmodel/post_viewmodel.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _ChatScreen();
+  State<StatefulWidget> createState() => _ChatScreenState();
 }
 
-class _ChatScreen extends State<ChatScreen> {
+class _ChatScreenState extends State<ChatScreen> {
   PostViewModel postViewModel = PostViewModel();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
-Widget build(BuildContext context) {
-  // TODO: implement build
-  return Scaffold( 
-    appBar: AppBar(
-      title: const Text("Chat"),
-      automaticallyImplyLeading: false, // Tắt nút back
-    ),
-    body: _buildUserList(),
-  );
-}
-
-  Widget _buildUserList() {
-    return StreamBuilder<QuerySnapshot>(      
-      stream: FirebaseFirestore.instance.collection('USERS').snapshots(), 
-      builder: (context,snapshot) { 
-          if (snapshot.hasError) {  
-            return const Text('error');
-          }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text ('loading ...');
-          }
-          // print(snapshot.data!.docs.length);
-          return ListView(
-            children: snapshot.data!.docs
-                .map<Widget>((doc) => _buildUserListItem(doc))
-                .toList(),
-          );
-        },
-       );
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Chat",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        automaticallyImplyLeading: false, // Tắt nút back
+        backgroundColor: Colors.blue, // Màu nền AppBar
+      ),
+      body: _buildUserList(),
+    );
   }
 
-  // build individual list items
+  Widget _buildUserList() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('USERS').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text('Error'),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        return ListView(
+          padding: EdgeInsets.all(16.0),
+          children: snapshot.data!.docs
+              .map<Widget>((doc) => _buildUserListItem(doc))
+              .toList(),
+        );
+      },
+    );
+  }
+
   Widget _buildUserListItem(DocumentSnapshot document) {
-    Map <String,dynamic> data = document.data()! as Map <String,dynamic>;
+    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
-  // display all user except current user
     if (_auth.currentUser!.email != data['email']) {
-      print("doc id" + document.id);
-      return ListTile(
-        title : Text(data['email']),
-        onTap: () {
-          // pass the clicked user's ID to the chat page
-          Navigator.push(
-            context, 
-            MaterialPageRoute(
-              builder: (context) => ChatPage(
-                receiveruserEmail: data['email'],
-                receiveruserID: document.id,
-
-              ),
+      return Card(
+        elevation: 3.0,
+        margin: EdgeInsets.symmetric(vertical: 8.0),
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(data['avatarUrl'] ?? 'URL_MẶC_ĐỊNH'),
+          ),
+          title: Text(
+            data['username'],
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatPage(
+                  receiveruserEmail: data['email'],
+                  receiveruserID: document.id,
+                ),
               ),
             );
-        },
-      );  
+          },
+        ),
+      );
     } else {
-      
-      //return empty container
-        return Container();
+      return Container();
     }
   }
 }
