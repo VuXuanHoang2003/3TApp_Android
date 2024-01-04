@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -96,6 +97,30 @@ class CommonFunc {
     }
     return email.split("@").first;
   }
+  static Future<String> getUsernameByUid(String uid) async {
+  try {
+    // Kết nối đến Firestore collection 'USERS'
+    final CollectionReference usersCollection = FirebaseFirestore.instance.collection('USERS');
+
+    // Truy vấn người dùng có UID tương ứng
+    QuerySnapshot querySnapshot = await usersCollection.where('uid', isEqualTo: uid).get();
+
+    // Lấy danh sách các tài khoản có UID tương ứng
+    List<DocumentSnapshot> userList = querySnapshot.docs;
+
+    // Kiểm tra xem có người dùng nào hay không
+    if (userList.isNotEmpty) {
+      // Lấy username từ người dùng đầu tiên (nếu có nhiều người dùng cùng UID)
+      String username = getUsernameByEmail(userList.first['email']);
+      return username;
+    } else {
+      return "Unknown username";
+    }
+  } catch (e) {
+    print('Lỗi khi truy cập Firestore: $e');
+    return "Unknown username";
+  }
+}
 
   static Future<Map<String, dynamic>?> getUserInfoFromFirebase(String uid) async {
     try {

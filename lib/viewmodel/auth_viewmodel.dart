@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ffi';
 
 import 'package:awesome_notifications_fcm/awesome_notifications_fcm.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -28,6 +29,10 @@ class AuthViewModel extends BaseViewModel {
   AuthRepo authRepo = AuthRepoImpl();
 
   RolesType rolesType = RolesType.none;
+  String? _currentUid;
+
+  // Getter để lấy giá trị uid
+  String? get currentUid => _currentUid;
 
   @override
   FutureOr<void> init() {}
@@ -72,7 +77,41 @@ class AuthViewModel extends BaseViewModel {
       CommonFunc.showToast("Lỗi đăng nhập!");
     });
   }
+  Future<String> getUsernameByEmail(String email) async {
+  try {
+    // Connect to Firestore collection 'USERS'
+    final CollectionReference usersCollection = FirebaseFirestore.instance.collection('USERS');
 
+
+    // Query users with the corresponding email
+    QuerySnapshot querySnapshot = await usersCollection.where('email', isEqualTo: email).get();
+
+    // Get the list of accounts with the matching email
+    List<DocumentSnapshot> userList = querySnapshot.docs;
+
+    // Check if there is any user
+    if (userList.isNotEmpty) {
+      // Get the username from the first user (if there are multiple users with the same email)
+      String username = userList.first['username'];
+      return username;
+    } else {
+      return "Unknown username";
+    }
+  } catch (e) {
+    print('Error accessing Firestore: $e');
+    return "Unknown username";
+  }
+}
+
+Future<String> getUsername() async {
+  String email = FirebaseAuth.instance.currentUser?.email ?? "";
+  return await getUsernameByEmail(email) ?? "Unknown username";
+}
+
+String getUsernameByEmail1(String? email) {
+  if (email == null) {
+    return "Unknown username";
+ 
   Future<void> signUp(String email, String password, String phone,
       String address, String username, bool isAdmin) async {
     EasyLoading.show();
@@ -97,7 +136,26 @@ class AuthViewModel extends BaseViewModel {
       EasyLoading.dismiss();
       CommonFunc.showToast("Đăng ký thất bại!");
     });
+
   }
+  return email.split("@").first;
+}
+
+  Future<void> signUp(String email, String password, String phone, String address, String username) async {
+  EasyLoading.show();
+  await authRepo.signUp(email: email, password: password, phone: phone, address: address, username: username).then((value) async {
+    EasyLoading.dismiss();
+    if (value) {
+      CommonFunc.showToast("Đăng ký thành công.");
+      Navigator.of(navigationKey.currentContext!).pop();
+    } else {
+      print("Sign up error");
+    }
+  }).onError((error, stackTrace) {
+    EasyLoading.dismiss();
+    CommonFunc.showToast("Đăng ký thất bại!");
+  });
+}
 
   Future<void> logout() async {
     EasyLoading.show();

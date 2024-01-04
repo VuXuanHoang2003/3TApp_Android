@@ -40,6 +40,7 @@ class _SplashScreen extends State<SplashScreen> {
             context,
             MaterialPageRoute(builder: (context) => SelectRole()),
           );
+          
         } else {
           FirebaseFirestore.instance
               .collection('USERS')
