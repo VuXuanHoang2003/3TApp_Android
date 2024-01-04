@@ -166,7 +166,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                           CommonFunc.showToast("Vui lòng nhập đủ thông tin.");
                         }
                       },
-                      text: 'Lên đơn',
+                      text: 'Tạo đơn',
                       textColor: Colors.white,
                       bgColor: Colors.blue,
                     ),

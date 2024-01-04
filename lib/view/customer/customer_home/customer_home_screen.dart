@@ -84,14 +84,14 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
           SizedBox(
             width: 36,
             height: 36,
-            child: FloatingActionButton(
-              backgroundColor: Colors.white,
-              onPressed: goToCartScreen,
-              child: Icon(
-                Icons.notifications,
-                color: Colors.blue,
-              ),
-            ),
+            // child: FloatingActionButton(
+            //   backgroundColor: Colors.white,
+            //   onPressed: goToCartScreen,
+            //   child: Icon(
+            //     Icons.notifications,
+            //     color: Colors.blue,
+            //   ),
+            // ),
           ),
         ],
       ),
@@ -277,10 +277,10 @@ Widget buildProductLists() {
       runSpacing: 10.0,
       alignment: WrapAlignment.start,
       children: [
-        buildScrapTypeWithButton("Giấy", "assets/images/donaso-logo.png", productViewModel.listGiay),
-        buildScrapTypeWithButton("Nhựa", "assets/images/donaso-logo.png", productViewModel.listNhua),
-        buildScrapTypeWithButton("Kim loại", "assets/images/donaso-logo.png", productViewModel.listKimLoai),
-        buildScrapTypeWithButton("Thủy tinh", "assets/images/donaso-logo.png", productViewModel.listThuytinh),
+        buildScrapTypeWithButton("Giấy", "assets/images/paper.jpeg", productViewModel.listGiay),
+        buildScrapTypeWithButton("Nhựa", "assets/images/plastic.jpeg", productViewModel.listNhua),
+        buildScrapTypeWithButton("Kim loại", "assets/images/metal.jpeg", productViewModel.listKimLoai),
+        buildScrapTypeWithButton("Thủy tinh", "assets/images/glass.jpeg", productViewModel.listThuytinh),
         buildScrapTypeWithButton("Khác", "assets/images/donaso-logo.png", productViewModel.listGiayKhac),
       ],
     ),
