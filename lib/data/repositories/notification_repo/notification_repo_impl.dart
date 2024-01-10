@@ -82,7 +82,7 @@ class NotificationRepoImpl with NotificationRepo {
     try {
       final response = await dio.post('https://fcm.googleapis.com/fcm/send', data: {
         "registration_ids": [token],
-        "notification": {"body": "Khách hàng vừa lên đơn mới.", "title": "Đơn hàng mới", "sound": true},
+        "notification": {"body": "Khách hàng vừa tạo đơn mới.", "title": "Đơn hàng mới", "sound": true},
         "data": {"content_type": "notification", "value": 2},
         "content_available": true,
         "priority": "high"

@@ -51,8 +51,8 @@ class _SalesManagementScreen extends State<SalesManagementScreen> {
               labelStyle: TextStyle(color: Colors.black, fontSize: 12)),
           tabs: const [
             Text('Mới tạo', style: TextStyle(color: Colors.black)),
-            Text('Đang xử lý', style: TextStyle(color: Colors.black)),
-            Text('Đã giao', style: TextStyle(color: Colors.black)),
+            Text('Đang giao dịch', style: TextStyle(color: Colors.black)),
+            Text('Đã xong', style: TextStyle(color: Colors.black)),
             Text('Đã huỷ', style: TextStyle(color: Colors.black))
           ],
           views: [

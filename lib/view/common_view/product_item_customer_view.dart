@@ -69,7 +69,7 @@ class _ProductItemCustomerView extends State<ProductItemCustomerView> {
                   onClick: () {
                     goToConfirmOrderScreen();
                   },
-                  title: "Lên đơn",
+                  title: "Tạo đơn",
                   bgColor: Colors.white,
                   borderColor: Colors.blue,
                   textStyle: TextStyle(color: Colors.blue, fontSize: 10))

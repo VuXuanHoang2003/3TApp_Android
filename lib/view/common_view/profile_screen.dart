@@ -115,13 +115,24 @@ class _ProfileScreen extends State<ProfileScreen> {
                 ),
               ),
               Center(
-                child: SizedBox(
-                  width: 100,
-                  child: TextButton(
-                    onPressed: () async {
-                      await authViewModel.logout();
-                    },
-                    child: const Text("Đăng xuất"),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await authViewModel.logout();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue, // Màu sắc nút
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0), // Góc bo tròn của nút
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0), // Khoảng cách giữa vị trí chữ và mép nút
+                  ),
+                  child: Text(
+                    "Đăng xuất",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
