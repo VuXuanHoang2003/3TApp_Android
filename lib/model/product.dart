@@ -1,4 +1,3 @@
-
 import 'package:three_tapp_app/model/scrap_type.dart';
 
 class Product {
@@ -12,16 +11,17 @@ class Product {
   String uploadDate = DateTime.now().toString();
   String editDate = DateTime.now().toString();
 
-  Product(
-      {required this.id,
-      required this.name,
-      required this.image,
-      required this.description,
-      required this.price,
-      required this.type,
-      required this.uploadBy,
-      required this.uploadDate,
-      required this.editDate});
+  Product({
+    required this.id,
+    required this.name,
+    required this.image,
+    required this.description,
+    required this.price,
+    required this.type,
+    required this.uploadBy,
+    required this.uploadDate,
+    required this.editDate,
+  });
 
   Product.empty() {
     id = '';
@@ -35,7 +35,7 @@ class Product {
     editDate = DateTime.now().toString();
   }
 
-  Product.fromJson(Map<String, dynamic> json){
+  Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     image = json['image'];
@@ -46,5 +46,4 @@ class Product {
     uploadDate = json['uploadDate'];
     editDate = json['editDate'];
   }
-
 }
