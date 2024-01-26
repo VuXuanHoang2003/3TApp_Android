@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:three_tapp_app/view/admin/product_management_screen.dart';
 import 'package:three_tapp_app/view/admin/sales_management_screen.dart';
+import 'package:three_tapp_app/view/admin/statistic_screen.dart';
 import 'package:three_tapp_app/view/common_view/chat/chat_screen.dart';
 
 import '../../utils/common_func.dart';
@@ -19,6 +20,7 @@ class _AdminRootScreen extends State<AdminRootScreen> {
     SalesManagementScreen(),
     BlogsScreen(),
     ChatScreen(),
+    StatisticScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -47,7 +49,7 @@ class _AdminRootScreen extends State<AdminRootScreen> {
         body: Padding(
           padding: EdgeInsets.only(
               left: 0,
-              top: MediaQuery.of(context).padding.top+ 8,
+              top: MediaQuery.of(context).padding.top + 8,
               right: 0,
               bottom: 0),
           child: Column(
@@ -77,30 +79,36 @@ class _AdminRootScreen extends State<AdminRootScreen> {
               icon: Icon(
                 Icons.production_quantity_limits,
                 color: Colors.blue,
-                ),
+              ),
               label: 'Sản phẩm',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.point_of_sale_rounded,
                 color: Colors.blue,
-                ),
+              ),
               label: 'Bán hàng',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.post_add_rounded,
                 color: Colors.blue,
-                ),
+              ),
               label: 'Bài viết',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.chat_rounded,
                 color: Colors.blue,
-                ),
+              ),
               label: 'Chat',
             ),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.book_rounded,
+                  color: Colors.blue,
+                ),
+                label: 'Thống kê')
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.lightBlue,
