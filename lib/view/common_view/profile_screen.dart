@@ -53,7 +53,7 @@ class _ProfileScreen extends State<ProfileScreen> {
           backgroundColor: Colors.white,
           centerTitle: true,
           title: const Text(
-            "Hồ sơ của tôi",
+            "Thông tin cá nhân",
             style: TextStyle(color: Colors.black),
           ),
           leading: IconButton(

@@ -20,21 +20,21 @@ class AuthRepoImpl with AuthRepo {
         email: email,
         password: password,
       );
-      
-            _currentUid = credential.user?.uid;
+      _currentUid = credential.user?.uid;
       if (isCheckAdmin) {
         bool isAdmin = false;
-        await FirebaseFirestore.instance
+        final doc = await FirebaseFirestore.instance
             .collection('USERS')
             .doc(credential.user?.uid)
-            .get()
-            .then((value) {
-          isAdmin = value['isAdmin'] as bool;
-        });
+            .get();
+        if (doc.exists) {
+          isAdmin = doc.data()?['isAdmin'] as bool;
+        }
         if (isAdmin) {
           return FirebaseAuth.instance.currentUser;
         } else {
-          CommonFunc.showToast("Tài khoản của bạn không có quyền Admin.");
+          CommonFunc.showToast(
+              "Tài khoản của bạn không có quyền của người bán.");
           return null;
         }
       } else {
@@ -45,7 +45,11 @@ class AuthRepoImpl with AuthRepo {
         CommonFunc.showToast("Không tìm thấy người dùng.");
       } else if (e.code == 'wrong-password') {
         CommonFunc.showToast("Sai tài khoản/mật khẩu.");
+      } else {
+        CommonFunc.showToast("Đăng nhập thất bại");
       }
+    } catch (e) {
+      CommonFunc.showToast("Đã xảy ra lỗi: $e");
     }
     return null;
   }
@@ -66,7 +70,6 @@ class AuthRepoImpl with AuthRepo {
         password: password,
       );
 
-
       // Lưu thông tin người dùng vào Firestore
       if (FirebaseAuth.instance.currentUser != null) {
         await addUser(
@@ -84,7 +87,6 @@ class AuthRepoImpl with AuthRepo {
         });
       }
 
-
       return Future.value(true);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -98,6 +100,7 @@ class AuthRepoImpl with AuthRepo {
     return Future.value(false);
   }
 
+  @override
   @override
   Future<bool> addUser(User user,
       {String phone = '',
@@ -125,5 +128,80 @@ class AuthRepoImpl with AuthRepo {
       CommonFunc.showToast("Đã có lỗi xảy ra.");
     }
     return Future.value(false);
+  }
+
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Future<bool> editProfile(String newName, String newAddress,
+      String newPhoneNumber, String oldPassword, String newPassword) async {
+    try {
+      // Lấy người dùng hiện tại
+      User? currentUser = _auth.currentUser;
+      if (oldPassword == newPassword) {
+        CommonFunc.showToast("Mật khẩu mới trùng mật khẩu cũ");
+        return false;
+      }
+      // Xác thực người dùng bằng mật khẩu cũ
+      AuthCredential credential = EmailAuthProvider.credential(
+          email: currentUser!.email!, password: oldPassword);
+      await currentUser.reauthenticateWithCredential(credential);
+
+      // Thay đổi mật khẩu nếu newPassword được cung cấp
+      if (newPassword.isNotEmpty) {
+        await currentUser.updatePassword(newPassword);
+      }
+
+      // Cập nhật thông tin người dùng trong Firestore
+      await _firestore.collection('USERS').doc(currentUser.uid).update({
+        'username': newName,
+        'address': newAddress,
+        'phone': newPhoneNumber,
+      });
+
+      // Trả về true để thể hiện rằng thông tin đã được cập nhật thành công
+      return true;
+    } catch (error) {
+      // Xử lý lỗi (nếu có)
+      print('Error updating user data: $error');
+
+      // Kiểm tra nếu lỗi là do xác thực mật khẩu cũ không thành công
+      if (error is FirebaseAuthException && error.code == 'wrong-password') {
+        // Nếu mật khẩu cũ không chính xác, thông báo cho người dùng biết
+        print('Old password is incorrect');
+      }
+
+      // Trả về false để thể hiện rằng có lỗi xảy ra
+      return false;
+    }
+  }
+
+  Future<List<String>> getUserInfo() async {
+    try {
+      // Lấy dữ liệu người dùng từ Firestore
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('USERS')
+          .doc(_currentUid!)
+          .get();
+
+      // Kiểm tra xem dữ liệu người dùng có tồn tại không
+      if (userSnapshot.exists) {
+        // Lấy thông tin từ dữ liệu người dùng
+        String username = userSnapshot.get('username') ?? '';
+        String address = userSnapshot.get('address') ?? '';
+        String phone = userSnapshot.get('phone') ?? '';
+
+        // Trả về kết quả dưới dạng danh sách
+        return [username, address, phone];
+      } else {
+        // Trường hợp dữ liệu người dùng không tồn tại, trả về danh sách rỗng
+        return ['', '', ''];
+      }
+    } catch (error) {
+      // Xử lý lỗi nếu có
+      print('Error getting user data: $error');
+
+      // Trả về danh sách rỗng trong trường hợp có lỗi xảy ra
+      return ['', '', ''];
+    }
   }
 }

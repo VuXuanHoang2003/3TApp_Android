@@ -209,23 +209,30 @@ class ProductRepoImpl with ProductRepo {
   }
 
   Future<List<Product>> searchProducts(String searchTerm) async {
-    List<Product> searchResults = [];
+  List<Product> searchResults = [];
 
-    try {
-      await FirebaseFirestore.instance
-          .collection("PRODUCTS")
-          .where("name", isGreaterThanOrEqualTo: searchTerm)
-          .where("name", isLessThan: searchTerm + "z")
-          .get()
-          .then((querySnapshot) {
-        for (var result in querySnapshot.docs) {
-          searchResults.add(Product.fromJson(result.data()));
+  try {
+    await FirebaseFirestore.instance
+        .collection("PRODUCTS")
+        .get()
+        .then((querySnapshot) {
+      for (var result in querySnapshot.docs) {
+        Product product = Product.fromJson(result.data());
+
+        // Chuyển tên sản phẩm và từ khóa tìm kiếm về chữ thường để so sánh không phân biệt chữ hoa chữ thường
+        String productNameLower = product.name.toLowerCase();
+        String searchTermLower = searchTerm.toLowerCase();
+
+        // Kiểm tra xem từ khóa có xuất hiện trong tên sản phẩm hay không
+        if (productNameLower.contains(searchTermLower)) {
+          searchResults.add(product);
         }
-      });
-    } catch (error) {
-      print("searchProducts error: ${error.toString()}");
-    }
-
-    return searchResults;
+      }
+    });
+  } catch (error) {
+    print("searchProducts error: ${error.toString()}");
   }
+
+  return searchResults;
+}
 }

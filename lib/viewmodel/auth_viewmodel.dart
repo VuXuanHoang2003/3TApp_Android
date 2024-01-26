@@ -104,7 +104,15 @@ class AuthViewModel extends BaseViewModel {
       return "Unknown username";
     }
   }
-
+  Future<bool> editProfile(String newName, String newAddress, String newPhone,String oldPassword,String newPassword) async {
+   
+    try {
+      return await authRepo.editProfile(newName, newAddress, newPhone,oldPassword,newPassword);
+    } catch (error) {
+      print('Error updating user profile: $error');
+      return false;
+    }
+  }
   Future<String> getUsername() async {
     String email = FirebaseAuth.instance.currentUser?.email ?? "";
     return await getUsernameByEmail(email) ?? "Unknown username";
@@ -153,4 +161,13 @@ class AuthViewModel extends BaseViewModel {
           MaterialPageRoute(builder: (context) => SelectRole()));
     }
   }
+  Future<List<String>> getUserInfo() async {
+    try {
+      return await authRepo.getUserInfo();
+    } catch (error) {
+      print('Error fetching user info: $error');
+      return ['', '', '']; // Trả về danh sách rỗng trong trường hợp có lỗi xảy ra
+    }
+  }
+
 }
