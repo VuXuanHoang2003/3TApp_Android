@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:three_tapp_app/view/common_view/profile_screen_root.dart';
 
 import '../main.dart';
 import '../model/scrap_type.dart';
@@ -57,7 +58,7 @@ class CommonFunc {
   static void goToProfileScreen() {
     Navigator.push(
       navigationKey.currentContext!,
-      MaterialPageRoute(builder: (context) => ProfileScreen()),
+      MaterialPageRoute(builder: (context) => ProfileScreenRoot()),
     );
   }
 
