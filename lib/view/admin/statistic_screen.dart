@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:three_tapp_app/model/product.dart';
 import 'package:three_tapp_app/model/statistic.dart';
+import 'package:three_tapp_app/utils/image_path.dart';
 import 'package:three_tapp_app/viewmodel/product_viewmodel.dart';
 import 'package:three_tapp_app/viewmodel/statistic_viewmodel.dart';
 
@@ -14,15 +15,12 @@ class _StatisticScreenState extends State<StatisticScreen> {
   @override
   void initState() {
     super.initState();
-    // Thực hiện các tác vụ khởi tạo cần thiết ở đây (nếu có).
+    // Perform any initializations here
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Thống kê người dùng'),
-      ),
       body: _buildStatisticsList(),
     );
   }
@@ -32,32 +30,83 @@ class _StatisticScreenState extends State<StatisticScreen> {
       future: StatisticViewModel().getStatisticOfCurrentUser(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator(); // Show a loading indicator.
+          return Center(
+            child: CircularProgressIndicator(),
+          ); // Centered loading indicator.
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return Center(
+            child: Text(
+              'Error: ${snapshot.error}',
+              style: TextStyle(color: Colors.red),
+            ),
+          ); // Centered error message with red color.
         } else if (!snapshot.hasData) {
-          return const Text('No data available');
+          return Center(
+            child: Text(
+              'No data available',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ); // Centered message for no data with grey color.
         } else {
           Statistic? statisticCurrentUser = snapshot.data;
 
-          return ListView.builder(
-            itemCount: 1,
-            itemBuilder: (context, index) {
-              return ListTile(
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Số bài đăng: ${statisticCurrentUser?.numberOfPosts}'),
-                    Text(
-                        'Số giao dịch thành công: ${statisticCurrentUser?.numberOfSuccessfulTrade}'),
-                  ],
+          return Padding(
+            padding: EdgeInsets.all(16.0),
+            child: ListView(
+              children: [
+                _buildCard(
+                  title: 'Số lượng bài đăng trên hệ thống',
+                  value: '${statisticCurrentUser?.numberOfPosts}',
+                  color: Colors.green,
+                  imagePath: ImagePath.imgUploadedPost,
                 ),
-                // You can add more information or actions here.
-              );
-            },
+                _buildCard(
+                  title: 'Giao dịch thành công: ',
+                  value: '${statisticCurrentUser?.numberOfSuccessfulTrade}',
+                  color: Colors.green,
+                  imagePath: ImagePath.imgSuccessfulTransaction,
+                ),
+              ],
+            ),
           );
         }
       },
+    );
+  }
+
+  Widget _buildCard({
+    required String title,
+    required String value,
+    required Color color,
+    required String imagePath,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 30.0,
+            backgroundImage: AssetImage(imagePath),
+          ),
+          SizedBox(
+              width: 16.0), // Adjust the spacing between the image and the card
+          Expanded(
+            child: Card(
+              elevation: 8.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: ListTile(
+                title: Text(
+                  '$title: $value',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                tileColor: color,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

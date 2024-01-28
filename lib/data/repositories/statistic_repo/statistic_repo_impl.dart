@@ -7,6 +7,7 @@ class StatisticRepoImpl extends StatisticRepo {
       Statistic(numberOfPosts: 0, numberOfSuccessfulTrade: 0);
   @override
   Future<Statistic> getStatistic(String? email) async {
+    print(email);
     // TODO: implement getStatistic
     try {
       await FirebaseFirestore.instance
@@ -31,7 +32,6 @@ class StatisticRepoImpl extends StatisticRepo {
     } catch (error) {
       print("error:${error.toString()}");
     }
-    print("Tổng số sản phẩm đã đăng alo: ${statistic.numberOfPosts}");
     return statistic;
   }
 }

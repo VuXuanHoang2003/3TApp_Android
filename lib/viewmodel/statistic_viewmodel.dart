@@ -19,10 +19,9 @@ class StatisticViewModel extends BaseViewModel {
   @override
   FutureOr<void> init() {
     //Khoi tao nguoi dung hien tai
-    currentUser = FirebaseAuth.instance.currentUser;
   }
 
   Future<Statistic> getStatisticOfCurrentUser() {
-    return statisticRepo.getStatistic(currentUser!.email);
+    return statisticRepo.getStatistic(FirebaseAuth.instance.currentUser!.email);
   }
 }

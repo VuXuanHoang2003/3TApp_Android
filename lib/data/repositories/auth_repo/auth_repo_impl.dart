@@ -5,6 +5,7 @@ import '../../../utils/common_func.dart';
 import 'auth_repo.dart';
 
 class AuthRepoImpl with AuthRepo {
+  Future<User?>? _currentUser = null;
   @override
   String? _currentUid;
 
@@ -20,8 +21,8 @@ class AuthRepoImpl with AuthRepo {
         email: email,
         password: password,
       );
-      
-            _currentUid = credential.user?.uid;
+
+      _currentUid = credential.user?.uid;
       if (isCheckAdmin) {
         bool isAdmin = false;
         await FirebaseFirestore.instance
@@ -32,12 +33,14 @@ class AuthRepoImpl with AuthRepo {
           isAdmin = value['isAdmin'] as bool;
         });
         if (isAdmin) {
+          print(FirebaseAuth.instance.currentUser?.email);
           return FirebaseAuth.instance.currentUser;
         } else {
           CommonFunc.showToast("Tài khoản của bạn không có quyền Admin.");
           return null;
         }
       } else {
+        print(FirebaseAuth.instance.currentUser?.email);
         return FirebaseAuth.instance.currentUser;
       }
     } on FirebaseAuthException catch (e) {
@@ -66,7 +69,6 @@ class AuthRepoImpl with AuthRepo {
         password: password,
       );
 
-
       // Lưu thông tin người dùng vào Firestore
       if (FirebaseAuth.instance.currentUser != null) {
         await addUser(
@@ -83,7 +85,6 @@ class AuthRepoImpl with AuthRepo {
           return Future.value(false);
         });
       }
-
 
       return Future.value(true);
     } on FirebaseAuthException catch (e) {
