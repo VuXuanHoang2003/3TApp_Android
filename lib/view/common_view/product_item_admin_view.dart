@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:three_tapp_app/view/common_view/product_details_screen.dart';
 import '../../main.dart';
@@ -17,6 +18,14 @@ class ProductItemAdminView extends StatefulWidget {
 
 class _ProductItemAdminViewState extends State<ProductItemAdminView> {
   ProductViewModel productViewModel = ProductViewModel();
+  String? firstImageUrl; // Biến để lưu URL của ảnh đầu tiên
+
+  @override
+  void initState() {
+    super.initState();
+    // Gọi hàm để lấy URL của ảnh đầu tiên khi StatefulWidget được khởi tạo
+    getFirstImageUrl();
+  }
 
   void goToProductDetailsScreen() {
     Navigator.push(
@@ -68,6 +77,23 @@ class _ProductItemAdminViewState extends State<ProductItemAdminView> {
         return alert;
       },
     );
+  }
+
+  // Hàm để lấy URL của ảnh đầu tiên từ thư mục trong Firebase Storage
+  void getFirstImageUrl() async {
+    try {
+      // Lấy danh sách tệp tin trong thư mục
+      ListResult result = await FirebaseStorage.instance.ref(widget.product.image).list();
+      // Lấy URL của ảnh đầu tiên nếu danh sách không rỗng
+      if (result.items.isNotEmpty) {
+        String firstImageURL = await result.items[0].getDownloadURL();
+        setState(() {
+          firstImageUrl = firstImageURL;
+        });
+      }
+    } catch (e) {
+      print('Error getting first image URL: $e');
+    }
   }
 
   @override
@@ -157,35 +183,36 @@ class _ProductItemAdminViewState extends State<ProductItemAdminView> {
   }
 
   Widget productItemImage() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
-      child: SizedBox(
-        width: 48,
-        height: 48,
-        child: Image.network(
-          widget.product.image,
-          fit: BoxFit.cover,
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) return child;
-            return Center(
-              child: CircularProgressIndicator(
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes!
-                    : null,
-              ),
-            );
-          },
-          errorBuilder: (context, error, stackTrace) {
-            return Image.asset(
-              ImagePath.imgImageUpload,
-              width: 48,
-              height: 48,
-              fit: BoxFit.cover,
-            );
-          },
-        ),
-      ),
-    );
+    return firstImageUrl != null
+        ? Image.network(
+            firstImageUrl!,
+            width: 48,
+            height: 48,
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                      : null,
+                ),
+              );
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return Image.asset(
+                ImagePath.imgImageUpload,
+                width: 48,
+                height: 48,
+                fit: BoxFit.cover,
+              );
+            },
+          )
+        : SizedBox(
+            width: 48,
+            height: 48,
+            child: CircularProgressIndicator(),
+          );
   }
 }

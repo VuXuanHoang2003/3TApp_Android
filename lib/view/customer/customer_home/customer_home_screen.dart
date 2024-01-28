@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:three_tapp_app/main.dart';
 import 'package:three_tapp_app/view/customer/cart/cart_screen.dart';
-import 'package:three_tapp_app/view/product_details_screen.dart';
+//import 'package:three_tapp_app/view/product_details_screen.dart';
 import 'package:three_tapp_app/viewmodel/auth_viewmodel.dart';
 import '../../../model/product.dart';
 import '../../../model/status.dart';
