@@ -50,10 +50,10 @@ class _CustomerRootScreen extends State<CustomerRootScreen> {
               icon: Icon(Icons.chat_rounded),
               label: 'Chat',
             ),
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.map_rounded),
-            //   label: 'Map',
-            // ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.map_rounded),
+              label: 'Map',
+            ),
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.green,

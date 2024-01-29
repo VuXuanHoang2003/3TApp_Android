@@ -1,56 +1,69 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-class SimpleMapScreen extends StatefulWidget {
-  const SimpleMapScreen({super.key});
+import 'package:geocoding/geocoding.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+class MapSearchPage extends StatefulWidget {
   @override
-  State<SimpleMapScreen> createState() => _SimpleMapScreenState();
+  _MapSearchPageState createState() => _MapSearchPageState();
 }
 
-class _SimpleMapScreenState extends State<SimpleMapScreen> {
+class _MapSearchPageState extends State<MapSearchPage> {
+  TextEditingController searchController = TextEditingController();
 
-  final Completer<GoogleMapController> _controller = Completer();
+  void searchAndNavigate(BuildContext context) async {
+    String searchText = searchController.text;
+    if (searchText.isEmpty) {
+      return;
+    }
 
-  static const CameraPosition initialPosition = CameraPosition(
-    target: LatLng(16.05437, 108.24061),
-    zoom: 14.5
-    );
+    List<Location> locations = await locationFromAddress(searchText);
+    if (locations.isNotEmpty) {
+      double latitude = locations.first.latitude;
+      double longitude = locations.first.longitude;
+      String mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
 
-  static const CameraPosition targetPosition = CameraPosition(
-    target: LatLng(16.07392, 108.14993),
-    zoom: 14.0, 
-    bearing: 192.0,
-    tilt: 60  
-    );
+      // Chuyển đổi chuỗi URL sang đối tượng Uri
+      Uri uri = Uri.parse(mapUrl);
+
+      // Kiểm tra xem ứng dụng Google Maps đã được cài đặt chưa
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri);
+      } else {
+        Fluttertoast.showToast(msg: "Ứng dụng Google Maps không được cài đặt");
+      }
+    } else {
+      Fluttertoast.showToast(msg: "Không tìm thấy");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Simple Google Map"),
-        centerTitle: true,
+      appBar: AppBar(title: Text('Google SearchMap')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                hintText: 'Nhập địa chỉ cần tìm',
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () => searchAndNavigate(context),
+                ),
+              ),
+              onSubmitted: (value) => searchAndNavigate(context),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () => searchAndNavigate(context),
+              child: Text('Tìm kiếm'),
+            ),
+          ],
+        ),
       ),
-      body: GoogleMap(
-        initialCameraPosition: initialPosition,
-        mapType: MapType.normal,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          goToKinhTe();
-        }, 
-        label: const Text("Di den Bach Khoa"),
-        icon : const Icon(Icons.directions_bike),
-      )
     );
   }
-
-  Future<void> goToKinhTe() async {
-    final GoogleMapController controller =await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(targetPosition));
-  }
-
 }
