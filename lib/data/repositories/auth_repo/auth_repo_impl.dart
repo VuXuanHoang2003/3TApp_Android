@@ -5,6 +5,7 @@ import '../../../utils/common_func.dart';
 import 'auth_repo.dart';
 
 class AuthRepoImpl with AuthRepo {
+  Future<User?>? _currentUser = null;
   @override
   String? _currentUid;
 
@@ -31,6 +32,7 @@ class AuthRepoImpl with AuthRepo {
           isAdmin = doc.data()?['isAdmin'] as bool;
         }
         if (isAdmin) {
+          print(FirebaseAuth.instance.currentUser?.email);
           return FirebaseAuth.instance.currentUser;
         } else {
           CommonFunc.showToast(
@@ -38,6 +40,7 @@ class AuthRepoImpl with AuthRepo {
           return null;
         }
       } else {
+        print(FirebaseAuth.instance.currentUser?.email);
         return FirebaseAuth.instance.currentUser;
       }
     } on FirebaseAuthException catch (e) {
