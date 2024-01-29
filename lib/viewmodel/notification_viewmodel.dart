@@ -40,7 +40,7 @@ class NotificationViewModel extends BaseViewModel {
       EasyLoading.dismiss();
     });
   }
-
+  //loc token theo nguoi dung
   void filterUser(List<FCM> fcms) {
     userFCMs.clear();
     adminFCMs.clear();

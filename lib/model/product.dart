@@ -29,7 +29,7 @@ class Product {
     image = '';
     description = '';
     price = 0.0;
-    type = ScrapType.khac.toShortString();
+    type = ScrapType.khac.toShortString();//ket qua tra ve la "khac"
     uploadBy = '';
     uploadDate = DateTime.now().toString();
     editDate = DateTime.now().toString();

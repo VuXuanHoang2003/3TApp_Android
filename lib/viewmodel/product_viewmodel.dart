@@ -69,10 +69,24 @@ class ProductViewModel extends BaseViewModel {
     });
   }
 
+  // Future<void> addProduct(
+  //     {required Product product, required File? imageFile}) async {
+  //   await productRepo
+  //       .addProduct(product: product, imageFile: imageFile)
+  //       .then((value) async {
+  //     if (value == true) {
+  //       CommonFunc.showToast("Thêm thành công.");
+  //       await getAllProduct();
+  //       NotificationViewModel().newProductNotification();
+  //     }
+  //   }).onError((error, stackTrace) {
+  //     print("add fail");
+  //   });
+  // }
   Future<void> addProduct(
-      {required Product product, required File? imageFile}) async {
+      {required Product product, required List<File> imageFiles}) async {
     await productRepo
-        .addProduct(product: product, imageFile: imageFile)
+        .addProduct(product: product, imageFiles: imageFiles)
         .then((value) async {
       if (value == true) {
         CommonFunc.showToast("Thêm thành công.");
@@ -82,7 +96,8 @@ class ProductViewModel extends BaseViewModel {
     }).onError((error, stackTrace) {
       print("add fail");
     });
-  }
+}
+
 
   Future<void> updateProduct(
       {required Product product, required File? imageFile}) async {
