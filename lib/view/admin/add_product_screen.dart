@@ -94,7 +94,7 @@ class _AddProductScreen extends State<AddProductScreen> {
               right: 16,
               bottom: MediaQuery.of(context).padding.bottom + 16),
           child: SingleChildScrollView(
-            physics:const BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Container(
               color: Colors.white,
               child: Column(
@@ -215,7 +215,8 @@ class _AddProductScreen extends State<AddProductScreen> {
                         items: productType.map((ScrapType value) {
                           return DropdownMenuItem<ScrapType>(
                             value: value,
-                            child: Text(CommonFunc.getSenDaNameByType(value.toShortString())),
+                            child: Text(CommonFunc.getSenDaNameByType(
+                                value.toShortString())),
                           );
                         }).toList(),
                         value: selectedType,
@@ -240,10 +241,14 @@ class _AddProductScreen extends State<AddProductScreen> {
                                   .toString()
                                   .trim()
                                   .isNotEmpty &&
-                              priceController.text.toString().trim().isNotEmpty) {
+                              priceController.text
+                                  .toString()
+                                  .trim()
+                                  .isNotEmpty) {
                             String name =
                                 productNameController.text.toString().trim();
-                            double price =double.parse(priceController.text.toString().trim());
+                            double price = double.parse(
+                                priceController.text.toString().trim());
                             String description =
                                 descriptionController.text.toString().trim();
 
@@ -260,6 +265,7 @@ class _AddProductScreen extends State<AddProductScreen> {
 
                             await productViewModel.addProduct(
                                 product: product, imageFile: _image);
+
                             Navigator.of(context).pop();
                           } else {
                             Fluttertoast.showToast(
