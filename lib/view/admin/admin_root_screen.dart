@@ -78,29 +78,34 @@ class _AdminRootScreen extends State<AdminRootScreen> {
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.production_quantity_limits,
-                color: Colors.blue,
-              ),
+
+                color: Colors.green,
+                ),
+
               label: 'Sản phẩm',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.point_of_sale_rounded,
-                color: Colors.blue,
-              ),
+
+                color: Colors.green,
+                ),
               label: 'Bán hàng',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.post_add_rounded,
-                color: Colors.blue,
-              ),
+
+                color: Colors.green,
+                ),
               label: 'Bài viết',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.chat_rounded,
-                color: Colors.blue,
-              ),
+              
+                color: Colors.green,
+                ),
               label: 'Chat',
             ),
             BottomNavigationBarItem(
@@ -111,7 +116,7 @@ class _AdminRootScreen extends State<AdminRootScreen> {
                 label: 'Thống kê')
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.lightBlue,
+          selectedItemColor: Colors.green,
           onTap: _onItemTapped,
         ),
       ),
