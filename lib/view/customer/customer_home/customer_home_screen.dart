@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:three_tapp_app/main.dart';
 import 'package:three_tapp_app/view/customer/cart/cart_screen.dart';
-import 'package:three_tapp_app/view/product_details_screen.dart';
+//import 'package:three_tapp_app/view/product_details_screen.dart';
 import 'package:three_tapp_app/viewmodel/auth_viewmodel.dart';
 import '../../../model/product.dart';
 import '../../../model/status.dart';
@@ -277,11 +277,11 @@ Widget buildProductLists() {
       runSpacing: 10.0,
       alignment: WrapAlignment.start,
       children: [
-        buildScrapTypeWithButton("Giấy", "assets/images/paper.jpg", productViewModel.listGiay),
-        buildScrapTypeWithButton("Nhựa", "assets/images/plastic.jpg", productViewModel.listNhua),
-        buildScrapTypeWithButton("Kim loại", "assets/images/metal.jpg", productViewModel.listKimLoai),
+        buildScrapTypeWithButton("Giấy", "assets/images/paper.jpeg", productViewModel.listGiay),
+        buildScrapTypeWithButton("Nhựa", "assets/images/plastic.jpeg", productViewModel.listNhua),
+        buildScrapTypeWithButton("Kim loại", "assets/images/metal.jpeg", productViewModel.listKimLoai),
         buildScrapTypeWithButton("Thủy tinh", "assets/images/glass.jpeg", productViewModel.listThuytinh),
-        buildScrapTypeWithButton("Khác", "assets/images/other.jpg", productViewModel.listGiayKhac),
+        buildScrapTypeWithButton("Khác", "assets/images/donaso-logo.png", productViewModel.listGiayKhac),
       ],
     ),
   );

@@ -96,7 +96,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
         body: Padding(
           padding: EdgeInsets.all(16),
           child: SingleChildScrollView(
-
             physics: BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
