@@ -85,7 +85,7 @@ class _AdminRootScreen extends State<AdminRootScreen> {
                 Icons.point_of_sale_rounded,
                 color: Colors.blue,
                 ),
-              label: 'Bán hàng',
+              label: 'Quản lý',
             ),
             BottomNavigationBarItem(
               icon: Icon(

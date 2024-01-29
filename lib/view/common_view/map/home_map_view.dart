@@ -1,8 +1,6 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:three_tapp_app/view/common_view/map/current_user_view.dart';
-import 'package:three_tapp_app/view/common_view/map/search_places_view.dart';
+import 'package:three_tapp_app/view/common_view/map/address_list.dart';
 import 'package:three_tapp_app/view/common_view/map/simple_map_screen.dart';
 
 class MapSample extends StatefulWidget {
@@ -27,7 +25,7 @@ class MapSampleState extends State<MapSample> {
           children: [
             ElevatedButton(onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                return const SimpleMapScreen();
+                return MapSearchPage();
               }));
             }, child: const Text("Simple Map")),
             ElevatedButton(onPressed: () {
@@ -37,7 +35,7 @@ class MapSampleState extends State<MapSample> {
             }, child: const Text("User current location")),
                         ElevatedButton(onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                return const SearchPlaceView();
+                return AddressListScreen();
               }));
             }, child: const Text("Search Map")),
           ],

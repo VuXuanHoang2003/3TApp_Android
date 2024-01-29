@@ -51,10 +51,13 @@ dependencies:
   dio: ^5.0.1
   badges: ^3.1.1
   google_maps_flutter: ^2.5.0
-  geolocator: ^8.0.1
+  geolocator: 7.6.2
   google_place: ^0.4.3 # for autocomplete search of Google Places
   flutter_google_places: ^0.3.0
-  url_launcher: ^6.1.5 # to launch URLs
+  geocoding: ^2.1.1
+  webview_flutter: 2.8.0
+  url_launcher : ^6.0.4
+  location : 4.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

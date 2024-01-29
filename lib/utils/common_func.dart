@@ -160,7 +160,7 @@ class CommonFunc {
       case "DONE":
         return Colors.green;
       default:
-        return Colors.black;
+        return Colors.redAccent;
     }
   }
 }
