@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:three_tapp_app/view/common_view/language_screen.dart';
 import 'package:three_tapp_app/view/common_view/profile_edit_screen.dart';
 
 import '../../model/roles_type.dart';
@@ -8,7 +9,7 @@ import '../../utils/common_func.dart';
 import '../../utils/image_path.dart';
 import '../../viewmodel/auth_viewmodel.dart';
 import 'package:three_tapp_app/view/common_view/profile_screen.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileScreenRoot extends StatefulWidget {
   @override
@@ -46,7 +47,7 @@ class _ProfileScreenRoot extends State<ProfileScreenRoot>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Thông tin của bạn'),
+        title: const Text('Thông tin của bạn'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -61,12 +62,12 @@ class _ProfileScreenRoot extends State<ProfileScreenRoot>{
 
               children: [
                 // Ảnh đại diện
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 50,
                   // TODO: Thêm ảnh đại diện của người dùng
                   backgroundImage: AssetImage('assets/images/default-avatar.png'),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 // Thông tin người dùng
                 Expanded(
                   child: Column(
@@ -75,12 +76,12 @@ class _ProfileScreenRoot extends State<ProfileScreenRoot>{
                   userInfo?['username'] ?? "Unknown username",
                   style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
                 ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                        Text(
                       userInfo?['email'] ?? "Unknown email",
                       style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
                     ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       ElevatedButton(
                         onPressed: () {
                           // TODO: Xử lý khi bấm vào nút chỉnh sửa hồ sơ
@@ -92,7 +93,7 @@ class _ProfileScreenRoot extends State<ProfileScreenRoot>{
                         style: ElevatedButton.styleFrom(
                           primary: Colors.green, // Màu nền xanh lá
                         ),
-                        child: Text('Chỉnh sửa hồ sơ',
+                        child: const Text('Chỉnh sửa hồ sơ',
                             style: TextStyle(color: Colors.white),
                             ),// Màu chữ đen
                       ),
@@ -101,18 +102,17 @@ class _ProfileScreenRoot extends State<ProfileScreenRoot>{
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             // Phần dưới
             Expanded(
               child: ListView(
                 children: [
                   
-                  CustomListTile('Lịch sử'),
-                
-                  CustomListTile('Thông tin'),
-                  CustomListTile('Hướng dẫn'),
-                  CustomListTile('Ngôn ngữ'),
-                  CustomListTile('Thoát tài khoản'),
+                  CustomListTile(AppLocalizations.of(context)!.history),
+                  CustomListTile(AppLocalizations.of(context)!.info),
+                  CustomListTile(AppLocalizations.of(context)!.guide),
+                  CustomListTile(AppLocalizations.of(context)!.language),
+                  CustomListTile(AppLocalizations.of(context)!.logout),
                 ],
               ),
             ),
@@ -136,7 +136,7 @@ class CustomListTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(itemName),
-          Icon(Icons.arrow_forward_ios), // Ký hiệu ">"
+          const Icon(Icons.arrow_forward_ios), // Ký hiệu ">"
         ],
       ),
       onTap: () async {
@@ -148,6 +148,13 @@ class CustomListTile extends StatelessWidget {
         }
         else if(itemName=='Lịch sử'){
 
+        }
+        else if(itemName=='Ngôn ngữ'){
+          // Điều hướng đến file language_screen.dart
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => LanguageScreen()),
+          );
         }
         else if(itemName=='Thoát tài khoản'){
           await authViewModel.logout();
@@ -176,7 +183,7 @@ class DetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chi tiết'),
+        title: const Text('Chi tiết'),
       ),
       body: Center(
         child: Text('Chi tiết về $itemName'),

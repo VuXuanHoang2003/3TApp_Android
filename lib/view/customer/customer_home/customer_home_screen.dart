@@ -262,7 +262,7 @@ Widget buildScrapTypeWithButton(String title, String imageUrl, List<Product> pro
 
 void navigateToScrapList(List<Product> products, String category) {
   Navigator.push(
-    context,
+    context,  
     MaterialPageRoute(
       builder: (context) => ProductListScreen(products: products, category: category),
     ),
