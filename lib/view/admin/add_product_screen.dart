@@ -14,10 +14,10 @@ import '../common_view/custom_button.dart';
 
 class AddProductScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _AddProductScreen();
+  State<StatefulWidget> createState() => _AddProductScreenState();
 }
 
-class _AddProductScreen extends State<AddProductScreen> {
+class _AddProductScreenState extends State<AddProductScreen> {
   ProductViewModel productViewModel = ProductViewModel();
   TextEditingController productNameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -26,6 +26,7 @@ class _AddProductScreen extends State<AddProductScreen> {
   FocusNode descriptionFocusNode = FocusNode();
   FocusNode priceFocusNode = FocusNode();
   User? user;
+  List<File> _images = []; // Khởi tạo danh sách ảnh
 
   @override
   void initState() {
@@ -47,24 +48,28 @@ class _AddProductScreen extends State<AddProductScreen> {
     setState(() {});
   }
 
-  File? _image;
   final ImagePicker _picker = ImagePicker();
 
-  Future getImage() async {
-    var pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+  Future<void> getImage() async {
+    List<XFile>? pickedFiles = await _picker.pickMultiImage(
+      imageQuality: 50,
+    );
 
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      }
-    });
+    if (pickedFiles != null) {
+      setState(() {
+        _images.clear(); // Xóa danh sách ảnh hiện tại
+        for (var pickedFile in pickedFiles) {
+          _images.add(File(pickedFile.path)); // Thêm ảnh mới vào danh sách
+        }
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(new FocusNode());
+        FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -76,207 +81,220 @@ class _AddProductScreen extends State<AddProductScreen> {
             style: TextStyle(color: Colors.black),
           ),
           leading: IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios,
-                color: Colors.grey,
-                size: 20,
-              )),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.grey,
+              size: 20,
+            ),
+          ),
           elevation: 0,
         ),
         body: Padding(
-          padding: EdgeInsets.only(
-              left: 16,
-              top: 08,
-              right: 16,
-              bottom: MediaQuery.of(context).padding.bottom + 16),
+          padding: EdgeInsets.all(16),
           child: SingleChildScrollView(
-            physics:const BouncingScrollPhysics(),
-            child: Container(
-              color: Colors.white,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                      child: GestureDetector(
-                    onTap: () async {
-                      print("pick image");
-                      getImage();
-                    },
-                    child: _image == null
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: GestureDetector(
+                    onTap: getImage,
+                    child: _images.isEmpty
                         ? Image.asset(
                             ImagePath.imgImageUpload,
                             width: 64,
                             height: 64,
                           )
-                        : Image.file(
-                            _image!,
-                            width: 64,
+                        : SizedBox(
                             height: 64,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: _images.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: EdgeInsets.only(right: 8.0),
+                                  child: Image.file(
+                                    _images[index],
+                                    width: 64,
+                                    height: 64,
+                                  ),
+                                );
+                              },
+                            ),
                           ),
-                  )),
-                  const Padding(padding: EdgeInsets.only(top: 32)),
-                  TextFormField(
-                    controller: productNameController,
-                    focusNode: productFocusNode,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(8),
-                      labelText: "Tên sản phẩm (*)",
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.blueAccent, width: 2.0),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.redAccent, width: 1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.redAccent, width: 1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                  ),
+                ),
+                const SizedBox(height: 32),
+                TextFormField(
+                  controller: productNameController,
+                  focusNode: productFocusNode,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    labelText: "Tên sản phẩm (*)",
+                    fillColor: Colors.white,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          color: Colors.blueAccent, width: 2.0),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.grey, width: 1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.redAccent, width: 1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.redAccent, width: 1),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  const Padding(padding: EdgeInsets.only(top: 8)),
-                  TextFormField(
-                    controller: priceController,
-                    focusNode: priceFocusNode,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(8),
-                      labelText: "Giá bán (*)",
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.blueAccent, width: 2.0),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.redAccent, width: 1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.redAccent, width: 1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                ),
+                const SizedBox(height: 8),
+                TextFormField(
+                  controller: priceController,
+                  focusNode: priceFocusNode,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: "Giá bán (*)",
+                    fillColor: Colors.white,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          color: Colors.blueAccent, width: 2.0),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.grey, width: 1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.redAccent, width: 1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.redAccent, width: 1),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  const Padding(padding: EdgeInsets.only(top: 8)),
-                  TextFormField(
-                    maxLines: null,
-                    controller: descriptionController,
-                    focusNode: descriptionFocusNode,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(8),
-                      labelText: "Mô tả",
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            color: Colors.blueAccent, width: 2.0),
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.grey, width: 1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                ),
+                const SizedBox(height: 8),
+                TextFormField(
+                  maxLines: null,
+                  controller: descriptionController,
+                  focusNode: descriptionFocusNode,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    labelText: "Mô tả",
+                    fillColor: Colors.white,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          color: Colors.blueAccent, width: 2.0),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.grey, width: 1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.redAccent, width: 1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.redAccent, width: 1),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  const Padding(padding: EdgeInsets.only(top: 8)),
-                  Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text("Loại:"),
-                      ),
-                      Spacer(),
-                      DropdownButton<ScrapType>(
-                        items: productType.map((ScrapType value) {
-                          return DropdownMenuItem<ScrapType>(
-                            value: value,
-                            child: Text(CommonFunc.getSenDaNameByType(value.toShortString())),
-                          );
-                        }).toList(),
-                        value: selectedType,
-                        onChanged: (value) {
-                          if (value != null) {
-                            selectedType = value;
-                          } else {
-                            selectedType = ScrapType.khac;
-                          }
-                          reloadView();
-                        },
-                      ),
-                      const Spacer(),
-                    ],
-                  ),
-                  const Padding(padding: EdgeInsets.only(top: 32)),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: CustomButton(
-                        onPressed: () async {
-                          if (productNameController.text
-                                  .toString()
-                                  .trim()
-                                  .isNotEmpty &&
-                              priceController.text.toString().trim().isNotEmpty) {
-                            String name =
-                                productNameController.text.toString().trim();
-                            double price =double.parse(priceController.text.toString().trim());
-                            String description =
-                                descriptionController.text.toString().trim();
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Text("Loại:"),
+                    ),
+                    Spacer(),
+                    DropdownButton<ScrapType>(
+                      items: productType.map((type) {
+                        return DropdownMenuItem<ScrapType>(
+                          value: type,
+                          child: Text(CommonFunc.getSenDaNameByType(
+                              type.toShortString())),
+                        );
+                      }).toList(),
+                      value: selectedType,
+                      onChanged: (value) {
+                        if (value != null) {
+                          selectedType = value;
+                        } else {
+                          selectedType = ScrapType.khac;
+                        }
+                        reloadView();
+                      },
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+                const SizedBox(height: 32),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: CustomButton(
+                    onPressed: () async {
+                      if (productNameController.text.isNotEmpty &&
+                          priceController.text.isNotEmpty &&
+                          _images.isNotEmpty) {
+                        String name = productNameController.text.trim();
+                        double price =
+                            double.parse(priceController.text.trim());
+                        String description = descriptionController.text.trim();
 
-                            Product product = Product(
-                                id: UniqueKey().toString(),
-                                name: name,
-                                image: '',
-                                description: description,
-                                price: price,
-                                type: selectedType.toShortString(),
-                                uploadBy: user?.email ?? "Unknown user",
-                                uploadDate: DateTime.now().toString(),
-                                editDate: DateTime.now().toString());
+                        Product product = Product(
+                          id: UniqueKey().toString(),
+                          name: name,
+                          image: '', // Cập nhật sau khi tải ảnh lên
+                          description: description,
+                          price: price,
+                          type: selectedType.toShortString(),
+                          uploadBy: user?.email ?? "Unknown user",
+                          uploadDate: DateTime.now().toString(),
+                          editDate: DateTime.now().toString(),
+                        );
 
-                            await productViewModel.addProduct(
-                                product: product, imageFile: _image);
-                            Navigator.of(context).pop();
-                          } else {
-                            Fluttertoast.showToast(
-                                msg: "Vui lòng nhập đủ thông tin.",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.black45,
-                                textColor: Colors.white,
-                                fontSize: 12.0);
-                          }
-                        },
-                        text: "Thêm",
-                        textColor: Colors.white,
-                        bgColor: Colors.blue),
+                        await productViewModel.addProduct(
+                          product: product,
+                          imageFiles: _images,
+                        );
+                        Navigator.of(context).pop();
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: "Vui lòng nhập đủ thông tin.",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.black45,
+                          textColor: Colors.white,
+                          fontSize: 12.0,
+                        );
+                      }
+                    },
+                    text: "Thêm",
+                    textColor: Colors.white,
+                    bgColor: Colors.blue,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

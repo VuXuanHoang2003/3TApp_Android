@@ -16,6 +16,13 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   AuthViewModel authViewModel = AuthViewModel();
+  List<String> imageUrls = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getAllImageUrls();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +55,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: productItemImage(),
-              ),
+              productItemImage(),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Text(
@@ -102,22 +106,27 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   Widget productItemImage() {
-    if (widget.product.image.isNotEmpty) {
-      return Image.network(
-        widget.product.image,
-        width: 200,
-        height: 200,
-        fit: BoxFit.cover,
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-          return Center(
-            child: CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                  : null,
-            ),
-          );
-        },
+    if (imageUrls.isNotEmpty) {
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: imageUrls.map((imageUrl) {
+            return GestureDetector(
+              onTap: () {
+                showImageDialog(context, imageUrl);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Image.network(
+                  imageUrl,
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          }).toList(),
+        ),
       );
     } else {
       return Image.asset(
@@ -127,5 +136,40 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         fit: BoxFit.cover,
       );
     }
+  }
+
+  void getAllImageUrls() async {
+    try {
+      ListResult result = await FirebaseStorage.instance.ref(widget.product.image).listAll();
+      List<String> urls = [];
+      for (Reference ref in result.items) {
+        String url = await ref.getDownloadURL();
+        urls.add(url);
+      }
+      setState(() {
+        imageUrls = urls;
+      });
+    } catch (e) {
+      print('Error getting image URLs: $e');
+    }
+  }
+
+  void showImageDialog(BuildContext context, String imageUrl) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Image.network(imageUrl),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

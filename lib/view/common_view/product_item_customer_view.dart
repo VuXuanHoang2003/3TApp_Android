@@ -91,26 +91,51 @@ class _ProductItemCustomerView extends State<ProductItemCustomerView> {
   }
 
   Widget productItemImage() {
-    if (widget.product.image.isNotEmpty) {
-      return Image.network(
-        height: 120,
-        widget.product.image,
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-          return Center(
-            child: CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                  : null,
-            ),
+  if (widget.product.image.isNotEmpty) {
+    return FutureBuilder<String>(
+      future: getFirstImageUrl(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          return Image.network(
+            snapshot.data ?? '', // Use imageUrl here
+            height: 120, // Define height here
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                      : null,
+                ),
+              );
+            },
           );
-        },
-      );
-    } else {
-      return Image.asset(
-        ImagePath.imgImageUpload,
-        height: 120,
-      );
-    }
+        }
+      },
+    );
+  } else {
+    return Image.asset(
+      ImagePath.imgImageUpload,
+      height: 120,
+    );
   }
+}
+
+
+Future<String> getFirstImageUrl() async {
+  try {
+    ListResult result = await FirebaseStorage.instance.ref(widget.product.image).list();
+    if (result.items.isNotEmpty) {
+      return await result.items[0].getDownloadURL();
+    }
+  } catch (e) {
+    print('Error getting first image URL: $e');
+  }
+  return ''; // Trả về chuỗi rỗng nếu không tìm thấy ảnh
+}
+
 }
