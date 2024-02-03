@@ -111,7 +111,7 @@ class _AdminRootScreen extends State<AdminRootScreen> {
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.book_rounded,
-                  color: Colors.blue,
+                  color: Colors.green,
                 ),
                 label: 'Thống kê')
           ],
