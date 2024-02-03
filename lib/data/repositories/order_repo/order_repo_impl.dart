@@ -25,6 +25,7 @@ class OrderRepoImpl with OrderRepo {
         "status": order.status,
         "create_date": order.createDate,
         "update_date": order.updateDate,
+        "seller_email": order.sellerEmail 
       };
 
       await FirebaseFirestore.instance

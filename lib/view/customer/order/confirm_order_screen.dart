@@ -165,6 +165,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                             status: OrderStatus.NEW.toShortString(),
                             createDate: DateTime.now().toString(),
                             updateDate: DateTime.now().toString(),
+                            sellerEmail: widget.product.uploadBy
                           );
                           orderViewModel.createOrder(order: order);
                           Navigator.of(context).pop();

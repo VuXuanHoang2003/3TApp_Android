@@ -16,13 +16,14 @@ class StatisticRepoImpl extends StatisticRepo {
           .get()
           .then((querySnapshot) {
         statistic.numberOfPosts = querySnapshot.docs.length;
-        print("Tổng số sản phẩm đang đăng: ${statistic.numberOfPosts}");
+        print("Tổng số sản phẩm đã đăng: ${statistic.numberOfPosts}");
       });
 
       print("Tổng số sản phẩm đã đăng: ${statistic.numberOfPosts}");
       await FirebaseFirestore.instance
           .collection("ORDERS")
           .where("status", isEqualTo: "DONE")
+          .where("seller_email", isEqualTo: email)
           .get()
           .then((querySnapshot) {
         statistic.numberOfSuccessfulTrade = querySnapshot.size;

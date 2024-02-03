@@ -166,7 +166,8 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
                               address: address,
                               status: order.status,
                               createDate: order.createDate,
-                              updateDate: DateTime.now().toString());
+                              updateDate: DateTime.now().toString(),
+                              sellerEmail: order.sellerEmail);
                           cartViewModel.updateOrderInfo(
                             newOrder: newOrder,
                           );
