@@ -7,6 +7,7 @@ class MyOrder {
   double productPrice = 0;
   int productQuantity = 1;
   String customerName = '';
+
   ///Thuoc tinh nay de duoc gan theo user
   String customerEmail = '';
   String phoneNumber = '';
@@ -14,6 +15,7 @@ class MyOrder {
   String status = OrderStatus.NEW.toShortString();
   String createDate = DateTime.now().toString();
   String updateDate = DateTime.now().toString();
+  String sellerEmail = '';
 
   MyOrder(
       {required this.id,
@@ -27,7 +29,8 @@ class MyOrder {
       required this.address,
       required this.status,
       required this.createDate,
-      required this.updateDate});
+      required this.updateDate,
+      required this.sellerEmail});
 
   MyOrder.empty() {
     id = '';
@@ -42,6 +45,7 @@ class MyOrder {
     status = OrderStatus.NEW.toShortString();
     createDate = DateTime.now().toString();
     updateDate = DateTime.now().toString();
+    sellerEmail = '';
   }
 
   MyOrder.fromJson(Map<String, dynamic> json) {
@@ -57,5 +61,6 @@ class MyOrder {
     status = json['status'];
     createDate = json['create_date'];
     updateDate = json['update_date'];
+    sellerEmail = json['seller_email'];
   }
 }
