@@ -11,31 +11,33 @@ class MapSearchPage extends StatefulWidget {
 class _MapSearchPageState extends State<MapSearchPage> {
   TextEditingController searchController = TextEditingController();
 
-  void searchAndNavigate(BuildContext context) async {
-    String searchText = searchController.text;
-    if (searchText.isEmpty) {
-      return;
-    }
-
+void searchAndNavigate(BuildContext context) async {
+  String searchText = searchController.text;
+  if (searchText.isEmpty) {
+    return;
+  }
+  try {
     List<Location> locations = await locationFromAddress(searchText);
     if (locations.isNotEmpty) {
       double latitude = locations.first.latitude;
       double longitude = locations.first.longitude;
       String mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
-
-      // Chuyển đổi chuỗi URL sang đối tượng Uri
+      // Convert the URL string to a Uri object
       Uri uri = Uri.parse(mapUrl);
-
-      // Kiểm tra xem ứng dụng Google Maps đã được cài đặt chưa
+      // Check if the Google Maps app is installed
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri);
       } else {
         Fluttertoast.showToast(msg: "Ứng dụng Google Maps không được cài đặt");
       }
     } else {
-      Fluttertoast.showToast(msg: "Không tìm thấy");
+      Fluttertoast.showToast(msg: "Không tìm thấy địa chỉ");
     }
+  } catch (error) {
+    Fluttertoast.showToast(msg: "Không tìm thấy địa chỉ");
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

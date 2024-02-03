@@ -57,6 +57,7 @@ dependencies:
   google_place: ^0.4.3 # for autocomplete search of Google Places
   flutter_google_places: ^0.3.0
   url_launcher: ^6.1.5 # to launch URLs
+  geocoding: ^2.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

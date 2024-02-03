@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:three_tapp_app/view/common_view/chat/chat_screen.dart';
 import 'package:three_tapp_app/view/common_view/map/home_map_view.dart';
-
 import '../blogs/blogs_screen.dart';
 import 'customer_home_screen.dart';
 
@@ -18,7 +17,7 @@ class _CustomerRootScreen extends State<CustomerRootScreen> {
     CustomerHomeScreen(),
     BlogsScreen(),
     ChatScreen(),
-    const MapSample(),
+    MapSample(),
   ];
 
   void _onItemTapped(int index) {
