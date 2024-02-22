@@ -127,6 +127,7 @@ Future<bool> addProduct({required Product product, required List<File> imageFile
       "description": product.description,
       "price": product.price,
       "type": product.type,
+      "mass":product.mass,
       "uploadBy": product.uploadBy,
       "uploadDate": product.uploadDate,
       "editDate": product.editDate,
@@ -143,7 +144,43 @@ Future<bool> addProduct({required Product product, required List<File> imageFile
     return false;
   }
 }
+Future<bool> isMassLessThanOrEqualProductMass(double mass,String productId) async {
+  try {
+    // Lấy thông tin sản phẩm từ Firestore
+    DocumentSnapshot productSnapshot = await FirebaseFirestore.instance
+        .collection("PRODUCTS")
+        .doc(productId)
+        .get();
 
+    // Lấy khối lượng sản phẩm từ dữ liệu Firestore
+    double productMass = productSnapshot.get('mass');
+
+    // Kiểm tra xem khối lượng có nhỏ hơn hoặc bằng khối lượng sản phẩm không
+    return mass <= productMass;
+  } catch (error) {
+    print("Lỗi khi kiểm tra khối lượng: $error");
+    return false; // Trả về false nếu có lỗi xảy ra
+  }
+}
+Future<bool> updateProductMass({required String productId, required double newMass}) async {
+    try {
+      // Lấy tham chiếu tới tài liệu của sản phẩm cần cập nhật khối lượng
+      DocumentReference productRef = FirebaseFirestore.instance.collection('PRODUCTS').doc(productId);
+
+      // Tạo map chứa dữ liệu mới của sản phẩm (bao gồm khối lượng mới)
+      Map<String, dynamic> newData = {
+        'mass': newMass,
+      };
+
+      // Cập nhật dữ liệu của sản phẩm trong Firestore
+      await productRef.update(newData);
+
+      return true; // Trả về true nếu cập nhật thành công
+    } catch (error) {
+      print('Error updating product mass: $error');
+      return false; // Trả về false nếu có lỗi xảy ra
+    }
+  }
 Future<void> uploadImagesToFirebaseStorage({
   required List<File> imageFiles,
   required String productFolder,
@@ -190,6 +227,7 @@ Future<void> uploadImagesToFirebaseStorage({
           "description": product.description,
           "price": product.price,
           "type": product.type,
+          "mass":product.mass,
           "uploadBy": product.uploadBy,
           "uploadDate": product.uploadDate,
           "editDate": product.editDate
@@ -217,6 +255,7 @@ Future<void> uploadImagesToFirebaseStorage({
           "price": product.price,
           "type": product.type,
           "uploadBy": product.uploadBy,
+          "mass":product.mass,
           "uploadDate": product.uploadDate,
           "editDate": product.editDate
         };

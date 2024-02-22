@@ -12,4 +12,6 @@ abstract class OrderRepo {
 
   Future<bool> updateOrderInfo({required MyOrder newOrder});
 // Future<bool> deleteOrder({required String productId});
+  Future<bool> isOrderDone(String orderId);
+
 }
