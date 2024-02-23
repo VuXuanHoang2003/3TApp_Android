@@ -23,11 +23,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
   TextEditingController productNameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController priceController = TextEditingController();
+  TextEditingController massController = TextEditingController();
+  FocusNode massFocusNode=FocusNode();
   FocusNode productFocusNode = FocusNode();
   FocusNode descriptionFocusNode = FocusNode();
   FocusNode priceFocusNode = FocusNode();
   User? user;
-  List<File> _images = []; // Khởi tạo danh sách ảnh
+  List<File> _images = [];
+  
+  
 
   @override
   void initState() {
@@ -219,6 +223,38 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     ),
                   ),
                 ),
+                                const SizedBox(height: 8),
+
+                TextFormField(
+                  maxLines: null,
+                  controller: massController,
+                  focusNode: massFocusNode,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    labelText: "Khối lượng",
+                    fillColor: Colors.white,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          color: Colors.blueAccent, width: 2.0),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.grey, width: 1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.redAccent, width: 1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.redAccent, width: 1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 8),
                 Row(
                   children: [
@@ -260,6 +296,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         double price =
                             double.parse(priceController.text.trim());
                         String description = descriptionController.text.trim();
+                        double mass= double.parse(massController.text.trim());
 
                         Product product = Product(
                           id: UniqueKey().toString(),
@@ -271,6 +308,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           uploadBy: user?.email ?? "Unknown user",
                           uploadDate: DateTime.now().toString(),
                           editDate: DateTime.now().toString(),
+                          mass: mass,
                         );
 
                         await productViewModel.addProduct(

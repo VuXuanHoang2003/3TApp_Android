@@ -7,7 +7,8 @@ class MyOrder {
   double productPrice = 0;
   int productQuantity = 1;
   String customerName = '';
-
+  double productMass=0;
+  String type='';
   ///Thuoc tinh nay de duoc gan theo user
   String customerEmail = '';
   String phoneNumber = '';
@@ -23,12 +24,14 @@ class MyOrder {
       required this.productName,
       required this.productPrice,
       required this.productQuantity,
+      required this.type,
       required this.customerName,
       required this.customerEmail,
       required this.phoneNumber,
       required this.address,
       required this.status,
       required this.createDate,
+      required this.productMass,
       required this.updateDate,
       required this.sellerEmail});
 
@@ -41,6 +44,8 @@ class MyOrder {
     customerName = '';
     customerEmail = '';
     phoneNumber = '';
+    productMass=0;
+    type='';
     address = '';
     status = OrderStatus.NEW.toShortString();
     createDate = DateTime.now().toString();
@@ -53,6 +58,8 @@ class MyOrder {
     productImage = json['product_image'];
     productName = json['product_name'];
     productPrice = json['product_price'];
+    productMass=json['product_mass'];
+    type=json['type'];
     productQuantity = json['product_quantity'];
     customerName = json['customer_name'];
     customerEmail = json['customer_email'];

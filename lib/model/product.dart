@@ -5,6 +5,7 @@ class Product {
   String name = '';
   String image = '';
   String description = '';
+  double mass = 0.0;
   double price = 0.0;
   String type = ScrapType.khac.toShortString();
   String uploadBy = '';
@@ -16,6 +17,7 @@ class Product {
     required this.name,
     required this.image,
     required this.description,
+    required this.mass,
     required this.price,
     required this.type,
     required this.uploadBy,
@@ -29,8 +31,9 @@ class Product {
     image = '';
     description = '';
     price = 0.0;
-    type = ScrapType.khac.toShortString();//ket qua tra ve la "khac"
+    type = ScrapType.khac.toShortString(); //ket qua tra ve la "khac"
     uploadBy = '';
+    mass = 0.0;
     uploadDate = DateTime.now().toString();
     editDate = DateTime.now().toString();
   }
@@ -43,6 +46,7 @@ class Product {
     price = json['price'];
     type = json['type'];
     uploadBy = json['uploadBy'];
+    mass = json['mass'];
     uploadDate = json['uploadDate'];
     editDate = json['editDate'];
   }

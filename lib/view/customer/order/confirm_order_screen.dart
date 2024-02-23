@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:three_tapp_app/data/repositories/order_repo/order_repo.dart';
+import 'package:three_tapp_app/data/repositories/product_repo/product_repo.dart';
+import 'package:three_tapp_app/data/repositories/product_repo/product_repo_impl.dart';
 
 import '../../../main.dart';
 import '../../../model/my_order.dart';
@@ -21,38 +25,43 @@ class ConfirmOrderScreen extends StatefulWidget {
 }
 
 class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
-  OrderViewModel orderViewModel = OrderViewModel();
-  TextEditingController customerNameController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-  FocusNode customerNameFocusNode = FocusNode();
-  FocusNode phoneNumberFocusNode = FocusNode();
-  FocusNode addressFocusNode = FocusNode();
-  int orderQuantity = 1;
+  final OrderViewModel _orderViewModel = OrderViewModel();
+  final TextEditingController _customerNameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _massController = TextEditingController();
+
+  final FocusNode _customerNameFocusNode = FocusNode();
+  final FocusNode _phoneNumberFocusNode = FocusNode();
+  final FocusNode _addressFocusNode = FocusNode();
+  final FocusNode _massFocusNode = FocusNode();
+  ProductRepo productRepo = ProductRepoImpl();
+
+  int _orderQuantity = 1;
+  bool _imageLoaded = false;
+  List<String> _imageUrls = [];
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      reloadView();
-    });
+    _loadImageUrls();
   }
 
-  void reloadView() {
-    setState(() {});
-  }
-
-  void incrementQuantity() {
-    setState(() {
-      orderQuantity += 1;
-    });
-  }
-
-  void decrementQuantity() {
-    if (orderQuantity > 1) {
+  Future<void> _loadImageUrls() async {
+    try {
+      ListResult result =
+          await FirebaseStorage.instance.ref(widget.product.image).list();
+      List<String> urls = [];
+      for (Reference ref in result.items) {
+        String url = await ref.getDownloadURL();
+        urls.add(url);
+      }
       setState(() {
-        orderQuantity -= 1;
+        _imageUrls = urls;
+        _imageLoaded = true;
       });
+    } catch (e) {
+      print('Error getting image URLs: $e');
     }
   }
 
@@ -101,23 +110,23 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                   color: Colors.grey,
                   height: 16,
                 ),
-                orderDetail(),
+                _imageLoaded ? orderDetail() : Center(child: CircularProgressIndicator()),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
                       onPressed: () {
-                        decrementQuantity();
+                        _decrementQuantity();
                       },
                       child: const Icon(Icons.remove_circle_outline_outlined),
                     ),
                     Text(
-                      "$orderQuantity",
+                      "$_orderQuantity",
                       style: const TextStyle(fontSize: 16),
                     ),
                     TextButton(
                       onPressed: () {
-                        incrementQuantity();
+                        _incrementQuantity();
                       },
                       child: const Icon(Icons.add_circle_outline_outlined),
                     ),
@@ -139,40 +148,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: CustomButton(
-                      onPressed: () {
-                        String customerName =
-                            customerNameController.text.toString().trim();
-                        String phoneNumber =
-                            phoneNumberController.text.toString().trim();
-                        String address =
-                            addressController.text.toString().trim();
-
-                        if (customerName.isNotEmpty &&
-                            phoneNumber.isNotEmpty &&
-                            address.isNotEmpty) {
-                          MyOrder order = MyOrder(
-                            id: UniqueKey().toString(),
-                            productImage: widget.product.image,
-                            productName: widget.product.name,
-                            productPrice: widget.product.price,
-                            productQuantity: orderQuantity,
-                            customerName: customerName,
-                            customerEmail: FirebaseAuth
-                                    .instance.currentUser?.email ??
-                                '',
-                            phoneNumber: phoneNumber,
-                            address: address,
-                            status: OrderStatus.NEW.toShortString(),
-                            createDate: DateTime.now().toString(),
-                            updateDate: DateTime.now().toString(),
-                            sellerEmail: widget.product.uploadBy
-                          );
-                          orderViewModel.createOrder(order: order);
-                          Navigator.of(context).pop();
-                        } else {
-                          CommonFunc.showToast("Vui lòng nhập đủ thông tin.");
-                        }
-                      },
+                      onPressed: _createOrder,
                       text: 'Tạo giao dịch',
                       textColor: Colors.white,
                       bgColor: Colors.blue,
@@ -229,6 +205,40 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
             fontStyle: FontStyle.italic,
           ),
         ),
+        TextFormField(
+          controller: _massController,
+          focusNode: _massFocusNode,
+          keyboardType: TextInputType.number,
+          validator: (input) {
+            if (input!.isNotEmpty) {
+              return null;
+            } else {
+              return "Vui lòng nhập khối lượng";
+            }
+          },
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.all(8),
+            labelText: "Khối lượng (g)",
+            fillColor: Colors.white,
+            focusedBorder: OutlineInputBorder(
+              borderSide:
+                  const BorderSide(color: Colors.blueAccent, width: 2.0),
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.grey, width: 1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.redAccent, width: 1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.redAccent, width: 1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -240,8 +250,8 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
         children: [
           const Padding(padding: EdgeInsets.only(top: 16)),
           TextFormField(
-            controller: customerNameController,
-            focusNode: customerNameFocusNode,
+            controller: _customerNameController,
+            focusNode: _customerNameFocusNode,
             keyboardType: TextInputType.text,
             validator: (input) {
               if (input!.isNotEmpty) {
@@ -255,7 +265,8 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
               labelText: "Tên khách hàng (Bắt buộc)",
               fillColor: Colors.white,
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.blueAccent, width: 2.0),
+                borderSide:
+                    const BorderSide(color: Colors.blueAccent, width: 2.0),
                 borderRadius: BorderRadius.circular(12.0),
               ),
               enabledBorder: OutlineInputBorder(
@@ -274,15 +285,16 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
           ),
           const Padding(padding: EdgeInsets.only(top: 16)),
           TextFormField(
-            controller: phoneNumberController,
-            focusNode: phoneNumberFocusNode,
+            controller: _phoneNumberController,
+            focusNode: _phoneNumberFocusNode,
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8),
               labelText: "Số điện thoại (Bắt buộc)",
               fillColor: Colors.white,
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.blueAccent, width: 2.0),
+                borderSide:
+                    const BorderSide(color: Colors.blueAccent, width: 2.0),
                 borderRadius: BorderRadius.circular(12.0),
               ),
               enabledBorder: OutlineInputBorder(
@@ -293,15 +305,16 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
           ),
           const Padding(padding: EdgeInsets.only(top: 16)),
           TextFormField(
-            controller: addressController,
-            focusNode: addressFocusNode,
+            controller: _addressController,
+            focusNode: _addressFocusNode,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8),
               labelText: "Địa chỉ (Bắt buộc)",
               fillColor: Colors.white,
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.blueAccent, width: 2.0),
+                borderSide:
+                    const BorderSide(color: Colors.blueAccent, width: 2.0),
                 borderRadius: BorderRadius.circular(12.0),
               ),
               enabledBorder: OutlineInputBorder(
@@ -317,51 +330,39 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
   }
 
   Widget productItemImage() {
-    if (widget.product.image.isNotEmpty) {
-      return FutureBuilder<List<String>>(
-        future: getImageUrls(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else {
-            List<String> imageUrls = snapshot.data ?? [];
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Wrap(
-                spacing: 8.0, // Khoảng cách giữa các ảnh
-                runSpacing: 8.0, // Khoảng cách giữa các dòng
-                children: imageUrls.map((imageUrl) {
-                  return GestureDetector(
-                    onTap: () {
-                      showImageDialog(context, imageUrl);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Image.network(
-                        imageUrl,
-                        height: 120,
-                        width: 120,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
-                                  : null,
-                            ),
-                          );
-                        },
+    if (_imageUrls.isNotEmpty) {
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Wrap(
+          spacing: 8.0, // Khoảng cách giữa các ảnh
+          runSpacing: 8.0, // Khoảng cách giữa các dòng
+          children: _imageUrls.map((imageUrl) {
+            return GestureDetector(
+              onTap: () {
+                showImageDialog(context, imageUrl);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Image.network(
+                  imageUrl,
+                  height: 120,
+                  width: 120,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
                       ),
-                    ),
-                  );
-                }).toList(),
+                    );
+                  },
+                ),
               ),
             );
-          }
-        },
+          }).toList(),
+        ),
       );
     } else {
       return Image.asset(
@@ -369,22 +370,6 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
         height: 120,
         width: 120,
       );
-    }
-  }
-
-  Future<List<String>> getImageUrls() async {
-    try {
-      ListResult result =
-          await FirebaseStorage.instance.ref(widget.product.image).list();
-      List<String> urls = [];
-      for (Reference ref in result.items) {
-        String url = await ref.getDownloadURL();
-        urls.add(url);
-      }
-      return urls;
-    } catch (e) {
-      print('Error getting image URLs: $e');
-      return [];
     }
   }
 
@@ -406,4 +391,79 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
       },
     );
   }
+
+  void _incrementQuantity() {
+    setState(() {
+      _orderQuantity += 1;
+    });
+  }
+
+  void _decrementQuantity() {
+    if (_orderQuantity > 1) {
+      setState(() {
+        _orderQuantity -= 1;
+      });
+    }
+  }
+
+  void _createOrder() {
+  String customerName = _customerNameController.text.trim();
+  String phoneNumber = _phoneNumberController.text.trim();
+  String address = _addressController.text.trim();
+  String mass = _massController.text.trim();
+  double massDouble = double.tryParse(mass) ?? 0.0;
+
+  double productMass = widget.product.mass;
+
+  if (customerName.isNotEmpty &&
+      phoneNumber.isNotEmpty &&
+      address.isNotEmpty &&
+      mass.isNotEmpty) {
+    if (massDouble <= productMass) {
+      // Tính khối lượng mới của sản phẩm sau khi tạo đơn hàng
+      double newProductMass = productMass - massDouble;
+newProductMass = double.parse(newProductMass.toStringAsFixed(2));
+
+
+      // Tạo đối tượng đơn hàng
+      MyOrder order = MyOrder(
+        id: UniqueKey().toString(),
+        productImage: widget.product.image,
+        productName: widget.product.name,
+        productPrice: widget.product.price,
+        productQuantity: _orderQuantity,
+        customerName: customerName,
+        productMass: massDouble,
+        type:widget.product.type,
+        customerEmail: FirebaseAuth.instance.currentUser?.email ?? '',
+        phoneNumber: phoneNumber,
+        address: address,
+        status: OrderStatus.NEW.toShortString(),
+        createDate: DateTime.now().toString(),
+        updateDate: DateTime.now().toString(),
+        sellerEmail: widget.product.uploadBy,
+      );
+     // Tạo thể hiện của lớp ProductRepo
+    productRepo.updateProductMass(productId: widget.product.id, newMass: newProductMass)
+    .then((success) {
+        if (success) {
+          // Nếu cập nhật thành công, tạo đơn hàng và đóng màn hình
+          _orderViewModel.createOrder(order: order);
+          Navigator.of(context).pop();
+        } else {
+          // Xử lý trường hợp cập nhật không thành công
+          CommonFunc.showToast("Cập nhật khối lượng sản phẩm thất bại.");
+        }
+      }).catchError((error) {
+        // Xử lý lỗi nếu có
+        CommonFunc.showToast("Đã có lỗi xảy ra khi cập nhật khối lượng sản phẩm.");
+      });
+    } else {
+      CommonFunc.showToast("Khối lượng nhập phải nhỏ hơn khối lượng sản phẩm.");
+    }
+  } else {
+    CommonFunc.showToast("Vui lòng nhập đủ thông tin.");
+  }
+}
+
 }

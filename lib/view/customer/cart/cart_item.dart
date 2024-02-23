@@ -139,8 +139,8 @@ class _OrderItem extends State<CartItem> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(
-                      formatCurrency.format(widget.order.productPrice),
+                   Text(
+                      "Giá thành : ${widget.order.productPrice} (vnđ)",
                       style: const TextStyle(
                         color: Colors.redAccent,
                         fontSize: 12,
@@ -148,7 +148,7 @@ class _OrderItem extends State<CartItem> {
                       ),
                     ),
                     Text(
-                      "Số lượng: ${widget.order.productQuantity}",
+                      "Khối lượng: ${widget.order.productMass} (kg)",
                       style: const TextStyle(
                         color: Colors.blue,
                         fontSize: 12,
@@ -241,7 +241,7 @@ class _OrderItem extends State<CartItem> {
             return Text('Error: ${snapshot.error}');
           } else {
             return Container(
-              width: 120, // Định nghĩa chiều rộng của container
+              width: 500, // Định nghĩa chiều rộng của container
               height: 120, // Định nghĩa chiều cao của container
               child: Image.network(
                 snapshot.data ?? '', // Use imageUrl here

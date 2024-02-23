@@ -111,8 +111,7 @@ Widget orderDetail() {
       Text("Tên sản phẩm: ${widget.order.productName}",
         style: TextStyle(color: Colors.black, fontSize: 14),
       ),
-      Text(
-        formatCurrency.format(widget.order.productPrice),
+        Text("Giá thành: ${widget.order.productPrice} (vnđ)",
         style: TextStyle(color: Colors.redAccent, fontSize: 14, fontStyle: FontStyle.italic),
       ),
       Text(
@@ -121,6 +120,10 @@ Widget orderDetail() {
       ),
       Text(
         "Trạng thái: ${CommonFunc.getOrderStatusName(widget.order.status)}",
+        style: TextStyle(color: Colors.black, fontSize: 14, fontStyle: FontStyle.italic),
+      ),
+      Text(
+        "Khối lượng: ${widget.order.productMass} (kg)",
         style: TextStyle(color: Colors.black, fontSize: 14, fontStyle: FontStyle.italic),
       ),
     ],

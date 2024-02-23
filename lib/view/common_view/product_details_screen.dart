@@ -82,6 +82,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   style: TextStyle(color: Colors.black, fontSize: 16, fontStyle: FontStyle.italic),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(
+                  "Khối lượng: ${widget.product.mass} (kg)", // Hiển thị khối lượng sản phẩm
+                  style: TextStyle(color: Colors.black, fontSize: 16, fontStyle: FontStyle.italic),
+                ),
+              ),
               const Divider(
                 thickness: 1,
                 color: Colors.green,
