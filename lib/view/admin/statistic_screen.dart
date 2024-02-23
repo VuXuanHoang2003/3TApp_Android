@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:three_tapp_app/model/product.dart';
 import 'package:three_tapp_app/model/statistic.dart';
 import 'package:three_tapp_app/utils/image_path.dart';
-import 'package:three_tapp_app/viewmodel/product_viewmodel.dart';
 import 'package:three_tapp_app/viewmodel/statistic_viewmodel.dart';
 
 class StatisticScreen extends StatefulWidget {
@@ -21,7 +19,16 @@ class _StatisticScreenState extends State<StatisticScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildStatisticsList(),
+      body: Column(
+        children: [
+          Expanded(
+            child: _buildStatisticsList(),
+          ),
+          Expanded(
+            child: _buildTable(),
+          ),
+        ],
+      ),
     );
   }
 
@@ -50,7 +57,7 @@ class _StatisticScreenState extends State<StatisticScreen> {
         } else {
           Statistic? statisticCurrentUser = snapshot.data;
 
-          return Padding(
+          return Padding(   
             padding: EdgeInsets.all(16.0),
             child: ListView(
               children: [
@@ -61,7 +68,7 @@ class _StatisticScreenState extends State<StatisticScreen> {
                   imagePath: ImagePath.imgUploadedPost,
                 ),
                 _buildCard(
-                  title: 'Giao dịch thành công: ',
+                  title: 'Giao dịch thành công',
                   value: '${statisticCurrentUser?.numberOfSuccessfulTrade}',
                   color: Colors.green,
                   imagePath: ImagePath.imgSuccessfulTransaction,
@@ -87,6 +94,7 @@ class _StatisticScreenState extends State<StatisticScreen> {
           CircleAvatar(
             radius: 30.0,
             backgroundImage: AssetImage(imagePath),
+            backgroundColor: Colors.white,
           ),
           SizedBox(
               width: 16.0), // Adjust the spacing between the image and the card
@@ -106,6 +114,43 @@ class _StatisticScreenState extends State<StatisticScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildTable() {
+    return Center(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: DataTable(
+          border: TableBorder.all(),
+          columns: const [
+            DataColumn(label: Text('Loại sản phẩm')),
+            DataColumn(label: Text('Doanh thu (đơn vị: 1000 VNĐ)')),
+          ],
+          rows: const [
+            DataRow(cells: [
+              DataCell(Text('Kim loại')),
+              DataCell(Text('0')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Giấy')),
+              DataCell(Text('0')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Nhựa')),
+              DataCell(Text('0')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Thuỷ tinh')),
+              DataCell(Text('0')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Khác')),
+              DataCell(Text('0')),
+            ]),
+          ],
+        ),
       ),
     );
   }
