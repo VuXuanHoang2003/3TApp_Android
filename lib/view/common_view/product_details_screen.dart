@@ -58,12 +58,56 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               productItemImage(),
+              const Padding(
+                padding: EdgeInsets.all(6),
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: AlignmentDirectional(-0.94, 0),
+                      child: Text(
+                        'Khối lượng: ',
+                      ),
+                    ),
+                    Align(
+                      alignment: AlignmentDirectional(0, 0),
+                      child: Text(
+                        'Hello World',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Text(
-                  widget.product.name,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                padding: EdgeInsets.all(6),
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: AlignmentDirectional(0, 0),
+                      child: Text(
+                        "Giá tiền: ${formatCurrency.format(widget.product.price)} ",
+                      ),
+                    ),
+                    Align(
+                      alignment: AlignmentDirectional(-0.94, 0),
+                      child: Text('Giá tiền (1 kg)'),
+                    ),
+                  ],
+                ),
+              ),
+              // Generated code for this Stack Widget...
+              Padding(
+                padding: const EdgeInsets.all(6),
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: AlignmentDirectional(0, 0),
+                      child: Text("Khối lượng: ${widget.product.mass} (kg)"),
+                    ),
+                    Align(
+                      alignment: AlignmentDirectional(-0.94, 0),
+                      child: Text('Khối lượng: '),
+                    ),
+                  ],
                 ),
               ),
               const Divider(
@@ -71,42 +115,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 color: Colors.green,
                 height: 16,
               ),
-              Text(
-                "${formatCurrency.format(widget.product.price)}",
-                style: TextStyle(color: Colors.redAccent, fontSize: 22, fontStyle: FontStyle.italic),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Text(
-                  "Thể loại: ${CommonFunc.getSenDaNameByType(widget.product.type)}",
-                  style: TextStyle(color: Colors.black, fontSize: 16, fontStyle: FontStyle.italic),
+              Align(
+                alignment: AlignmentDirectional(0, 0),
+                child: Padding(
+                  padding: EdgeInsets.all(6),
+                  child: Text('Mô tả sản phẩm'),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Text(
-                  "Khối lượng: ${widget.product.mass} (kg)", // Hiển thị khối lượng sản phẩm
-                  style: TextStyle(color: Colors.black, fontSize: 16, fontStyle: FontStyle.italic),
-                ),
-              ),
-              const Divider(
-                thickness: 1,
-                color: Colors.green,
-                height: 16,
-              ),
-              Text(
-                "Mô tả",
-                style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const Padding(padding: EdgeInsets.only(top: 8)),
-              Text(
-                widget.product.description,
-                textAlign: TextAlign.justify,
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontSize: 16,
+              Align(
+                alignment: AlignmentDirectional(0, 0),
+                child: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Text(widget.product.description),
                 ),
-              ),
+              )
             ],
           ),
         ),
@@ -149,7 +172,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   void getAllImageUrls() async {
     try {
-      ListResult result = await FirebaseStorage.instance.ref(widget.product.image).listAll();
+      ListResult result =
+          await FirebaseStorage.instance.ref(widget.product.image).listAll();
       List<String> urls = [];
       for (Reference ref in result.items) {
         String url = await ref.getDownloadURL();
