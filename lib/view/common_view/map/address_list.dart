@@ -1,155 +1,12 @@
-// import 'package:flutter/material.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
-// //import 'package:location/location.dart'; // Import location package
-// import 'package:geolocator/geolocator.dart';
-// import 'package:url_launcher/url_launcher.dart';
-
-// class AddressListScreen extends StatefulWidget {
-//   @override
-//   _AddressListScreenState createState() => _AddressListScreenState();
-// }
-
-// class _AddressListScreenState extends State<AddressListScreen> {
-//   late Future<QuerySnapshot<Map<String, dynamic>>> _usersCollection;
-//   late Position _currentPosition;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _usersCollection = FirebaseFirestore.instance.collection('USERS').get();
-//     _getCurrentLocation();
-//   }
-
-//   void _onAddressTapped(String address) async {
-//     try {
-//       // Location location = Location();
-//       // Map<String, double> coordinates = await location.locationFromAddress(address);
-//       // double latitude = coordinates['latitude']!;
-//       // double longitude = coordinates['longitude']!;
-//       // double distance = _calculateDistance(latitude, longitude);
-
-//       // Fluttertoast.showToast(
-//       //   msg: 'Address: $address\nDistance: ${distance.toStringAsFixed(2)} km from your location',
-//       //   toastLength: Toast.LENGTH_SHORT,
-//       //   gravity: ToastGravity.BOTTOM,
-//       //   timeInSecForIosWeb: 1,
-//       //   backgroundColor: Colors.blue,
-//       //   textColor: Colors.white,
-//       //   fontSize: 16.0,
-//       // );
-//     } catch (e) {
-//       print(e);
-//       Fluttertoast.showToast(
-//         msg: 'Error finding location for the address',
-//         toastLength: Toast.LENGTH_SHORT,
-//         gravity: ToastGravity.BOTTOM,
-//         timeInSecForIosWeb: 1,
-//         backgroundColor: Colors.red,
-//         textColor: Colors.white,
-//         fontSize: 16.0,
-//       );
-//     }
-//   }
-
-//   void _openGoogleMaps(double latitude, double longitude) async {
-//     String googleMapsUrl =
-//         'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
-//     if (await canLaunch(googleMapsUrl)) {
-//       await launch(googleMapsUrl);
-//     } else {
-//       Fluttertoast.showToast(
-//         msg: 'Could not open Google Maps',
-//         toastLength: Toast.LENGTH_SHORT,
-//         gravity: ToastGravity.BOTTOM,
-//         timeInSecForIosWeb: 1,
-//         backgroundColor: Colors.red,
-//         textColor: Colors.white,
-//         fontSize: 16.0,
-//       );
-//     }
-//   }
-
-//   void _getCurrentLocation() async {
-//     try {
-//       Position position = await Geolocator.getCurrentPosition(
-//           desiredAccuracy: LocationAccuracy.high);
-//       setState(() {
-//         _currentPosition = position;
-//       });
-//     } catch (e) {
-//       print(e);
-//     }
-//   }
-
-//   double _calculateDistance(double latitude, double longitude) {
-//     if (_currentPosition.latitude == null ||
-//         _currentPosition.longitude == null) {
-//       return 0.0;
-//     }
-
-//     double distanceInMeters = Geolocator.distanceBetween(
-//       _currentPosition.latitude!,
-//       _currentPosition.longitude!,
-//       latitude,
-//       longitude,
-//     );
-
-//     return distanceInMeters / 1000.0;
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('User Addresses'),
-//       ),
-//       body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-//         future: _usersCollection,
-//         builder: (BuildContext context,
-//             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-//           if (snapshot.connectionState == ConnectionState.waiting) {
-//             return Center(child: CircularProgressIndicator());
-//           } else if (snapshot.hasError) {
-//             return Center(child: Text('Error: ${snapshot.error}'));
-//           } else {
-//             List<String> addresses = [];
-//             snapshot.data!.docs.forEach(
-//                 (DocumentSnapshot<Map<String, dynamic>> document) {
-//               final address = document.data()!['address'] as String;
-//               addresses.add(address);
-//             });
-//             return ListView.builder(
-//               itemCount: addresses.length,
-//               itemBuilder: (context, index) {
-//                 return ListTile(
-//                   title: Text(addresses[index]),
-//                   onTap: () {
-//                     _onAddressTapped(addresses[index]);
-//                   },
-//                 );
-//               },
-//             );
-//           }
-//         },
-//       ),
-//     );
-//   }
-// }
-
-// void main() {
-//   runApp(MaterialApp(
-//     home: AddressListScreen(),
-//   ));
-// }
-
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:geolocator/geolocator.dart';
+import '../../customer/order/order_per_person_screen.dart';
 
+// Trang chính hiển thị danh sách địa chỉ
 class AddressListScreen extends StatefulWidget {
   @override
   _AddressListScreenState createState() => _AddressListScreenState();
@@ -157,34 +14,66 @@ class AddressListScreen extends StatefulWidget {
 
 class _AddressListScreenState extends State<AddressListScreen> {
   late Future<QuerySnapshot<Map<String, dynamic>>> _usersCollection;
+  Position? _currentPosition;
 
   @override
   void initState() {
     super.initState();
     _usersCollection = FirebaseFirestore.instance.collection('USERS').get();
+    _getCurrentLocation();
   }
 
-  // Hàm xử lý khi người dùng click vào địa chỉ
-  void _onAddressTapped(String address) async {
-    List<Location> locations = await locationFromAddress(address);
-    if (locations.isNotEmpty) {
-      double latitude = locations.first.latitude;
-      double longitude = locations.first.longitude;
-      _openGoogleMaps(latitude, longitude);
-    } else {
-      Fluttertoast.showToast(
-        msg: 'Cannot find location for the address',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
+  void _getCurrentLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition();
+      setState(() {
+        _currentPosition = position;
+      });
+    } catch (e) {
+      print("Error getting current location: $e");
     }
   }
 
-  // Hàm mở Google Maps với địa chỉ đã được chuyển đổi thành LatLng
+  void _onAddressTapped(String address) async {
+    try {
+      List<Location> locations = await locationFromAddress(address);
+      if (locations.isNotEmpty && _currentPosition != null) {
+        Location destinationLocation = locations.first;
+        double distanceInMeters = await Geolocator.distanceBetween(
+          _currentPosition!.latitude,
+          _currentPosition!.longitude,
+          destinationLocation.latitude,
+          destinationLocation.longitude,
+        );
+        double distanceInKm = distanceInMeters / 1000;
+        Fluttertoast.showToast(
+          msg: 'Khoảng cách đến $address: ${distanceInKm.toStringAsFixed(2)} km',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+        double latitude = destinationLocation.latitude;
+        double longitude = destinationLocation.longitude;
+        _openGoogleMaps(latitude, longitude);
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Không thể tìm thấy địa chỉ này',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
+    } catch (e) {
+      print("Error processing address tap: $e");
+    }
+  }
+
   void _openGoogleMaps(double latitude, double longitude) async {
     String googleMapsUrl =
         'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
@@ -192,7 +81,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
       await launch(googleMapsUrl);
     } else {
       Fluttertoast.showToast(
-        msg: 'Could not open Google Maps',
+        msg: 'Không thể mở Google Maps',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -207,7 +96,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Addresses'),
+        title: Text('Danh sách người dùng theo địa chỉ'),
       ),
       body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
         future: _usersCollection,
@@ -218,28 +107,112 @@ class _AddressListScreenState extends State<AddressListScreen> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
-            List<String> addresses = [];
-            // Lặp qua tất cả các documents và lấy trường 'address'
-            snapshot.data!.docs.forEach(
-                (DocumentSnapshot<Map<String, dynamic>> document) {
-              final address = document.data()!['address'] as String;
-              addresses.add(address);
-            });
-            return ListView.builder(
-              itemCount: addresses.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(addresses[index]),
-                  onTap: () {
-                    _onAddressTapped(addresses[index]);
-                  },
-                );
-              },
-            );
+            List<String> addresses = snapshot.data!.docs.map((document) => document.data()['address'] as String).toList();
+            return _buildAddressList(addresses);
           }
         },
       ),
     );
+  }
+
+  Widget _buildAddressList(List<String> addresses) {
+    return FutureBuilder<List<String>>(
+      future: _sortAddressesByProximity(addresses),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else {
+          List<String> sortedAddresses = snapshot.data ?? [];
+          return ListView.builder(
+            itemCount: sortedAddresses.length,
+            itemBuilder: (context, index) {
+              return _buildListTile(sortedAddresses, index);
+            },
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildListTile(List<String> sortedAddresses, int index) {
+    return FutureBuilder<Location>(
+      future: _currentPosition != null
+          ? locationFromAddress(sortedAddresses[index]).then((locations) => locations.first)
+          : null,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return ListTile(title: Text('Loading...'));
+        } else if (snapshot.hasError) {
+          return ListTile(title: Text('Error loading location'));
+        } else if (snapshot.hasData) {
+          Location destinationLocation = snapshot.data!;
+          double distanceInMeters = Geolocator.distanceBetween(
+            _currentPosition!.latitude,
+            _currentPosition!.longitude,
+            destinationLocation.latitude,
+            destinationLocation.longitude,
+          );
+          double distanceInKm = distanceInMeters / 1000;
+          return Card(
+            child: ListTile(
+              title: Text(sortedAddresses[index]),
+              subtitle: Text('Khoảng cách: ${distanceInKm.toStringAsFixed(2)} km'),
+              leading: Icon(Icons.location_on),
+              trailing: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OrderPerPersonScreen(address: sortedAddresses[index]),
+                    ),
+                  );
+                },
+                child: Text('Xem đơn'),
+              ),
+              onTap: () {
+                _onAddressTapped(sortedAddresses[index]);
+              },
+            ),
+          );
+        } else {
+          return ListTile(title: Text('Loading...'));
+        }
+      },
+    );
+  }
+
+  Future<List<String>> _sortAddressesByProximity(List<String> addresses) async {
+    try {
+      if (_currentPosition != null) {
+        List<Map<String, dynamic>> addressDetails = [];
+        for (String address in addresses) {
+          List<Location> locations = await locationFromAddress(address);
+          if (locations.isNotEmpty) {
+            Location location = locations.first;
+            double distanceInMeters = Geolocator.distanceBetween(
+                _currentPosition!.latitude,
+                _currentPosition!.longitude,
+                location.latitude,
+                location.longitude);
+            double distanceInKm = distanceInMeters / 1000;
+            addressDetails.add({
+              'address': address,
+              'distanceInKm': distanceInKm,
+            });
+          }
+        }
+        addressDetails.sort((a, b) =>
+            (a['distanceInKm'] as double).compareTo(b['distanceInKm'] as double));
+        return addressDetails.map((details) => details['address'] as String).toList();
+      } else {
+        return addresses;
+      }
+    } catch (e) {
+      print("Error sorting addresses by proximity: $e");
+      return addresses;
+    }
   }
 }
 
