@@ -9,7 +9,7 @@ abstract class ProductRepo {
   Future<bool> updateProduct({required Product product, required File? imageFile});
   Future<bool> deleteProduct({required String productId});
   Future<List<Product>> searchProducts(String searchTerm);
-
-
+  Future<bool> isMassLessThanOrEqualProductMass(double mass,String productId);
+  Future<bool> updateProductMass({required String productId, required double newMass});
 
 }

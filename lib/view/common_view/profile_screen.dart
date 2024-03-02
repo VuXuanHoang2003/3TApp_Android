@@ -28,7 +28,8 @@ class _ProfileScreen extends State<ProfileScreen> {
   Future<void> getUserAdditionalInfo() async {
     try {
       // Lấy thông tin từ Firestore
-      Map<String, dynamic>? additionalInfo = await CommonFunc.getUserInfoFromFirebase(user?.uid ?? "");
+      Map<String, dynamic>? additionalInfo =
+          await CommonFunc.getUserInfoFromFirebase(user?.uid ?? "");
       print(additionalInfo);
       if (additionalInfo != null) {
         setState(() {
@@ -92,12 +93,16 @@ class _ProfileScreen extends State<ProfileScreen> {
               Center(
                 child: Text(
                   userInfo?['username'] ?? "Unknown username",
-                  style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
-
-              Center(child: Text(authViewModel.rolesType == RolesType.seller ? "(Người bán)" : "(Người mua)")),
-
+              Center(
+                  child: Text(authViewModel.rolesType == RolesType.seller
+                      ? "(Người bán)"
+                      : "(Người mua)")),
               const Divider(
                 thickness: 0.5,
                 color: Colors.grey,
@@ -107,11 +112,14 @@ class _ProfileScreen extends State<ProfileScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    buildUserInfoRow(Icons.email, "Email", userInfo?['email'] ?? "Unknown email"),
+                    buildUserInfoRow(Icons.email, "Email",
+                        userInfo?['email'] ?? "Unknown email"),
                     const SizedBox(height: 8),
-                    buildUserInfoRow(Icons.phone, "Phone", userInfo?['phone'] ?? "Unknown phone"),
+                    buildUserInfoRow(Icons.phone, "Phone",
+                        userInfo?['phone'] ?? "Unknown phone"),
                     const SizedBox(height: 8),
-                    buildUserInfoRow(Icons.location_on, "Address", userInfo?['address'] ?? "Unknown address"),
+                    buildUserInfoRow(Icons.location_on, "Address",
+                        userInfo?['address'] ?? "Unknown address"),
                   ],
                 ),
               ),
@@ -123,9 +131,13 @@ class _ProfileScreen extends State<ProfileScreen> {
                   style: ElevatedButton.styleFrom(
                     primary: Colors.blue, // Màu sắc nút
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0), // Góc bo tròn của nút
+                      borderRadius:
+                          BorderRadius.circular(10.0), // Góc bo tròn của nút
                     ),
-                    padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0), // Khoảng cách giữa vị trí chữ và mép nút
+                    padding: EdgeInsets.symmetric(
+                        vertical: 15.0,
+                        horizontal:
+                            20.0), // Khoảng cách giữa vị trí chữ và mép nút
                   ),
                   child: Text(
                     "Đăng xuất",

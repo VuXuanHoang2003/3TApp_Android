@@ -1,112 +1,370 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:three_tapp_app/model/product.dart';
 import 'package:three_tapp_app/model/statistic.dart';
 import 'package:three_tapp_app/utils/image_path.dart';
-import 'package:three_tapp_app/viewmodel/product_viewmodel.dart';
 import 'package:three_tapp_app/viewmodel/statistic_viewmodel.dart';
+import '../../view/flutter_flow/flutter_flow.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../model/statistic_screen_model.dart';
 
 class StatisticScreen extends StatefulWidget {
+  const StatisticScreen({super.key});
   @override
   State<StatefulWidget> createState() => _StatisticScreenState();
 }
 
 class _StatisticScreenState extends State<StatisticScreen> {
+  late StatisticScreenModel _model;
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
-    // Perform any initializations here
+    _model = createModel(context, () => StatisticScreenModel());
   }
 
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildStatisticsList(),
-    );
-  }
-
-  Widget _buildStatisticsList() {
     return FutureBuilder<Statistic>(
       future: StatisticViewModel().getStatisticOfCurrentUser(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(),
-          ); // Centered loading indicator.
+          );
         } else if (snapshot.hasError) {
           return Center(
             child: Text(
               'Error: ${snapshot.error}',
               style: TextStyle(color: Colors.red),
             ),
-          ); // Centered error message with red color.
+          );
         } else if (!snapshot.hasData) {
           return Center(
             child: Text(
               'No data available',
               style: TextStyle(color: Colors.grey),
             ),
-          ); // Centered message for no data with grey color.
+          );
         } else {
           Statistic? statisticCurrentUser = snapshot.data;
 
           return Padding(
-            padding: EdgeInsets.all(16.0),
-            child: ListView(
-              children: [
-                _buildCard(
-                  title: 'Số lượng bài đăng trên hệ thống',
-                  value: '${statisticCurrentUser?.numberOfPosts}',
-                  color: Colors.green,
-                  imagePath: ImagePath.imgUploadedPost,
+              padding: EdgeInsets.all(16.0),
+              child: GestureDetector(
+                onTap: () => _model.unfocusNode.canRequestFocus
+                    ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+                    : FocusScope.of(context).unfocus(),
+                child: Scaffold(
+                  key: scaffoldKey,
+                  body: SafeArea(
+                    top: true,
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: AlignmentDirectional(0.03, -0.86),
+                          child: Container(
+                            width: 376,
+                            height: 145,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                            ),
+                            child: Container(
+                              height: 101,
+                              child: Stack(
+                                children: [
+                                  Align(
+                                    alignment:
+                                        AlignmentDirectional(-0.86, -0.45),
+                                    child: Text(
+                                      'Số giao dịch thành công:',
+                                      textAlign: TextAlign.start,
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium,
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment:
+                                        AlignmentDirectional(0.54, -0.89),
+                                    child: Text(
+                                      statisticCurrentUser!
+                                          .numberOfSuccessfulTrade
+                                          .toString(),
+                                      textAlign: TextAlign.center,
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium,
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment:
+                                        AlignmentDirectional(-0.87, -0.9),
+                                    child: Text(
+                                      'Số sản phẩm đã đăng: ',
+                                      textAlign: TextAlign.start,
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium,
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment:
+                                        AlignmentDirectional(0.54, -0.43),
+                                    child: Text(
+                                      statisticCurrentUser!.numberOfPosts
+                                          .toString(),
+                                      textAlign: TextAlign.center,
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional(-0.02, -0.97),
+                          child: Text(
+                            'Dashboard',
+                            style: FlutterFlowTheme.of(context).bodyMedium,
+                          ),
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional(0.01, -0.34),
+                          child: Text(
+                            'Doanh thu',
+                            style: FlutterFlowTheme.of(context).bodyMedium,
+                          ),
+                        ),
+                        Align(
+                          alignment: AlignmentDirectional(0, 1),
+                          child: Container(
+                              width: 397,
+                              height: 448,
+                              decoration: BoxDecoration(
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
+                              ),
+                              child: // Generated code for this Column Widget...
+                                  Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      Align(
+                                        alignment:
+                                            AlignmentDirectional(-0.61, 0),
+                                        child: Text(
+                                          'Loại sản phẩm',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment:
+                                            AlignmentDirectional(0.52, 0),
+                                        child: Text(
+                                          'Doanh thu',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Stack(
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(-0.63, 0),
+                                          child: Text(
+                                            'Giấy',
+                                            textAlign: TextAlign.start,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(0.49, 0),
+                                          child: Text(
+                                            statisticCurrentUser.paperRevenue
+                                                .toString(),
+                                            textAlign: TextAlign.end,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Stack(
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(-0.63, 0),
+                                          child: Text(
+                                            'Nhựa',
+                                            textAlign: TextAlign.start,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(0.49, 0),
+                                          child: Text(
+                                            statisticCurrentUser.plasticRevenue
+                                                .toString(),
+                                            textAlign: TextAlign.end,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Stack(
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(-0.63, 0),
+                                          child: Text(
+                                            'Kim loại',
+                                            textAlign: TextAlign.start,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(0.49, 0),
+                                          child: Text(
+                                            statisticCurrentUser.metalRevenue
+                                                .toString(),
+                                            textAlign: TextAlign.end,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Stack(
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(-0.63, 0),
+                                          child: Text(
+                                            'Thuỷ tinh',
+                                            textAlign: TextAlign.start,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(0.49, 0),
+                                          child: Text(
+                                            statisticCurrentUser.glassRevenue
+                                                .toString(),
+                                            textAlign: TextAlign.end,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Stack(
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(-0.63, 0),
+                                          child: Text(
+                                            'Khác',
+                                            textAlign: TextAlign.start,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(0.49, 0),
+                                          child: Text(
+                                            statisticCurrentUser.otherRevenue
+                                                .toString(),
+                                            textAlign: TextAlign.end,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Stack(
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(-0.63, 0),
+                                          child: Text(
+                                            'Tổng tiền',
+                                            textAlign: TextAlign.start,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(0.47, 0),
+                                          child: Text(
+                                            statisticCurrentUser.sumOfRevenues
+                                                .toString(),
+                                            textAlign: TextAlign.end,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'Readex Pro',
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                _buildCard(
-                  title: 'Giao dịch thành công: ',
-                  value: '${statisticCurrentUser?.numberOfSuccessfulTrade}',
-                  color: Colors.green,
-                  imagePath: ImagePath.imgSuccessfulTransaction,
-                ),
-              ],
-            ),
-          );
+              ));
         }
       },
-    );
-  }
-
-  Widget _buildCard({
-    required String title,
-    required String value,
-    required Color color,
-    required String imagePath,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 30.0,
-            backgroundImage: AssetImage(imagePath),
-          ),
-          SizedBox(
-              width: 16.0), // Adjust the spacing between the image and the card
-          Expanded(
-            child: Card(
-              elevation: 8.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: ListTile(
-                title: Text(
-                  '$title: $value',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                tileColor: color,
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
