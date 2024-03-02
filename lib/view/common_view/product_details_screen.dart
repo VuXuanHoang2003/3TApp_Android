@@ -84,12 +84,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     Align(
                       alignment: AlignmentDirectional(0, 0),
                       child: Text(
-                        "Giá tiền: ${formatCurrency.format(widget.product.price)} ",
+                        " ${formatCurrency.format(widget.product.price)}",
                       ),
                     ),
                     Align(
                       alignment: AlignmentDirectional(-0.94, 0),
-                      child: Text('Giá tiền (1 kg)'),
+                      child: Text('Giá tiền'),
                     ),
                   ],
                 ),
@@ -101,7 +101,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   children: [
                     Align(
                       alignment: AlignmentDirectional(0, 0),
-                      child: Text("Khối lượng: ${widget.product.mass} (kg)"),
+                      child: Text("${widget.product.mass} (kg)"),
                     ),
                     Align(
                       alignment: AlignmentDirectional(-0.94, 0),
