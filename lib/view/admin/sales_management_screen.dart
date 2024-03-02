@@ -76,6 +76,7 @@ class _SalesManagementScreen extends State<SalesManagementScreen> {
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: orderViewModel.newOrders.length,
+            itemExtent: 150.0, // Đặt kích thước cố định cho mỗi phần tử con
             itemBuilder: (context, index) {
               return OrderItem(order: orderViewModel.newOrders[index]);
             },
@@ -94,6 +95,7 @@ class _SalesManagementScreen extends State<SalesManagementScreen> {
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: orderViewModel.processingOrders.length,
+            itemExtent: 150.0, // Đặt kích thước cố định cho mỗi phần tử con
             itemBuilder: (context, index) {
               return OrderItem(order: orderViewModel.processingOrders[index]);
             },
@@ -112,6 +114,7 @@ class _SalesManagementScreen extends State<SalesManagementScreen> {
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: orderViewModel.doneOrders.length,
+            itemExtent: 150.0, // Đặt kích thước cố định cho mỗi phần tử con
             itemBuilder: (context, index) {
               return OrderItem(order: orderViewModel.doneOrders[index]);
             },
@@ -130,6 +133,7 @@ class _SalesManagementScreen extends State<SalesManagementScreen> {
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: orderViewModel.cancelOrders.length,
+            itemExtent: 150.0, // Đặt kích thước cố định cho mỗi phần tử con
             itemBuilder: (context, index) {
               return OrderItem(order: orderViewModel.cancelOrders[index]);
             },

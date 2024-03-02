@@ -21,14 +21,16 @@ class _ProductItemCustomerView extends State<ProductItemCustomerView> {
   void goToProductDetailsScreen() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: widget.product)),
+      MaterialPageRoute(
+          builder: (context) => ProductDetailsScreen(product: widget.product)),
     );
   }
 
   void goToConfirmOrderScreen() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ConfirmOrderScreen(product: widget.product)),
+      MaterialPageRoute(
+          builder: (context) => ConfirmOrderScreen(product: widget.product)),
     );
   }
 
@@ -53,17 +55,25 @@ class _ProductItemCustomerView extends State<ProductItemCustomerView> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ClipRRect(borderRadius: BorderRadius.circular(10), child: productItemImage()),
+              ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: productItemImage()),
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(widget.product.name,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: Colors.black, fontSize: 12, fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold)),
               ),
               Text(
                 "${formatCurrency.format(widget.product.price)}",
-                style: TextStyle(color: Colors.redAccent, fontSize: 10, fontStyle: FontStyle.italic),
+                style: TextStyle(
+                    color: Colors.redAccent,
+                    fontSize: 10,
+                    fontStyle: FontStyle.italic),
               ),
               Spacer(),
               CustomButtonCreateOrder(
@@ -92,51 +102,51 @@ class _ProductItemCustomerView extends State<ProductItemCustomerView> {
   }
 
   Widget productItemImage() {
-  if (widget.product.image.isNotEmpty) {
-    return FutureBuilder<String>(
-      future: getFirstImageUrl(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else {
-          return Image.network(
-            snapshot.data ?? '', // Use imageUrl here
-            height: 120, // Define height here
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Center(
-                child: CircularProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                      : null,
-                ),
-              );
-            },
-          );
-        }
-      },
-    );
-  } else {
-    return Image.asset(
-      ImagePath.imgImageUpload,
-      height: 120,
-    );
-  }
-}
-
-
-Future<String> getFirstImageUrl() async {
-  try {
-    ListResult result = await FirebaseStorage.instance.ref(widget.product.image).list();
-    if (result.items.isNotEmpty) {
-      return await result.items[0].getDownloadURL();
+    if (widget.product.image.isNotEmpty) {
+      return FutureBuilder<String>(
+        future: getFirstImageUrl(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            return Image.network(
+              snapshot.data ?? '', // Use imageUrl here
+              height: 120, // Define height here
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                        : null,
+                  ),
+                );
+              },
+            );
+          }
+        },
+      );
+    } else {
+      return Image.asset(
+        ImagePath.imgImageUpload,
+        height: 120,
+      );
     }
-  } catch (e) {
-    print('Error getting first image URL: $e');
   }
-  return ''; // Trả về chuỗi rỗng nếu không tìm thấy ảnh
-}
 
+  Future<String> getFirstImageUrl() async {
+    try {
+      ListResult result =
+          await FirebaseStorage.instance.ref(widget.product.image).list();
+      if (result.items.isNotEmpty) {
+        return await result.items[0].getDownloadURL();
+      }
+    } catch (e) {
+      print('Error getting first image URL: $e');
+    }
+    return ''; // Trả về chuỗi rỗng nếu không tìm thấy ảnh
+  }
 }

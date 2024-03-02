@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:three_tapp_app/view/admin/product_management_screen.dart';
 import 'package:three_tapp_app/view/admin/sales_management_screen.dart';
+import 'package:three_tapp_app/view/admin/statistic_screen.dart';
 import 'package:three_tapp_app/view/common_view/chat/chat_screen.dart';
 
 import '../../utils/common_func.dart';
@@ -18,6 +19,7 @@ class _AdminRootScreen extends State<AdminRootScreen> {
     SalesManagementScreen(),
     BlogsScreen(),
     ChatScreen(),
+    StatisticScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -46,7 +48,7 @@ class _AdminRootScreen extends State<AdminRootScreen> {
         body: Padding(
           padding: EdgeInsets.only(
               left: 0,
-              top: MediaQuery.of(context).padding.top+ 8,
+              top: MediaQuery.of(context).padding.top + 8,
               right: 0,
               bottom: 0),
           child: Column(
@@ -77,6 +79,7 @@ class _AdminRootScreen extends State<AdminRootScreen> {
                 Icons.production_quantity_limits,
                 color: Colors.green,
                 ),
+
               label: 'Sản phẩm',
             ),
             BottomNavigationBarItem(
@@ -100,6 +103,12 @@ class _AdminRootScreen extends State<AdminRootScreen> {
                 ),
               label: 'Chat',
             ),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.book_rounded,
+                  color: Colors.green,
+                ),
+                label: 'Thống kê')
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.green,
@@ -109,3 +118,4 @@ class _AdminRootScreen extends State<AdminRootScreen> {
     );
   }
 }
+

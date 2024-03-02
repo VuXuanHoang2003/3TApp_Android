@@ -17,7 +17,7 @@ import 'package:intl/intl.dart';
 GlobalKey<NavigatorState> navigationKey = GlobalKey();
 
 final formatCurrency =
-    NumberFormat.currency(locale: 'vi', decimalDigits: 0, symbol: 'đ');
+    NumberFormat.currency(locale: 'vi', decimalDigits: 0, symbol: 'VNĐ');
 
 Future<void> main() async {
   await WidgetsFlutterBinding.ensureInitialized();

@@ -112,7 +112,29 @@ class ProductViewModel extends BaseViewModel {
       print("update fail");
     });
   }
+Future<bool> isLessorThan(double mass, String productId) async {
+    try {
+      // Gọi hàm từ productRepo để kiểm tra
+     
+      return await productRepo.isMassLessThanOrEqualProductMass(mass, productId);
+    } catch (error) {
+      print("Lỗi khi kiểm tra khối lượng: $error");
+      return false;
+    }
+  }
+  Future<void> updateProductMass({required String productId, required double newMass}) async {
+    try {
+      bool isSuccess = await productRepo.updateProductMass(productId: productId, newMass: newMass);
 
+      if (isSuccess) {
+        print('Khối lượng của sản phẩm đã được cập nhật thành công.');
+      } else {
+        print('Có lỗi xảy ra khi cập nhật khối lượng của sản phẩm.');
+      }
+    } catch (error) {
+      print('Error updating product mass: $error');
+    }
+  }
   Future<List<Product>> searchProduct(BuildContext context) async {
   String searchTerm = searchBarController.text.trim();
   print("VM searchTerm: $searchTerm");

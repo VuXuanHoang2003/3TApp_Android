@@ -21,10 +21,13 @@ class OrderRepoImpl with OrderRepo {
         "customer_name": order.customerName,
         "customer_email": order.customerEmail,
         "phone_number": order.phoneNumber,
+        "product_mass":order.productMass,
         "address": order.address,
         "status": order.status,
         "create_date": order.createDate,
+        "type":order.type,
         "update_date": order.updateDate,
+        "seller_email": order.sellerEmail 
       };
 
       await FirebaseFirestore.instance
@@ -69,30 +72,58 @@ class OrderRepoImpl with OrderRepo {
   }
 
   @override
+  // Future<List<MyOrder>> getOrderByUser() async {
+  //   List<MyOrder> orders = [];
+
+  //   try {
+  //     await FirebaseFirestore.instance
+  //         .collection("ORDERS")
+  //         .get()
+  //         .then((querySnapshot) {
+  //       for (var result in querySnapshot.docs) {
+  //         MyOrder myOrder = MyOrder.fromJson(result.data());
+  //         if (myOrder.customerEmail ==
+  //             FirebaseAuth.instance.currentUser?.email) {
+  //           orders.add(MyOrder.fromJson(result.data()));
+  //         }
+  //       }
+  //       print("order length:${orders.length}");
+  //     });
+  //     return orders;
+  //   } catch (error) {
+  //     print("error:${error.toString()}");
+  //   }
+
+  //   return [];
+  // }
   Future<List<MyOrder>> getOrderByUser() async {
-    List<MyOrder> orders = [];
+  List<MyOrder> orders = [];
 
-    try {
-      await FirebaseFirestore.instance
-          .collection("ORDERS")
-          .get()
-          .then((querySnapshot) {
-        for (var result in querySnapshot.docs) {
-          MyOrder myOrder = MyOrder.fromJson(result.data());
-          if (myOrder.customerEmail ==
-              FirebaseAuth.instance.currentUser?.email) {
-            orders.add(MyOrder.fromJson(result.data()));
-          }
-        }
-        print("order length:${orders.length}");
-      });
-      return orders;
-    } catch (error) {
-      print("error:${error.toString()}");
-    }
+  try {
+    // Lấy danh sách đơn hàng từ Firestore
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("ORDERS")
+        .get();
 
-    return [];
+    // Lặp qua từng document trong danh sách đơn hàng
+    querySnapshot.docs.forEach((DocumentSnapshot document) {
+      // Tạo đối tượng MyOrder từ dữ liệu của document
+      MyOrder myOrder = MyOrder.fromJson(document.data() as Map<String, dynamic>);
+      
+      // Kiểm tra xem đơn hàng có phải của người dùng hiện tại không
+      if (myOrder.customerEmail == FirebaseAuth.instance.currentUser?.email) {
+        orders.add(myOrder); // Thêm đơn hàng vào danh sách nếu là của người dùng hiện tại
+      }
+    });
+
+    print("Số lượng đơn hàng của người dùng: ${orders.length}");
+  } catch (error) {
+    print("Lỗi khi lấy đơn hàng: ${error.toString()}");
   }
+
+  return orders; // Trả về danh sách đơn hàng đã lấy được
+}
+
 
   @override
   Future<bool> updateOrderStatus(
@@ -128,6 +159,7 @@ class OrderRepoImpl with OrderRepo {
         "address": newOrder.address,
         "status": newOrder.status,
         "update_date": newOrder.updateDate,
+        "product_mass":newOrder.productMass,
       };
 
       FirebaseFirestore.instance
@@ -142,4 +174,27 @@ class OrderRepoImpl with OrderRepo {
     }
     return Future.value(false);
   }
+  Future<bool> isOrderDone(String orderId) async {
+  try {
+    // Tìm kiếm đơn hàng trong cơ sở dữ liệu
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('ORDERS')
+        .doc(orderId)
+        .get();
+
+    // Kiểm tra nếu tìm thấy đơn hàng và trạng thái là "done"
+    if (snapshot.exists) {
+      MyOrder order = MyOrder.fromJson(snapshot.data() as Map<String, dynamic>);
+      return order.status.toLowerCase() == 'done';
+    } else {
+      // Không tìm thấy đơn hàng
+      return false;
+    }
+  } catch (e) {
+    // Xử lý lỗi nếu có
+    print('Error checking order status: $e');
+    return false;
+  }
+}
+
 }

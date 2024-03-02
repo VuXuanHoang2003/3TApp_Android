@@ -50,7 +50,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   } else {
     // Show failure message
     Fluttertoast.showToast(
-                          msg: "Thất bại rồi.",
+                          msg: "Cập nhật thông tin thât bại.",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.CENTER,
                           timeInSecForIosWeb: 1,

@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../model/product.dart';
@@ -14,6 +16,12 @@ class ProductManagementScreen extends StatefulWidget {
 
 class _ProductManagementScreen extends State<ProductManagementScreen> {
   ProductViewModel productViewModel = ProductViewModel();
+
+  List<Product> userProducts = ProductViewModel()
+      .products
+      .where((product) =>
+          product.uploadBy == FirebaseAuth.instance.currentUser!.email)
+      .toList();
 
   @override
   void initState() {
@@ -59,7 +67,7 @@ class _ProductManagementScreen extends State<ProductManagementScreen> {
               child: Container(
                 color: Colors.white,
                 width: MediaQuery.of(context).size.width,
-                child: productViewModel.products.isNotEmpty
+                child: userProducts.isNotEmpty
                     ? allProduct(productViewModel.products)
                     : const Center(
                         child: Text("Không có sản phẩm."),
@@ -85,13 +93,19 @@ class _ProductManagementScreen extends State<ProductManagementScreen> {
   }
 
   Widget allProduct(List<Product> sendas) {
+    userProducts = ProductViewModel()
+        .products
+        .where((product) =>
+            product.uploadBy == FirebaseAuth.instance.currentUser!.email)
+        .toList();
+
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
       scrollDirection: Axis.vertical,
-      itemCount: productViewModel.products.length,
+      itemCount: userProducts.length,
       padding: EdgeInsets.zero,
       itemBuilder: (context, index) {
-        return ProductItemAdminView(product: productViewModel.products[index]);
+        return ProductItemAdminView(product: userProducts[index]);
       },
     );
   }

@@ -277,9 +277,9 @@ Widget buildProductLists() {
       runSpacing: 10.0,
       alignment: WrapAlignment.start,
       children: [
-        buildScrapTypeWithButton("Giấy", "assets/images/paper.jpeg", productViewModel.listGiay),
-        buildScrapTypeWithButton("Nhựa", "assets/images/plastic.jpeg", productViewModel.listNhua),
-        buildScrapTypeWithButton("Kim loại", "assets/images/metal.jpeg", productViewModel.listKimLoai),
+        buildScrapTypeWithButton("Giấy", "assets/images/paper.jpg", productViewModel.listGiay),
+        buildScrapTypeWithButton("Nhựa", "assets/images/plastic.jpg", productViewModel.listNhua),
+        buildScrapTypeWithButton("Kim loại", "assets/images/metal.jpg", productViewModel.listKimLoai),
         buildScrapTypeWithButton("Thủy tinh", "assets/images/glass.jpeg", productViewModel.listThuytinh),
         buildScrapTypeWithButton("Khác", "assets/images/donaso-logo.png", productViewModel.listGiayKhac),
       ],

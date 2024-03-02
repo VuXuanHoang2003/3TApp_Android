@@ -1,5 +1,7 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:three_tapp_app/model/order_status.dart';
+import 'package:three_tapp_app/model/product.dart';
 import 'package:three_tapp_app/viewmodel/cart_viewmodel.dart';
 
 import '../../../main.dart';
@@ -22,11 +24,13 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
   TextEditingController customerNameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  
   FocusNode customerNameFocusNode = FocusNode();
   FocusNode phoneNumberFocusNode = FocusNode();
   FocusNode addressFocusNode = FocusNode();
   late MyOrder order;
   int orderQuantity = 1;
+  List<String> imageUrls = [];
 
   @override
   void initState() {
@@ -34,6 +38,7 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
     loadInitData();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       reloadView();
+      getAllImageUrls();
     });
   }
 
@@ -163,9 +168,12 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
                               customerEmail: order.customerEmail,
                               phoneNumber: phoneNumber,
                               address: address,
+                              type:order.type,
                               status: order.status,
                               createDate: order.createDate,
-                              updateDate: DateTime.now().toString());
+                              updateDate: DateTime.now().toString(),
+                              productMass: order.productMass,
+                              sellerEmail: order.sellerEmail);
                           cartViewModel.updateOrderInfo(
                             newOrder: newOrder,
                           );
@@ -180,20 +188,17 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
                     ),
                   )),
                   Center(
-                    child: SizedBox(
-                      width: 100,
-                      child: TextButton(
-                          onPressed: () async {
-                            await showDialogConfirmCancelOrder();
-                            // Navigator.of(context).pop();
-                          },
-                          child: const Text(
-                            "Huỷ đơn hàng",
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.red,
-                                fontWeight: FontWeight.normal),
-                          )),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: CustomButton(
+                        onPressed: () async {
+                          await showDialogConfirmCancelOrder();
+                        },
+                        text: 'Hủy đơn hàng', // Bổ sung văn bản cho nút nếu cần
+                        textColor: Colors.white, // Màu văn bản của nút
+                        bgColor: Colors.blue, // Màu nền của nút
+                      ),
                     ),
                   ),
                 ],
@@ -215,14 +220,14 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
       onPressed: () async {
         Navigator.of(context).maybePop();
         await cartViewModel.updateOrderStatus(
-            orderId: order.id,
-            newStatus: OrderStatus.CANCEL.toShortString());
+            orderId: order.id, newStatus: OrderStatus.CANCEL.toShortString());
         Navigator.of(context).maybePop();
       },
     );
 
     AlertDialog alert = AlertDialog(
-      content: Text("Bạn có chắc muốn huỷ đơn hàng này?", textAlign: TextAlign.center),
+      content: Text("Bạn có chắc muốn huỷ đơn hàng này?",
+          textAlign: TextAlign.center),
       actions: [
         noButton,
         yesButton,
@@ -352,30 +357,99 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
     );
   }
 
-  Widget productItemImage() {
-    if (widget.order.productName.isNotEmpty) {
-      return Image.network(
-        height: 76,
-        width: 76,
-        widget.order.productImage,
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-          return Center(
-            child: CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes!
-                  : null,
+  // Widget productItemImage() {
+  //   if (widget.order.productName.isNotEmpty) {
+  //     return Image.network(
+  //       height: 76,
+  //       width: 76,
+  //       widget.order.productImage,
+  //       loadingBuilder: (context, child, loadingProgress) {
+  //         if (loadingProgress == null) return child;
+  //         return Center(
+  //           child: CircularProgressIndicator(
+  //             value: loadingProgress.expectedTotalBytes != null
+  //                 ? loadingProgress.cumulativeBytesLoaded /
+  //                     loadingProgress.expectedTotalBytes!
+  //                 : null,
+  //           ),
+  //         );
+  //       },
+  //     );
+  //   } else {
+  //     return Image.asset(
+  //       ImagePath.imgImageUpload,
+  //       height: 76,
+  //       width: 76,
+  //     );
+  //   }
+  // }
+  void showImageDialog(BuildContext context, String imageUrl) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Image.network(imageUrl),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
             ),
-          );
-        },
+          ],
+        );
+      },
+    );
+  }
+
+  Widget productItemImage() {
+    if (imageUrls.isNotEmpty) {
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: imageUrls.map((imageUrl) {
+            return GestureDetector(
+              onTap: () {
+                showImageDialog(context, imageUrl);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Image.network(
+                  imageUrl,
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          }).toList(),
+        ),
       );
     } else {
       return Image.asset(
         ImagePath.imgImageUpload,
-        height: 76,
-        width: 76,
+        width: 200,
+        height: 200,
+        fit: BoxFit.cover,
       );
+    }
+  }
+
+  void getAllImageUrls() async {
+    try {
+      ListResult result = await FirebaseStorage.instance
+          .ref(widget.order.productImage)
+          .listAll();
+      List<String> urls = [];
+      for (Reference ref in result.items) {
+        String url = await ref.getDownloadURL();
+        urls.add(url);
+      }
+      setState(() {
+        imageUrls = urls;
+      });
+    } catch (e) {
+      print('Error getting image URLs: $e');
     }
   }
 }

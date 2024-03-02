@@ -127,60 +127,80 @@ Future<bool> addProduct({required Product product, required List<File> imageFile
       "description": product.description,
       "price": product.price,
       "type": product.type,
+      "mass":product.mass,
       "uploadBy": product.uploadBy,
       "uploadDate": product.uploadDate,
       "editDate": product.editDate,
     };
 
-        FirebaseFirestore.instance
-            .collection('PRODUCTS')
-            .doc(product.id)
-            .set(productMap).then((value){
-          return Future.value(true);
-        });
+    // Thêm sản phẩm vào Firestore
+    await FirebaseFirestore.instance.collection('PRODUCTS').doc(product.id).set(productMap);
 
-        return Future.value(true);
-      } on FirebaseException {
-        CommonFunc.showToast("Đã có lỗi xảy ra.");
-      } catch (e) {
-        CommonFunc.showToast("Đã có lỗi xảy ra.");
-      }
-    }else{
-      try {
-
-        //Add product without image
-        Map<String, dynamic> productMap = {
-          "id": product.id,
-          "name": product.name,
-          "image": product.image,
-          "description": product.description,
-          "price": product.price,
-          "type": product.type,
-          "uploadBy": product.uploadBy,
-          "uploadDate": product.uploadDate,
-          "editDate": product.editDate
-        };
-
-        FirebaseFirestore.instance
-            .collection('PRODUCTS')
-            .doc(product.id)
-            .set(productMap)
-          ..then((value) {
-            return Future.value(true);
-          }).catchError((error) {
-            CommonFunc.showToast("Lỗi thêm sản phẩm.");
-            print("error:${error.toString()}");
-            return Future.value(false);
-          });
-        return Future.value(true);
-      } on FirebaseException {
-        CommonFunc.showToast("Đã có lỗi xảy ra.");
-      } catch (e) {
-        CommonFunc.showToast("Đã có lỗi xảy ra.");
-      }
-    }
-    return Future.value(false);
+    // Trả về true nếu việc thêm sản phẩm thành công
+    return true;
+  } catch (e) {
+    // Xử lý lỗi
+    print("Error adding product: $e");
+    return false;
   }
+}
+Future<bool> isMassLessThanOrEqualProductMass(double mass,String productId) async {
+  try {
+    // Lấy thông tin sản phẩm từ Firestore
+    DocumentSnapshot productSnapshot = await FirebaseFirestore.instance
+        .collection("PRODUCTS")
+        .doc(productId)
+        .get();
+
+    // Lấy khối lượng sản phẩm từ dữ liệu Firestore
+    double productMass = productSnapshot.get('mass');
+
+    // Kiểm tra xem khối lượng có nhỏ hơn hoặc bằng khối lượng sản phẩm không
+    return mass <= productMass;
+  } catch (error) {
+    print("Lỗi khi kiểm tra khối lượng: $error");
+    return false; // Trả về false nếu có lỗi xảy ra
+  }
+}
+Future<bool> updateProductMass({required String productId, required double newMass}) async {
+    try {
+      // Lấy tham chiếu tới tài liệu của sản phẩm cần cập nhật khối lượng
+      DocumentReference productRef = FirebaseFirestore.instance.collection('PRODUCTS').doc(productId);
+
+      // Tạo map chứa dữ liệu mới của sản phẩm (bao gồm khối lượng mới)
+      Map<String, dynamic> newData = {
+        'mass': newMass,
+      };
+
+      // Cập nhật dữ liệu của sản phẩm trong Firestore
+      await productRef.update(newData);
+
+      return true; // Trả về true nếu cập nhật thành công
+    } catch (error) {
+      print('Error updating product mass: $error');
+      return false; // Trả về false nếu có lỗi xảy ra
+    }
+  }
+Future<void> uploadImagesToFirebaseStorage({
+  required List<File> imageFiles,
+  required String productFolder,
+}) async {
+  try {
+    // Tạo một tham chiếu tới thư mục của sản phẩm trên Firebase Storage
+    Reference storageRef = FirebaseStorage.instance.ref().child(productFolder);
+
+    for (int i = 0; i < imageFiles.length; i++) {
+      File imageFile = imageFiles[i];
+      
+      // Tải ảnh lên Firebase Storage vào thư mục của sản phẩm
+      await storageRef.child('$i.jpg').putFile(imageFile);
+    }
+  } catch (e) {
+    print("Error uploading images: $e");
+    throw e; // Ném lỗi để xử lý ở hàm gọi
+  }
+}
+
 
   @override
   Future<bool> updateProduct(
@@ -207,6 +227,7 @@ Future<bool> addProduct({required Product product, required List<File> imageFile
           "description": product.description,
           "price": product.price,
           "type": product.type,
+          "mass":product.mass,
           "uploadBy": product.uploadBy,
           "uploadDate": product.uploadDate,
           "editDate": product.editDate
@@ -234,6 +255,7 @@ Future<bool> addProduct({required Product product, required List<File> imageFile
           "price": product.price,
           "type": product.type,
           "uploadBy": product.uploadBy,
+          "mass":product.mass,
           "uploadDate": product.uploadDate,
           "editDate": product.editDate
         };
