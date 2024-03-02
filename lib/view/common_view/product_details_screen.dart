@@ -122,7 +122,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   child: Text('Mô tả sản phẩm'),
                 ),
               ),
-              const Padding(padding: EdgeInsets.only(top: 8)),
               Align(
                 alignment: AlignmentDirectional(0, 0),
                 child: Padding(
