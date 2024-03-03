@@ -1,14 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:three_tapp_app/utils/common_func.dart';
+import 'package:three_tapp_app/view/customer/authentication/simple_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../model/roles_type.dart';
 import '../../utils/validator.dart';
 import '../../viewmodel/auth_viewmodel.dart';
 import '../customer/authentication/signup_screen.dart';
 import 'custom_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -24,6 +29,7 @@ class _LoginScreen extends State<LoginScreen> {
   AuthViewModel authViewModel = AuthViewModel();
   final _auth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn();
+  
   void goToSignUpScreen(bool isAdmin) {
     Navigator.push(
       context,
@@ -31,23 +37,69 @@ class _LoginScreen extends State<LoginScreen> {
     );
   }
 
-  signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleSignInAccount =
-          await _googleSignIn.signIn();
-      if (googleSignInAccount != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication =
-            await googleSignInAccount.authentication;
-        final AuthCredential authCredential = GoogleAuthProvider.credential(
-            accessToken: googleSignInAuthentication.accessToken,
-            idToken: googleSignInAuthentication.idToken);
-        await _auth.signInWithCredential(authCredential);
-      }
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
-      throw e;
-    }
+// Hàm để đăng xuất khỏi tài khoản Google
+void signOutGoogle() async {
+  try {
+    await _googleSignIn.signOut(); 
+    print("Đăng xuất khỏi tk cũ nè");// Đăng xuất khỏi tài khoản Google
+  } catch (error) {
+    print('Error signing out: $error');
   }
+}
+
+// Hàm xử lý việc đăng xuất khỏi tài khoản Google và xóa session
+void handleSignOut() async {
+  try {
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // await prefs.remove('user_email');
+    // await prefs.remove('user_token');
+    signOutGoogle(); // Remove the await keyword here
+        await _auth.signOut();
+        print("Đăng xuất khỏi fb nè");
+
+    } catch (error) {
+    print('Error handling sign out: $error');
+  }
+}
+
+  void _navigateToSimpleSignInScreen(
+      {required bool isAdmin}) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SimpleSignInScreen(
+        
+          isAdmin: isAdmin, // Truyền tham số isAdmin vào SimpleSignInScreen
+        ),
+      ),
+    );
+  } 
+void signInWithGoogle() async {
+
+  try {
+      //handleSignOut();
+    print("Đăng nhập bằng google nè");
+    // Gọi hàm signInWithGoogle từ AuthViewModel
+    bool signInResult = await authViewModel.signInWithGoogle();
+    // ton tai email =false,
+    if (signInResult) {
+     _navigateToSimpleSignInScreen(     isAdmin: authViewModel.rolesType == RolesType.seller,);
+
+      // true là email 0 tồn tại
+      
+    } else {
+        if (authViewModel.rolesType == RolesType.seller) {
+          CommonFunc.goToAdminRootScreen();
+        } else {
+          CommonFunc.goToCustomerRootScreen();
+        }
+     
+    }
+  } catch (e) {
+    // Xử lý lỗi nếu có
+    print("Sign in with Google error: ${e.toString()}");
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -264,8 +316,12 @@ class _LoginScreen extends State<LoginScreen> {
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 ElevatedButton.icon(
-                  onPressed: () {
-                    signInWithGoogle();
+                  onPressed: () async {
+                    try {
+                      signInWithGoogle();
+                    } catch (e) {
+                      print('Error signing in with Google: $e');
+                    }
                   },
                   icon: Image.asset(
                     "assets/images/google-logo.png",

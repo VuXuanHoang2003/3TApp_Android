@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class AuthRepo {
+  bool get isUserLoggedInWithEmail;
   Future<bool> signUp(
       {required String email,
       required String password,
@@ -18,9 +19,19 @@ abstract class AuthRepo {
     String newName,
     String newAddress,
     String newPhoneNumber,
-    String oldPassword,
-    String newPassword,
+
   );
-  
+ Future<bool> addUserByGoogleSignIn({
+    required String phone,
+    required String address,
+    required String username,
+    required bool isAdmin,
+  });
+ Future<bool> signInWithGoogle();
+
+  Future<bool> isEmailExistsInUsers(String email);
+
   Future<List<String>>getUserInfo();
+    Future<void> logout();
+
 }

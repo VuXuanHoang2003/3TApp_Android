@@ -11,8 +11,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   AuthViewModel authViewModel=AuthViewModel();
   TextEditingController nameController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController newpasswordController = TextEditingController();
+  // TextEditingController passwordController = TextEditingController();
+  // TextEditingController newpasswordController = TextEditingController();
 
   TextEditingController phoneController = TextEditingController();
   @override
@@ -31,10 +31,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Future<void> editProfile() async {
     String newName = nameController.text;
     String newAddress = addressController.text;
-    String password=passwordController.text;
-    String newPassword = newpasswordController.text;
+    //String password=passwordController.text;
+    // String newPassword = newpasswordController.text;
     String newPhone = phoneController.text;
-    bool success = await authViewModel.editProfile(newName,newAddress,newPhone,password,newPassword);
+    // bool success = await authViewModel.editProfile(newName,newAddress,newPhone,password,newPassword);
+    bool success = await authViewModel.editProfile(newName,newAddress,newPhone);
 
   if (success) {
     // Show success message
@@ -60,13 +61,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         );
   }    
 
-
-    // In thông tin mới
-    print('New Name: $newName');
-    print('New Address: $newAddress');
-    print('Password: $password');
-    print('New Password: $newPassword');
-    print('New Phone: $newPhone');
   }
 
   @override
@@ -102,8 +96,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               _buildTextField('Địa chỉ : ', addressController, height: 40),
               // Phần phone
               _buildTextField('Số điện thoại : ', phoneController, height: 40),
-              _buildTextField('Mật khẩu cũ :', passwordController, height: 40,isPassword: true),
-              _buildTextField('Mật khẩu mới :', newpasswordController, height: 40,isPassword: true),
+              // _buildTextField('Mật khẩu cũ :', passwordController, height: 40,isPassword: true),
+              // _buildTextField('Mật khẩu mới :', newpasswordController, height: 40,isPassword: true),
               // Phần Password
               //_buildTextField('Password', passwordController, isPassword: true),
 

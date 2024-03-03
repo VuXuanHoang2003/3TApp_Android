@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../base/baseviewmodel/base_viewmodel.dart';
 import '../data/repositories/auth_repo/auth_repo.dart';
@@ -18,6 +20,8 @@ import '../view/common_view/select_role.dart';
 import 'notification_viewmodel.dart';
 
 class AuthViewModel extends BaseViewModel {
+  GoogleSignIn _googleSignIn = GoogleSignIn(); // Khởi tạo trường _googleSignIn
+
   static final AuthViewModel _instance = AuthViewModel._internal();
 
   factory AuthViewModel() {
@@ -30,6 +34,7 @@ class AuthViewModel extends BaseViewModel {
 
   RolesType rolesType = RolesType.none;
   String? _currentUid;
+
 
   // Getter để lấy giá trị uid
   String? get currentUid => _currentUid;
@@ -47,7 +52,10 @@ class AuthViewModel extends BaseViewModel {
     return user?.email ??
         ""; // Nếu user không null thì trả về email, ngược lại trả về chuỗi rỗng
   }
-
+  bool get isUserLoggedInWithEmail {
+    
+    return authRepo.isUserLoggedInWithEmail;
+  }
   Future<void> login(
       {required String email,
       required String password,
@@ -104,18 +112,98 @@ class AuthViewModel extends BaseViewModel {
       return "Unknown username";
     }
   }
-  Future<bool> editProfile(String newName, String newAddress, String newPhone,String oldPassword,String newPassword) async {
-   
+
+  Future<bool> editProfile(String newName, String newAddress, String newPhone
+      ) async {
     try {
-      return await authRepo.editProfile(newName, newAddress, newPhone,oldPassword,newPassword);
+      return await authRepo.editProfile(
+          newName, newAddress, newPhone);
     } catch (error) {
       print('Error updating user profile: $error');
       return false;
     }
   }
+  Future<void> changePassword(String newPassword) async {
+    try {
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      if (currentUser != null) {
+        await currentUser.updatePassword(newPassword);
+        CommonFunc.showToast("Mật khẩu đã được thay đổi thành công");
+      } else {
+        // Xử lý trường hợp người dùng không đăng nhập
+      }
+    } catch (error) {
+
+      CommonFunc.showToast("Đã xảy ra lỗi khi thay đổi mật khẩu");
+      print('Error changing password: $error');
+    }
+  }
   Future<String> getUsername() async {
     String email = FirebaseAuth.instance.currentUser?.email ?? "";
     return await getUsernameByEmail(email) ?? "Unknown username";
+  }
+
+  // Future<bool> addNewUser({
+  //   required String email,
+  //   required String phone,
+  //   required String address,
+  //   required String username,
+  //   required bool isAdmin,
+  // }) async {
+  //   try {
+  //     return await authRepo.addNewUser(
+  //       email: email,
+  //       phone: phone,
+  //       address: address,
+  //       username: username,
+  //       isAdmin: isAdmin,
+  //     );
+  //   } catch (error) {
+  //     print('Error adding user: $error');
+  //     return false;
+  //   }
+  // }
+  Future<bool> addUserByGoogleSignIn({
+    required String phone,
+    required String address,
+    required String username,
+    required bool isAdmin,
+  }) async {
+    // Gọi lại hàm addUserByGoogleSignIn từ AuthRepoImpl
+    return await authRepo.addUserByGoogleSignIn(
+      phone: phone,
+      address: address,
+      username: username,
+      isAdmin: isAdmin,
+    );
+  }
+
+  Future<bool> addUser(User user,
+      {String phone = '',
+      String address = '',
+      String username = '',
+      bool isAdmin = false}) async {
+    try {
+      Map<String, dynamic> userMap = {
+        'username': username, // Sử dụng giá trị username được truyền từ signUp
+        'email': user.email,
+        'isAdmin': isAdmin,
+        'phone': phone,
+        'address': address,
+      };
+
+      await FirebaseFirestore.instance
+          .collection('USERS')
+          .doc(user.uid)
+          .set(userMap);
+      return true;
+    } on FirebaseAuthException catch (e) {
+      print("add user error: ${e.toString()}");
+      return false;
+    } catch (e) {
+      print("add user error: ${e.toString()}");
+      return false;
+    }
   }
 
   String getUsernameByEmail1(String? email) {
@@ -151,23 +239,75 @@ class AuthViewModel extends BaseViewModel {
     });
   }
 
+
+
+  
+  
+
+
+  void signOutGoogle() async {
+  try {
+    // Ngắt kết nối với tài khoản Google
+      //await _googleSignIn.disconnect(); 
+    _googleSignIn.signOut();
+    // Xóa thông tin đăng nhập của tài khoản Google trước đó từ SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('user_email');
+    await prefs.remove('user_token');
+    
+    print("Đăng xuất khỏi tài khoản Google thành công");
+
+  } catch (error) {
+    print('Lỗi khi đăng xuất khỏi tài khoản Google: $error');
+  }
+}
+
+
   Future<void> logout() async {
-    EasyLoading.show();
+  EasyLoading.show();
+  try {
+    // Đăng xuất khỏi Google Sign-In
+    await authRepo.logout();
+    
+   
     await FirebaseAuth.instance.signOut();
+
     notifyListeners();
     EasyLoading.dismiss();
-    if (FirebaseAuth.instance.currentUser == null) {
-      Navigator.pushReplacement(navigationKey.currentContext!,
-          MaterialPageRoute(builder: (context) => SelectRole()));
-    }
+    Navigator.pushReplacement(navigationKey.currentContext!,
+        MaterialPageRoute(builder: (context) => SelectRole()));
+  } catch (e) {
+    // Xử lý lỗi nếu có
+    print("Error during logout: $e");
+    EasyLoading.dismiss();
   }
+}
+
+
   Future<List<String>> getUserInfo() async {
     try {
       return await authRepo.getUserInfo();
     } catch (error) {
       print('Error fetching user info: $error');
-      return ['', '', '']; // Trả về danh sách rỗng trong trường hợp có lỗi xảy ra
+      return [
+        '',
+        '',
+        ''
+      ]; // Trả về danh sách rỗng trong trường hợp có lỗi xảy ra
     }
   }
 
+  Future<bool> signInWithGoogle() async {
+    // Gọi hàm signInWithGoogle từ model và nhận giá trị trả về
+    bool isSignedIn = await authRepo.signInWithGoogle();
+
+    // Xử lý kết quả trả về từ hàm signInWithGoogle
+    if (isSignedIn) {
+      // Đăng nhập thành công, điều hướng hoặc thực hiện các hành động tiếp theo
+      return true;
+    } else {
+      // Xử lý khi đăng nhập không thành công
+      return false;
+    }
+  }
 }

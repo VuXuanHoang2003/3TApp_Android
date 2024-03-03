@@ -289,7 +289,7 @@ class _OrderItem extends State<OrderItem> {
     } else {
       return Image.asset(
         ImagePath.imgImageUpload,
-        width: 120,
+        width: 150,
         height: 120,
       );
     }
