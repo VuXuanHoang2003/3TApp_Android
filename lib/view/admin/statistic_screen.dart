@@ -14,6 +14,8 @@ class StatisticScreen extends StatefulWidget {
 }
 
 class _StatisticScreenState extends State<StatisticScreen> {
+  Future<Statistic> statisticUser =
+      StatisticViewModel().getStatisticOfCurrentUser();
   late StatisticScreenModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -22,11 +24,12 @@ class _StatisticScreenState extends State<StatisticScreen> {
   void initState() {
     super.initState();
     _model = createModel(context, () => StatisticScreenModel());
+    statisticUser = StatisticViewModel().getStatisticOfCurrentUser();
   }
 
   Widget build(BuildContext context) {
     return FutureBuilder<Statistic>(
-      future: StatisticViewModel().getStatisticOfCurrentUser(),
+      future: statisticUser,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -88,8 +91,7 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                     alignment:
                                         AlignmentDirectional(0.54, -0.89),
                                     child: Text(
-                                      statisticCurrentUser!
-                                          .numberOfSuccessfulTrade
+                                      statisticCurrentUser!.numberOfPosts
                                           .toString(),
                                       textAlign: TextAlign.center,
                                       style: FlutterFlowTheme.of(context)
@@ -110,7 +112,8 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                     alignment:
                                         AlignmentDirectional(0.54, -0.43),
                                     child: Text(
-                                      statisticCurrentUser!.numberOfPosts
+                                      statisticCurrentUser!
+                                          .numberOfSuccessfulTrade
                                           .toString(),
                                       textAlign: TextAlign.center,
                                       style: FlutterFlowTheme.of(context)

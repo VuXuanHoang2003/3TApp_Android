@@ -70,9 +70,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                     Align(
                       alignment: AlignmentDirectional(0, 0),
-                      child: Text(
-                        'Hello World',
-                      ),
+                      child: Text('0101'),
                     ),
                   ],
                 ),

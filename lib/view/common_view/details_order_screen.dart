@@ -117,15 +117,6 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                   style:
                                       FlutterFlowTheme.of(context).titleLarge,
                                 ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 4, 0, 12),
-                                  child: Text(
-                                    'Below is the list of items in your cart.',
-                                    style: FlutterFlowTheme.of(context)
-                                        .labelMedium,
-                                  ),
-                                ),
                                 ListView(
                                   padding: EdgeInsets.zero,
                                   shrinkWrap: true,
@@ -315,7 +306,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                                     .textScaleFactor,
                                             text: TextSpan(
                                               children: [
-                                                TextSpan(
+                                                const TextSpan(
                                                   text: 'Trạng thái: ',
                                                   style: TextStyle(),
                                                 ),
@@ -323,7 +314,10 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                                   text: CommonFunc
                                                       .getOrderStatusName(
                                                           widget.order.status),
-                                                  style: TextStyle(),
+                                                  style: const TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 )
                                               ],
                                               style:
@@ -346,62 +340,23 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                     children: [
                                       Padding(
                                         padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 24, 0, 12),
-                                        child: Text(
-                                          'Price Breakdown',
-                                          style: FlutterFlowTheme.of(context)
-                                              .labelMedium,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0, 0, 0, 8),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              'Cleaning Fee',
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodySmall
-                                                      .override(
-                                                        fontFamily: 'Outfit',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                      ),
-                                            ),
-                                            Text(
-                                              (widget.order.productPrice *
-                                                      widget.order.productMass)
-                                                  .toString(),
-                                              textAlign: TextAlign.end,
-                                              style:
-                                                  FlutterFlowTheme.of(context)
-                                                      .bodyLarge,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
                                             0, 8, 0, 8),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
+                                            Divider(
+                                              thickness: 1,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .accent4,
+                                            ),
                                             Row(
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Text(
-                                                  'Total',
+                                                  'Tổng cộng',
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .titleMedium
@@ -416,30 +371,12 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                                             FontWeight.w500,
                                                       ),
                                                 ),
-                                                FlutterFlowIconButton(
-                                                  borderColor:
-                                                      Colors.transparent,
-                                                  borderRadius: 30,
-                                                  borderWidth: 1,
-                                                  buttonSize: 36,
-                                                  icon: Icon(
-                                                    Icons.info_outlined,
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryText,
-                                                    size: 18,
-                                                  ),
-                                                  onPressed: () {
-                                                    print(
-                                                        'IconButton pressed ...');
-                                                  },
-                                                ),
                                               ],
                                             ),
                                             Text(
                                               (widget.order.productPrice *
                                                       widget.order.productMass)
-                                                  .toString(),
+                                                  .toStringAsFixed(3),
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .displaySmall,
