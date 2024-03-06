@@ -21,14 +21,26 @@ class _ProfileScreenRootState extends State<ProfileScreenRoot> {
   AuthViewModel authViewModel = AuthViewModel();
   User? user;
   Map<String, dynamic>? userInfo;
+  String? _avatarUrl; // Đường dẫn của ảnh người dùng
 
   @override
   void initState() {
+   _getUserInfo();
+
     super.initState();
     user = FirebaseAuth.instance.currentUser;
     // Lấy thông tin từ Cloud Firestore
     getUserAdditionalInfo();
   }
+
+  Future<void> _getUserInfo() async {
+  List<String> userInfo = await authViewModel.getUserInfo();
+  setState(() {
+    _avatarUrl = userInfo[3]; // Gán đường dẫn của ảnh từ avatarUrl
+    print("Hello root");
+    print(_avatarUrl);
+  });
+}
 
   Future<void> getUserAdditionalInfo() async {
     try {
@@ -66,9 +78,22 @@ class _ProfileScreenRootState extends State<ProfileScreenRoot> {
                 // Ảnh đại diện
                 CircleAvatar(
                   radius: 50,
-                  // TODO: Thêm ảnh đại diện của người dùng
-                  backgroundImage:
-                      AssetImage('assets/images/default-avatar.png'),
+                  backgroundColor: Colors.transparent,
+                  child: ClipOval(
+                    child: _avatarUrl != null
+                        ? Image.network(
+                            _avatarUrl!,
+                            fit: BoxFit.cover,
+                            width: 100,
+                            height: 100,
+                          )
+                        : Image.asset(
+                            'assets/images/default-avatar.png',
+                            fit: BoxFit.cover,
+                            width: 50,
+                            height: 50,
+                          ),
+                  ),
                 ),
                 SizedBox(width: 16),
                 // Thông tin người dùng
@@ -119,10 +144,10 @@ class _ProfileScreenRootState extends State<ProfileScreenRoot> {
               child: ListView(
                 children: [
                   CustomListTile('Lịch sử'),
-                  CustomListTile('Thông tin'),
                   CustomListTile('Hướng dẫn'),
                   CustomListTile('Ngôn ngữ'),
-                  if(authViewModel.isUserLoggedInWithEmail)CustomListTile('Đổi mật khẩu'),
+                  if (authViewModel.userMode == 1)
+                    CustomListTile('Đổi mật khẩu'),
                   CustomListTile('Thoát tài khoản'),
                 ],
               ),
@@ -152,20 +177,17 @@ class CustomListTile extends StatelessWidget {
       ),
       onTap: () async {
         if (itemName == 'Thông tin') {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => ProfileScreen()),
-          );
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => ProfileScreen()),
+          // );
         } else if (itemName == 'Lịch sử') {
           // Xử lý khi chọn "Lịch sử"
         } else if (itemName == 'Đổi mật khẩu') {
-         
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ChangePasswordPage()),
-            );
-        
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => ChangePasswordPage()),
+          );
         } else if (itemName == 'Thoát tài khoản') {
           await authViewModel.logout();
         } else {

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ffi';
+import 'dart:io';
 
 import 'package:awesome_notifications_fcm/awesome_notifications_fcm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -35,7 +36,6 @@ class AuthViewModel extends BaseViewModel {
   RolesType rolesType = RolesType.none;
   String? _currentUid;
 
-
   // Getter để lấy giá trị uid
   String? get currentUid => _currentUid;
 
@@ -47,15 +47,25 @@ class AuthViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  String? getCurrentUserID() {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      return currentUser.uid;
+    } else {
+      return null;
+    }
+  }
+
   String getUserEmail() {
     User? user = FirebaseAuth.instance.currentUser;
     return user?.email ??
         ""; // Nếu user không null thì trả về email, ngược lại trả về chuỗi rỗng
   }
-  bool get isUserLoggedInWithEmail {
-    
-    return authRepo.isUserLoggedInWithEmail;
+
+  int get userMode {
+    return authRepo.userMode;
   }
+
   Future<void> login(
       {required String email,
       required String password,
@@ -86,6 +96,15 @@ class AuthViewModel extends BaseViewModel {
     });
   }
 
+  Future<bool> uploadAvatar(File imageFile, String userId) async {
+    try {
+      return await authRepo.uploadAvatar(imageFile, userId);
+    } catch (e) {
+      print("Error uploading avatar from uploadAvatar: $e");
+      return false; // Trả về giá trị mặc định trong trường hợp xảy ra lỗi
+    }
+  }
+
   Future<String> getUsernameByEmail(String email) async {
     try {
       // Connect to Firestore collection 'USERS'
@@ -113,16 +132,17 @@ class AuthViewModel extends BaseViewModel {
     }
   }
 
-  Future<bool> editProfile(String newName, String newAddress, String newPhone
-      ) async {
+  Future<bool> editProfile(String newName, String newAddress, String newPhone,
+      File? imageFile) async {
     try {
       return await authRepo.editProfile(
-          newName, newAddress, newPhone);
+          newName, newAddress, newPhone, imageFile);
     } catch (error) {
       print('Error updating user profile: $error');
       return false;
     }
   }
+
   Future<void> changePassword(String newPassword) async {
     try {
       User? currentUser = FirebaseAuth.instance.currentUser;
@@ -133,97 +153,113 @@ class AuthViewModel extends BaseViewModel {
         // Xử lý trường hợp người dùng không đăng nhập
       }
     } catch (error) {
-
       CommonFunc.showToast("Đã xảy ra lỗi khi thay đổi mật khẩu");
       print('Error changing password: $error');
     }
   }
+
   Future<String> getUsername() async {
     String email = FirebaseAuth.instance.currentUser?.email ?? "";
     return await getUsernameByEmail(email) ?? "Unknown username";
   }
 
-  // Future<bool> addNewUser({
-  //   required String email,
-  //   required String phone,
-  //   required String address,
-  //   required String username,
-  //   required bool isAdmin,
-  // }) async {
-  //   try {
-  //     return await authRepo.addNewUser(
-  //       email: email,
-  //       phone: phone,
-  //       address: address,
-  //       username: username,
-  //       isAdmin: isAdmin,
-  //     );
-  //   } catch (error) {
-  //     print('Error adding user: $error');
-  //     return false;
-  //   }
-  // }
-  Future<bool> addUserByGoogleSignIn({
-    required String phone,
-    required String address,
-    required String username,
-    required bool isAdmin,
-  }) async {
+  Future<bool> addUserByGoogleSignIn(
+      {required String phone,
+      required String address,
+      required String username,
+      required bool isAdmin,
+      required File avatarFile}) async {
     // Gọi lại hàm addUserByGoogleSignIn từ AuthRepoImpl
     return await authRepo.addUserByGoogleSignIn(
       phone: phone,
       address: address,
       username: username,
       isAdmin: isAdmin,
+      avatarFile: avatarFile,
     );
   }
 
-  Future<bool> addUser(User user,
-      {String phone = '',
-      String address = '',
-      String username = '',
-      bool isAdmin = false}) async {
-    try {
-      Map<String, dynamic> userMap = {
-        'username': username, // Sử dụng giá trị username được truyền từ signUp
-        'email': user.email,
-        'isAdmin': isAdmin,
-        'phone': phone,
-        'address': address,
-      };
+  // Future<bool> addUser(User user,
+  //     {String phone = '',
+  //     String address = '',
+  //     String username = '',
+  //     bool isAdmin = false}) async {
+  //   try {
+  //     Map<String, dynamic> userMap = {
+  //       'username': username, // Sử dụng giá trị username được truyền từ signUp
+  //       'email': user.email,
+  //       'isAdmin': isAdmin,
+  //       'phone': phone,
+  //       'address': address,
+  //     };
 
-      await FirebaseFirestore.instance
-          .collection('USERS')
-          .doc(user.uid)
-          .set(userMap);
-      return true;
-    } on FirebaseAuthException catch (e) {
-      print("add user error: ${e.toString()}");
-      return false;
-    } catch (e) {
-      print("add user error: ${e.toString()}");
-      return false;
-    }
-  }
+  //     await FirebaseFirestore.instance
+  //         .collection('USERS')
+  //         .doc(user.uid)
+  //         .set(userMap);
+  //     return true;
+  //   } on FirebaseAuthException catch (e) {
+  //     print("add user error: ${e.toString()}");
+  //     return false;
+  //   } catch (e) {
+  //     print("add user error: ${e.toString()}");
+  //     return false;
+  //   }
+  // }
 
-  String getUsernameByEmail1(String? email) {
-    if (email == null) {
-      return "Unknown username";
-    }
-    return email.split("@").first;
-  }
+  // String getUsernameByEmail1(String? email) {
+  //   if (email == null) {
+  //     return "Unknown username";
+  //   }
+  //   return email.split("@").first;
+  // }
 
-  Future<void> signUp(String email, String password, String phone,
-      String address, String username, bool isAdmin) async {
+  // Future<void> signUp(String email, String password, String phone,
+  //     String address, String username, bool isAdmin) async {
+  //   EasyLoading.show();
+  //   await authRepo
+  //       .signUp(
+  //           email: email,
+  //           password: password,
+  //           phone: phone,
+  //           address: address,
+  //           username: username,
+  //           isAdmin: isAdmin)
+  //       .then((value) {
+  //     EasyLoading.dismiss();
+  //     if (value) {
+  //       CommonFunc.showToast("Đăng ký thành công.");
+  //       // Back to login screen
+  //       Navigator.of(navigationKey.currentContext!).pop();
+  //     } else {
+  //       print("Sign up error");
+  //     }
+  //   }).onError((error, stackTrace) {
+  //     EasyLoading.dismiss();
+  //     CommonFunc.showToast("Đăng ký thất bại!");
+  //   });
+  // }
+
+  Future<void> signUp(
+    String email,
+    String password,
+    String phone,
+    String address,
+    String username,
+    bool isAdmin,
+    File avatarFile, // Add this argument
+  ) async {
     EasyLoading.show();
     await authRepo
         .signUp(
-            email: email,
-            password: password,
-            phone: phone,
-            address: address,
-            username: username,
-            isAdmin: isAdmin)
+      email: email,
+      password: password,
+      phone: phone,
+      address: address,
+      username: username,
+      isAdmin: isAdmin,
+      avatarFile: avatarFile, // Pass the avatarFile argument
+    )
         .then((value) {
       EasyLoading.dismiss();
       if (value) {
@@ -239,50 +275,40 @@ class AuthViewModel extends BaseViewModel {
     });
   }
 
-
-
-  
-  
-
-
   void signOutGoogle() async {
-  try {
-    // Ngắt kết nối với tài khoản Google
-      //await _googleSignIn.disconnect(); 
-    _googleSignIn.signOut();
-    // Xóa thông tin đăng nhập của tài khoản Google trước đó từ SharedPreferences
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('user_email');
-    await prefs.remove('user_token');
-    
-    print("Đăng xuất khỏi tài khoản Google thành công");
+    try {
+      // Ngắt kết nối với tài khoản Google
+      //await _googleSignIn.disconnect();
+      _googleSignIn.signOut();
+      // Xóa thông tin đăng nhập của tài khoản Google trước đó từ SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('user_email');
+      await prefs.remove('user_token');
 
-  } catch (error) {
-    print('Lỗi khi đăng xuất khỏi tài khoản Google: $error');
+      print("Đăng xuất khỏi tài khoản Google thành công");
+    } catch (error) {
+      print('Lỗi khi đăng xuất khỏi tài khoản Google: $error');
+    }
   }
-}
-
 
   Future<void> logout() async {
-  EasyLoading.show();
-  try {
-    // Đăng xuất khỏi Google Sign-In
-    await authRepo.logout();
-    
-   
-    await FirebaseAuth.instance.signOut();
+    EasyLoading.show();
+    try {
+      // Đăng xuất khỏi Google Sign-In
+      await authRepo.logout();
 
-    notifyListeners();
-    EasyLoading.dismiss();
-    Navigator.pushReplacement(navigationKey.currentContext!,
-        MaterialPageRoute(builder: (context) => SelectRole()));
-  } catch (e) {
-    // Xử lý lỗi nếu có
-    print("Error during logout: $e");
-    EasyLoading.dismiss();
+      await FirebaseAuth.instance.signOut();
+
+      notifyListeners();
+      EasyLoading.dismiss();
+      Navigator.pushReplacement(navigationKey.currentContext!,
+          MaterialPageRoute(builder: (context) => SelectRole()));
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      print("Error during logout: $e");
+      EasyLoading.dismiss();
+    }
   }
-}
-
 
   Future<List<String>> getUserInfo() async {
     try {
@@ -292,7 +318,8 @@ class AuthViewModel extends BaseViewModel {
       return [
         '',
         '',
-        ''
+        '',
+        '',
       ]; // Trả về danh sách rỗng trong trường hợp có lỗi xảy ra
     }
   }
@@ -308,6 +335,31 @@ class AuthViewModel extends BaseViewModel {
     } else {
       // Xử lý khi đăng nhập không thành công
       return false;
+    }
+  }
+
+  Future<String> signInWithPhoneNumber(String phoneNumber) async {
+    try {
+      String verificationId = await authRepo.signInWithPhoneNumber(phoneNumber);
+      return verificationId;
+    } catch (e) {
+      // Xử lý lỗi nếu cần
+      print('Error signing in with phone number: $e');
+      rethrow;
+    }
+  }
+
+  // Hàm xác thực mã OTP
+  Future<UserCredential> verifyOTP(
+      String verificationId, String smsCode) async {
+    try {
+      UserCredential userCredential =
+          await authRepo.verifyOTP(verificationId, smsCode);
+      return userCredential;
+    } catch (e) {
+      // Xử lý lỗi nếu cần
+      print('Error verifying OTP: $e');
+      rethrow;
     }
   }
 }

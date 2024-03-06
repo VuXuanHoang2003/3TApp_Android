@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:three_tapp_app/utils/common_func.dart';
+import 'package:three_tapp_app/view/common_view/phone_verification_screen.dart';
 import 'package:three_tapp_app/view/customer/authentication/simple_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -29,7 +30,7 @@ class _LoginScreen extends State<LoginScreen> {
   AuthViewModel authViewModel = AuthViewModel();
   final _auth = FirebaseAuth.instance;
   final _googleSignIn = GoogleSignIn();
-  
+
   void goToSignUpScreen(bool isAdmin) {
     Navigator.push(
       context,
@@ -38,68 +39,65 @@ class _LoginScreen extends State<LoginScreen> {
   }
 
 // Hàm để đăng xuất khỏi tài khoản Google
-void signOutGoogle() async {
-  try {
-    await _googleSignIn.signOut(); 
-    print("Đăng xuất khỏi tk cũ nè");// Đăng xuất khỏi tài khoản Google
-  } catch (error) {
-    print('Error signing out: $error');
+  void signOutGoogle() async {
+    try {
+      await _googleSignIn.signOut();
+      print("Đăng xuất khỏi tk cũ nè"); // Đăng xuất khỏi tài khoản Google
+    } catch (error) {
+      print('Error signing out: $error');
+    }
   }
-}
 
 // Hàm xử lý việc đăng xuất khỏi tài khoản Google và xóa session
-void handleSignOut() async {
-  try {
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // await prefs.remove('user_email');
-    // await prefs.remove('user_token');
-    signOutGoogle(); // Remove the await keyword here
-        await _auth.signOut();
-        print("Đăng xuất khỏi fb nè");
-
+  void handleSignOut() async {
+    try {
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // await prefs.remove('user_email');
+      // await prefs.remove('user_token');
+      signOutGoogle(); // Remove the await keyword here
+      await _auth.signOut();
+      print("Đăng xuất khỏi fb nè");
     } catch (error) {
-    print('Error handling sign out: $error');
+      print('Error handling sign out: $error');
+    }
   }
-}
 
-  void _navigateToSimpleSignInScreen(
-      {required bool isAdmin}) {
+  void _navigateToSimpleSignInScreen({required bool isAdmin}) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => SimpleSignInScreen(
-        
           isAdmin: isAdmin, // Truyền tham số isAdmin vào SimpleSignInScreen
         ),
       ),
     );
-  } 
-void signInWithGoogle() async {
+  }
 
-  try {
+  void signInWithGoogle() async {
+    try {
       //handleSignOut();
-    print("Đăng nhập bằng google nè");
-    // Gọi hàm signInWithGoogle từ AuthViewModel
-    bool signInResult = await authViewModel.signInWithGoogle();
-    // ton tai email =false,
-    if (signInResult) {
-     _navigateToSimpleSignInScreen(     isAdmin: authViewModel.rolesType == RolesType.seller,);
+      print("Đăng nhập bằng google nè");
+      // Gọi hàm signInWithGoogle từ AuthViewModel
+      bool signInResult = await authViewModel.signInWithGoogle();
+      // ton tai email =false,
+      if (signInResult) {
+        _navigateToSimpleSignInScreen(
+          isAdmin: authViewModel.rolesType == RolesType.seller,
+        );
 
-      // true là email 0 tồn tại
-      
-    } else {
+        // true là email 0 tồn tại
+      } else {
         if (authViewModel.rolesType == RolesType.seller) {
           CommonFunc.goToAdminRootScreen();
         } else {
           CommonFunc.goToCustomerRootScreen();
         }
-     
+      }
+    } catch (e) {
+      // Xử lý lỗi nếu có
+      print("Sign in with Google error: ${e.toString()}");
     }
-  } catch (e) {
-    // Xử lý lỗi nếu có
-    print("Sign in with Google error: ${e.toString()}");
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -336,7 +334,12 @@ void signInWithGoogle() async {
                 const SizedBox(width: 100),
                 ElevatedButton.icon(
                   onPressed: () {
-                    // Handle Phone Sign-In
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PhoneVerificationScreen(),
+                      ),
+                    );
                   },
                   icon: Image.asset(
                     "assets/images/phone-logo.jpeg",

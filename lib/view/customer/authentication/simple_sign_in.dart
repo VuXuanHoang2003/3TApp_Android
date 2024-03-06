@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:three_tapp_app/model/roles_type.dart';
 import 'package:three_tapp_app/utils/common_func.dart';
 import 'package:three_tapp_app/viewmodel/auth_viewmodel.dart';
@@ -24,7 +27,8 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
   TextEditingController phoneController = TextEditingController();
   AuthViewModel authViewModel = AuthViewModel();
   Future<User?>? _currentUser = null;
-
+  File? _image;
+  final picker = ImagePicker();
   TextEditingController addressController = TextEditingController();
 
   void backToLoginScreen() {
@@ -35,7 +39,15 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
   void initState() {
     super.initState();
   }
+  void getImage() async {
+    var pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,8 +82,48 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
               ),
               SizedBox(height: 16), // Thêm khoảng cách 16 pixel giữa các dòng
 
-
+              const SizedBox(
+                  height: 16), 
+              Column(
+                children: [
+                  // Hiển thị ảnh đại diện trong CircleAvatar
+                  CircleAvatar(
+                    radius: 50, // Độ lớn của ảnh đại diện
+                    backgroundColor:
+                        Colors.grey[200], // Màu nền khi không có ảnh
+                    backgroundImage: _image != null
+                        ? FileImage(_image!) // Sử dụng ảnh từ _image nếu có
+                        : null,
+                    child: _image == null
+                        ? Icon(
+                            Icons.person, // Icon mặc định nếu không có ảnh
+                            size: 60,
+                            color: Colors.grey[400],
+                          )
+                        : null,
+                  ),
+                  const SizedBox(
+                      height: 16), // Khoảng cách giữa ảnh và nút chọn
+                  ElevatedButton.icon(
+                    onPressed: getImage,
+                    icon: Icon(Icons.photo_camera), // Icon chọn ảnh
+                    label: Text('Chọn ảnh đại diện'), // Text nút chọn ảnh
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green, // Màu nút chọn ảnh
+                      onPrimary: Colors.white, // Màu chữ trên nút
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 12), // Padding cho nút
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(8), // Bo tròn viền nút
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            const SizedBox(height: 16),
               TextFormField(
+                
                 controller: nameController,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
@@ -153,6 +205,8 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
                         address: address,
                         username: name,
                         isAdmin: widget.isAdmin,
+                        avatarFile:_image!,
+
                       );
 
                       if (addUserResult) {

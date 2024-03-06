@@ -1,8 +1,10 @@
 import 'dart:ffi';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../utils/validator.dart';
 import '../../../viewmodel/auth_viewmodel.dart';
@@ -11,16 +13,18 @@ import '../../common_view/custom_button.dart';
 bool isadminProp = false;
 
 class SignUpScreen extends StatefulWidget {
-  SignUpScreen(bool isAdmin) {
-    isadminProp = isAdmin;
-    print(isadminProp);
-  }
+  final bool isAdmin;
+
+  SignUpScreen(this.isAdmin);
 
   @override
-  State<StatefulWidget> createState() => _LoginScreen();
+  State<StatefulWidget> createState() => _LoginScreenState();
 }
 
-class _LoginScreen extends State<SignUpScreen> {
+class _LoginScreenState extends State<SignUpScreen> {
+  File? _image;
+  final picker = ImagePicker();
+
   bool obscureText = true;
   bool obscureReEnterPassword = true;
   TextEditingController emailController = TextEditingController();
@@ -28,17 +32,13 @@ class _LoginScreen extends State<SignUpScreen> {
   TextEditingController reEnterPasswordController = TextEditingController();
   TextEditingController phoneController = TextEditingController(); // New field
   TextEditingController addressController =
-      TextEditingController(); // New field
+  TextEditingController(); // New field
   TextEditingController usernameController = TextEditingController();
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
   FocusNode reEnterPasswordFocusNode = FocusNode();
   AuthViewModel authViewModel = AuthViewModel();
   FocusNode usernameFocusNode = FocusNode();
-
-  void backToLoginScreen() {
-    Navigator.of(context).pop();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,8 +73,45 @@ class _LoginScreen extends State<SignUpScreen> {
                 ],
               ),
               const SizedBox(
-                  height: 16), // Thêm khoảng cách 16 pixel giữa các dòng
-
+                  height: 16), 
+              Column(
+                children: [
+                  // Hiển thị ảnh đại diện trong CircleAvatar
+                  CircleAvatar(
+                    radius: 50, // Độ lớn của ảnh đại diện
+                    backgroundColor:
+                        Colors.grey[200], // Màu nền khi không có ảnh
+                    backgroundImage: _image != null
+                        ? FileImage(_image!) // Sử dụng ảnh từ _image nếu có
+                        : null,
+                    child: _image == null
+                        ? Icon(
+                            Icons.person, // Icon mặc định nếu không có ảnh
+                            size: 60,
+                            color: Colors.grey[400],
+                          )
+                        : null,
+                  ),
+                  const SizedBox(
+                      height: 16), // Khoảng cách giữa ảnh và nút chọn
+                  ElevatedButton.icon(
+                    onPressed: getImage,
+                    icon: Icon(Icons.photo_camera), // Icon chọn ảnh
+                    label: Text('Chọn ảnh đại diện'), // Text nút chọn ảnh
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green, // Màu nút chọn ảnh
+                      onPrimary: Colors.white, // Màu chữ trên nút
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 12), // Padding cho nút
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(8), // Bo tròn viền nút
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            const SizedBox(height: 16), // Khoảng cách giữa các dòng
               TextFormField(
                 controller: emailController,
                 focusNode: emailFocusNode,
@@ -262,7 +299,7 @@ class _LoginScreen extends State<SignUpScreen> {
                       String username = usernameController.text
                           .toString()
                           .trim(); // New field
-                      bool isAdmin = isadminProp;
+                      bool isAdmin = widget.isAdmin;
                       if (!Validators.isValidEmail(email)) {
                         Fluttertoast.showToast(
                           msg: "Vui lòng nhập đúng định dạng email.",
@@ -284,14 +321,19 @@ class _LoginScreen extends State<SignUpScreen> {
                           fontSize: 12.0,
                         );
                       } else {
-                        authViewModel.signUp(
-                          email,
-                          password,
-                          phone,
-                          address,
-                          username,
-                          isAdmin,
-                        );
+                        if (_image != null) {
+                          authViewModel.signUp(
+                            email,
+                            password,
+                            phone,
+                            address,
+                            username,
+                            isAdmin,
+                            _image!, // Sử dụng !_image để bỏ qua kiểm tra null
+                          );
+                        } else {
+                          // Xử lý trường hợp _image là null
+                        }
                       }
                     } else {
                       Fluttertoast.showToast(
@@ -383,5 +425,19 @@ class _LoginScreen extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+
+  void getImage() async {
+    var pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      }
+    });
+  }
+
+  void backToLoginScreen() {
+    Navigator.of(context).pop();
   }
 }
