@@ -25,13 +25,40 @@ class _AddressListScreenState extends State<AddressListScreen> {
 
   void _getCurrentLocation() async {
     try {
-      Position position = await Geolocator.getCurrentPosition();
+      Position position = await _determinePosition();
       setState(() {
         _currentPosition = position;
       });
     } catch (e) {
       print("Error getting current location: $e");
     }
+  }
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error("Location services are not enabled");
+    }
+
+    permission = await Geolocator.checkPermission();
+
+    if(permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+
+      if (permission == LocationPermission.denied) {
+        return Future.error("Location permission denied");
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error("Location permission are pernmanently denied");
+    }
+
+    Position position = await Geolocator.getCurrentPosition();
+    return position;
   }
 
   void _onAddressTapped(String address) async {
