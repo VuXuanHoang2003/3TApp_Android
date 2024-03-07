@@ -35,7 +35,7 @@ class OrderPerPersonViewModel {
         description: doc['description'],
         editDate: doc['editDate'],
         uploadBy: doc['uploadBy'],
-        uploadDate: doc['uploadDate']
+        uploadDate: doc['uploadDate'], mass: doc['mass'],
       )).toList();
 
       // Add orders to stream
