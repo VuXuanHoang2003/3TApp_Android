@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:three_tapp_app/model/product.dart';
-import 'package:three_tapp_app/viewmodel/order_per_person_view_model.dart';
+import 'package:three_tapp_app/utils/common_func.dart';
 import 'package:three_tapp_app/view/common_view/product_details_screen.dart';
+import 'package:three_tapp_app/viewmodel/order_per_person_view_model.dart';
 
 class OrderPerPersonScreen extends StatefulWidget {
   final String address;
@@ -13,7 +14,7 @@ class OrderPerPersonScreen extends StatefulWidget {
 }
 
 class _OrderPerPersonScreenState extends State<OrderPerPersonScreen> {
-  late OrderPerPersonViewModel _viewModel;
+  late final OrderPerPersonViewModel _viewModel;
 
   @override
   void initState() {
@@ -39,7 +40,7 @@ class _OrderPerPersonScreenState extends State<OrderPerPersonScreen> {
         stream: _viewModel.ordersStream,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return _buildContent(snapshot.data!);
+            return _buildContent(snapshot.data!, _viewModel.userData);
           } else if (snapshot.hasError) {
             return Center(
               child: Text('Error: ${snapshot.error}', style: TextStyle(color: Colors.red)),
@@ -52,7 +53,7 @@ class _OrderPerPersonScreenState extends State<OrderPerPersonScreen> {
     );
   }
 
-  Widget _buildContent(List<Product> orders) {
+  Widget _buildContent(List<Product> orders, Map<String, dynamic> userData) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -60,12 +61,24 @@ class _OrderPerPersonScreenState extends State<OrderPerPersonScreen> {
         children: [
           Text('Thông tin người dùng:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           SizedBox(height: 8),
-          // Đưa thông tin người dùng vào đây nếu cần thiết
+          _buildUserInfoRow('Tên:', userData['username']),
+          _buildUserInfoRow('Email:', userData['email']),
+          _buildUserInfoRow('Số điện thoại:', userData['phone']),
+          _buildUserInfoRow('Địa chỉ:', widget.address),
           SizedBox(height: 20),
           Text('Đơn hàng:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           _buildOrdersList(orders),
         ],
       ),
+    );
+  }
+
+  Widget _buildUserInfoRow(String label, String value) {
+    return Row(
+      children: [
+        Text('$label ', style: TextStyle(fontSize: 18)),
+        Text(value, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+      ],
     );
   }
 
@@ -91,10 +104,10 @@ class _OrderPerPersonScreenState extends State<OrderPerPersonScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                Text('Sản phẩm: ${order.name}', style: TextStyle(fontSize: 18, color: Colors.red)),
+                  Text('Sản phẩm: ${order.name}', style: TextStyle(fontSize: 18, color: Colors.red)),
                   SizedBox(height: 4),
-                  //Text('Khối lượng: ${order.mass} kg', style: TextStyle(fontSize: 16)),
-                  Text('Loại: ${order.type}', style: TextStyle(fontSize: 16)),
+                  Text('Khối lượng: ${order.mass} kg', style: TextStyle(fontSize: 16)),
+                  Text('Loại: ${CommonFunc.getSenDaNameByType(order.type)}', style: TextStyle(fontSize: 16)),
                   Text('Giá: ${order.price} vnd', style: TextStyle(fontSize: 16)),
                 ],
               ),
