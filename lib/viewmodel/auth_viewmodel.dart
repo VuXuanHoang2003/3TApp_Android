@@ -358,7 +358,7 @@ class AuthViewModel extends BaseViewModel {
       return userCredential;
     } catch (e) {
       // Xử lý lỗi nếu cần
-      print('Error verifying OTP: $e');
+      print('Error verifying OTP from vm: $e');
       rethrow;
     }
   }
