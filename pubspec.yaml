@@ -32,6 +32,7 @@ dependencies:
     sdk: flutter
 
 
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -43,9 +44,10 @@ dependencies:
   rxdart: 0.26.0
   contained_tab_bar_view: ^0.8.0
   cloud_firestore: ^4.3.0
-  image_picker: ^1.0.7
   multi_image_picker: ^4.8.1
   google_sign_in: ^6.2.1
+  image_picker: ^1.0.5
+  video_player : ^2.3.0
   firebase_storage: ^11.0.10
   country_code_picker: ^3.0.0
   awesome_notifications: ^0.8.2
@@ -58,13 +60,28 @@ dependencies:
   geolocator: ^8.0.1
   google_place: ^0.4.3 # for autocomplete search of Google Places
   flutter_google_places: ^0.3.0
-  url_launcher: ^6.1.5 # to launch URLs
+  url_launcher: ^6.1.5-nullsafety # to launch URLs
   geocoding: ^2.1.1
   shared_preferences: ^2.2.2
+  table_calendar: ^3.1.0
+  flutter_animate: ^4.5.0
+  fl_chart: ^0.65.0
+  font_awesome_flutter: ^10.7.0
+  mime_type: ^1.0.0
+  rive: ^0.12.4
+  swipeable_card_stack: ^0.0.5
+  google_fonts: ^4.0.4
+  auto_size_text: ^3.0.0
+  from_css_color: ^2.0.0
+  page_transition: ^2.1.0
+  timeago: ^3.6.1
+  json_path: ^0.7.0
+  intl: ^0.19.0
+  flutter_credit_card: ^4.0.1
+  emoji_flag_converter: ^1.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your

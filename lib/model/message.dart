@@ -4,17 +4,18 @@ class Message {
   final String senderId;
   final String senderEmail;
   final String receiverId;
-  // final String receiverEmail;
   final String message;
+  final String? imageUrl;
+  final String? videoUrl;
   final Timestamp timestamp;
-
 
   Message({
     required this.senderId,
     required this.senderEmail,
     required this.receiverId,
-    // required this.receiverEmail,
     required this.message,
+    this.imageUrl,
+    this.videoUrl,
     required this.timestamp,
   });
 
@@ -25,8 +26,9 @@ class Message {
       'senderEmail': senderEmail,
       'receiverId': receiverId,
       'message': message,
+      'imageUrl': imageUrl,
+      'videoUrl': videoUrl,
       'timestamp': timestamp,
     };
   }
-    
 }
