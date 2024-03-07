@@ -63,7 +63,7 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                 }).catchError((error) {
                   // Xử lý lỗi nếu có
                   print("Hello from view");
-                  print('Error verifying OTP from otp_screen: $error');
+                  print('Error verifying OTP: $error');
                 });
               },
               child: Text('Xác nhận OTP'),

@@ -611,7 +611,7 @@ Future<String?> getLatestImageURL(String userId) async {
       );
       return verificationId; // Trả về verificationId thông qua Future
     } catch (e) {
-      print('Error verifying phone number from repo: $e');
+      print('Error verifying phone number: $e');
       throw e; // Ném ra lỗi nếu có
     }
   }
