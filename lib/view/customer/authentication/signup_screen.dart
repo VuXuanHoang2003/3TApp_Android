@@ -32,7 +32,7 @@ class _LoginScreenState extends State<SignUpScreen> {
   TextEditingController reEnterPasswordController = TextEditingController();
   TextEditingController phoneController = TextEditingController(); // New field
   TextEditingController addressController =
-  TextEditingController(); // New field
+      TextEditingController(); // New field
   TextEditingController usernameController = TextEditingController();
   FocusNode emailFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
@@ -72,8 +72,7 @@ class _LoginScreenState extends State<SignUpScreen> {
                   ),
                 ],
               ),
-              const SizedBox(
-                  height: 16), 
+              const SizedBox(height: 16),
               Column(
                 children: [
                   // Hiển thị ảnh đại diện trong CircleAvatar
@@ -99,8 +98,8 @@ class _LoginScreenState extends State<SignUpScreen> {
                     icon: Icon(Icons.photo_camera), // Icon chọn ảnh
                     label: Text('Chọn ảnh đại diện'), // Text nút chọn ảnh
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.green, // Màu nút chọn ảnh
-                      onPrimary: Colors.white, // Màu chữ trên nút
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.green, // Màu chữ trên nút
                       padding: EdgeInsets.symmetric(
                           horizontal: 20, vertical: 12), // Padding cho nút
                       shape: RoundedRectangleBorder(
@@ -111,7 +110,7 @@ class _LoginScreenState extends State<SignUpScreen> {
                   ),
                 ],
               ),
-            const SizedBox(height: 16), // Khoảng cách giữa các dòng
+              const SizedBox(height: 16), // Khoảng cách giữa các dòng
               TextFormField(
                 controller: emailController,
                 focusNode: emailFocusNode,

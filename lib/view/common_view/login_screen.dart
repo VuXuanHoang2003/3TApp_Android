@@ -14,7 +14,7 @@ import '../../utils/validator.dart';
 import '../../viewmodel/auth_viewmodel.dart';
 import '../customer/authentication/signup_screen.dart';
 import 'custom_button.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

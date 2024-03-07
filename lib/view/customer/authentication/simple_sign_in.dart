@@ -14,7 +14,7 @@ class SimpleSignInScreen extends StatefulWidget {
   //final User user;
 
   SimpleSignInScreen(
-      {//required this.user,
+      { //required this.user,
       //required this.email,
       required this.isAdmin}); // Include isAdmin in the constructor
 
@@ -39,6 +39,7 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
   void initState() {
     super.initState();
   }
+
   void getImage() async {
     var pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
@@ -48,6 +49,7 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,8 +84,7 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
               ),
               SizedBox(height: 16), // Thêm khoảng cách 16 pixel giữa các dòng
 
-              const SizedBox(
-                  height: 16), 
+              const SizedBox(height: 16),
               Column(
                 children: [
                   // Hiển thị ảnh đại diện trong CircleAvatar
@@ -109,8 +110,8 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
                     icon: Icon(Icons.photo_camera), // Icon chọn ảnh
                     label: Text('Chọn ảnh đại diện'), // Text nút chọn ảnh
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.green, // Màu nút chọn ảnh
-                      onPrimary: Colors.white, // Màu chữ trên nút
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.green, // Màu chữ trên nút
                       padding: EdgeInsets.symmetric(
                           horizontal: 20, vertical: 12), // Padding cho nút
                       shape: RoundedRectangleBorder(
@@ -121,9 +122,8 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
                   ),
                 ],
               ),
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
-                
                 controller: nameController,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
@@ -194,19 +194,17 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
                     String phone = phoneController.text.toString().trim();
                     String address = addressController.text.toString().trim();
 
-                    if (
-                        name.isNotEmpty &&
+                    if (name.isNotEmpty &&
                         phone.isNotEmpty &&
                         address.isNotEmpty) {
                       // Thực hiện thêm thông tin người dùng vào Firestore
-                      bool addUserResult = await authViewModel.addUserByGoogleSignIn(
-                        
+                      bool addUserResult =
+                          await authViewModel.addUserByGoogleSignIn(
                         phone: phone,
                         address: address,
                         username: name,
                         isAdmin: widget.isAdmin,
-                        avatarFile:_image!,
-
+                        avatarFile: _image!,
                       );
 
                       if (addUserResult) {

@@ -6,7 +6,8 @@ import 'package:three_tapp_app/model/product.dart';
 
 class OrderPerPersonViewModel {
   final String address;
-  late final StreamController<List<Product>> _ordersController = StreamController<List<Product>>();
+  late final StreamController<List<Product>> _ordersController =
+      StreamController<List<Product>>();
   late Map<String, dynamic> _userData;
 
   OrderPerPersonViewModel({required this.address});
@@ -20,23 +21,31 @@ class OrderPerPersonViewModel {
 
   Future<void> loadData() async {
     try {
-      final userSnapshot = await FirebaseFirestore.instance.collection('USERS').where('address', isEqualTo: address).get();
+      final userSnapshot = await FirebaseFirestore.instance
+          .collection('USERS')
+          .where('address', isEqualTo: address)
+          .get();
       _userData = userSnapshot.docs.first.data();
-      
+
       final gmail = _userData['email'];
-      final orderSnapshot = await FirebaseFirestore.instance.collection('PRODUCTS').where('uploadBy', isEqualTo: gmail).get();
-      final orders = orderSnapshot.docs.map((doc) => Product(
-        id: doc['id'],
-        name: doc['name'],
-        image: doc['image'],
-        mass : doc['mass'],
-        type: doc['type'],
-        price: doc['price'],
-        description: doc['description'],
-        editDate: doc['editDate'],
-        uploadBy: doc['uploadBy'],
-        uploadDate: doc['uploadDate'], mass: doc['mass'],
-      )).toList();
+      final orderSnapshot = await FirebaseFirestore.instance
+          .collection('PRODUCTS')
+          .where('uploadBy', isEqualTo: gmail)
+          .get();
+      final orders = orderSnapshot.docs
+          .map((doc) => Product(
+                id: doc['id'],
+                name: doc['name'],
+                image: doc['image'],
+                mass: doc['mass'],
+                type: doc['type'],
+                price: doc['price'],
+                description: doc['description'],
+                editDate: doc['editDate'],
+                uploadBy: doc['uploadBy'],
+                uploadDate: doc['uploadDate'],
+              ))
+          .toList();
 
       // Add orders to stream
       _ordersController.add(orders);

@@ -126,7 +126,7 @@ class _ProfileScreenRootState extends State<ProfileScreenRoot> {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.green, // Màu nền xanh lá
+                          backgroundColor: Colors.green, // Màu nền xanh lá
                         ),
                         child: Text(
                           'Chỉnh sửa hồ sơ',
