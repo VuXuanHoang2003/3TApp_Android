@@ -24,10 +24,12 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   FocusNode searchBarFocusNode = FocusNode();
   AuthViewModel authViewModel = AuthViewModel();
   User? user;
+  String ? _avatarUrl;
   @override
   void initState() {
-    super.initState();
+    _getUserInfo();
 
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       productViewModel.getAllProduct();
       productViewModel.getProductStream.listen((status) {
@@ -37,7 +39,15 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
       });
     });
   }
+  Future<void> _getUserInfo() async {
+    List<String> userInfo = await authViewModel.getUserInfo();
+      setState(() {
 
+    
+    _avatarUrl = userInfo[3]; // Gán đường dẫn của ảnh từ avatarUrl
+    
+      });
+  }
   void reloadView() {
     setState(() {});
   }
@@ -51,16 +61,32 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
         children: [
           Row(
             children: [
-              IconButton(
-                onPressed: () {
-                  // Xử lý khi nhấn vào IconButton
-                  CommonFunc.goToProfileScreen();
-                },
-                icon: Icon(
-                  Icons.account_circle_rounded,
-                  color: Colors.blue,
-                ),
-              ),
+              GestureDetector(
+  onTap: () {
+    // Xử lý khi nhấn vào hình ảnh để xem hồ sơ
+    CommonFunc.goToProfileScreen(); // hoặc hành động bạn muốn thực hiện
+  },
+  child: CircleAvatar(
+    radius: 30,
+    backgroundColor: Colors.transparent,
+    child: ClipOval(
+      child: _avatarUrl != null
+          ? Image.network(
+              _avatarUrl!,
+              fit: BoxFit.cover,
+              width: 30,
+              height: 30,
+            )
+          : Image.asset(
+              'assets/images/d.png',
+              fit: BoxFit.cover,
+              width: 50,
+              height: 50,
+            ),
+    ),
+  ),
+),
+
               FutureBuilder<String>(
                 future: AuthViewModel().getUsername(),
                 builder: (context, snapshot) {

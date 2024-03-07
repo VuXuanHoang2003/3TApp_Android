@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:three_tapp_app/data/repositories/auth_repo/auth_repo.dart';
+import 'package:three_tapp_app/data/repositories/auth_repo/auth_repo_impl.dart';
 import 'package:three_tapp_app/data/repositories/order_repo/order_repo.dart';
 import 'package:three_tapp_app/data/repositories/product_repo/product_repo.dart';
 import 'package:three_tapp_app/data/repositories/product_repo/product_repo_impl.dart';
@@ -30,13 +32,14 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _massController = TextEditingController();
+  User? user;
 
   final FocusNode _customerNameFocusNode = FocusNode();
   final FocusNode _phoneNumberFocusNode = FocusNode();
   final FocusNode _addressFocusNode = FocusNode();
   final FocusNode _massFocusNode = FocusNode();
   ProductRepo productRepo = ProductRepoImpl();
-
+  AuthRepo authRepo = AuthRepoImpl();
   int _orderQuantity = 1;
   bool _imageLoaded = false;
   List<String> _imageUrls = [];
@@ -44,7 +47,18 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
   @override
   void initState() {
     super.initState();
+    user = FirebaseAuth.instance.currentUser;
+
+    loadInitData();
     _loadImageUrls();
+  }
+
+  void loadInitData() async {
+    Map<String, dynamic>? userInfo =
+        await CommonFunc.getUserInfoFromFirebase(user?.uid ?? "");
+    _customerNameController.text = userInfo?['username'] ?? "Unknown username";
+    _addressController.text = userInfo?['address'] ?? "Unknown address";
+    _phoneNumberController.text = userInfo?['phone'] ?? "Unknown phone";
   }
 
   Future<void> _loadImageUrls() async {
@@ -110,7 +124,9 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                   color: Colors.grey,
                   height: 16,
                 ),
-                _imageLoaded ? orderDetail() : Center(child: CircularProgressIndicator()),
+                _imageLoaded
+                    ? orderDetail()
+                    : Center(child: CircularProgressIndicator()),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -407,63 +423,65 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
   }
 
   void _createOrder() {
-  String customerName = _customerNameController.text.trim();
-  String phoneNumber = _phoneNumberController.text.trim();
-  String address = _addressController.text.trim();
-  String mass = _massController.text.trim();
-  double massDouble = double.tryParse(mass) ?? 0.0;
+    String customerName = _customerNameController.text.trim();
+    String phoneNumber = _phoneNumberController.text.trim();
+    String address = _addressController.text.trim();
+    String mass = _massController.text.trim();
+    double massDouble = double.tryParse(mass) ?? 0.0;
 
-  double productMass = widget.product.mass;
+    double productMass = widget.product.mass;
 
-  if (customerName.isNotEmpty &&
-      phoneNumber.isNotEmpty &&
-      address.isNotEmpty &&
-      mass.isNotEmpty) {
-    if (massDouble <= productMass) {
-      // Tính khối lượng mới của sản phẩm sau khi tạo đơn hàng
-      double newProductMass = productMass - massDouble;
-newProductMass = double.parse(newProductMass.toStringAsFixed(2));
+    if (customerName.isNotEmpty &&
+        phoneNumber.isNotEmpty &&
+        address.isNotEmpty &&
+        mass.isNotEmpty) {
+      if (massDouble <= productMass) {
+        // Tính khối lượng mới của sản phẩm sau khi tạo đơn hàng
+        double newProductMass = productMass - massDouble;
+        newProductMass = double.parse(newProductMass.toStringAsFixed(2));
 
-
-      // Tạo đối tượng đơn hàng
-      MyOrder order = MyOrder(
-        id: UniqueKey().toString(),
-        productImage: widget.product.image,
-        productName: widget.product.name,
-        productPrice: widget.product.price,
-        productQuantity: _orderQuantity,
-        customerName: customerName,
-        productMass: massDouble,
-        type:widget.product.type,
-        customerEmail: FirebaseAuth.instance.currentUser?.email ?? '',
-        phoneNumber: phoneNumber,
-        address: address,
-        status: OrderStatus.NEW.toShortString(),
-        createDate: DateTime.now().toString(),
-        updateDate: DateTime.now().toString(),
-        sellerEmail: widget.product.uploadBy,
-      );
-     // Tạo thể hiện của lớp ProductRepo
-    productRepo.updateProductMass(productId: widget.product.id, newMass: newProductMass)
-    .then((success) {
-        if (success) {
-          // Nếu cập nhật thành công, tạo đơn hàng và đóng màn hình
-          _orderViewModel.createOrder(order: order);
-          Navigator.of(context).pop();
-        } else {
-          // Xử lý trường hợp cập nhật không thành công
-          CommonFunc.showToast("Cập nhật khối lượng sản phẩm thất bại.");
-        }
-      }).catchError((error) {
-        // Xử lý lỗi nếu có
-        CommonFunc.showToast("Đã có lỗi xảy ra khi cập nhật khối lượng sản phẩm.");
-      });
+        // Tạo đối tượng đơn hàng
+        MyOrder order = MyOrder(
+          id: UniqueKey().toString(),
+          productImage: widget.product.image,
+          productName: widget.product.name,
+          productPrice: widget.product.price,
+          productQuantity: _orderQuantity,
+          customerName: customerName,
+          productMass: massDouble,
+          type: widget.product.type,
+          customerEmail: FirebaseAuth.instance.currentUser?.email ?? '',
+          phoneNumber: phoneNumber,
+          address: address,
+          status: OrderStatus.NEW.toShortString(),
+          createDate: DateTime.now().toString(),
+          updateDate: DateTime.now().toString(),
+          sellerEmail: widget.product.uploadBy,
+        );
+        // Tạo thể hiện của lớp ProductRepo
+        productRepo
+            .updateProductMass(
+                productId: widget.product.id, newMass: newProductMass)
+            .then((success) {
+          if (success) {
+            // Nếu cập nhật thành công, tạo đơn hàng và đóng màn hình
+            _orderViewModel.createOrder(order: order);
+            Navigator.of(context).pop();
+          } else {
+            // Xử lý trường hợp cập nhật không thành công
+            CommonFunc.showToast("Cập nhật khối lượng sản phẩm thất bại.");
+          }
+        }).catchError((error) {
+          // Xử lý lỗi nếu có
+          CommonFunc.showToast(
+              "Đã có lỗi xảy ra khi cập nhật khối lượng sản phẩm.");
+        });
+      } else {
+        CommonFunc.showToast(
+            "Khối lượng nhập phải nhỏ hơn khối lượng sản phẩm.");
+      }
     } else {
-      CommonFunc.showToast("Khối lượng nhập phải nhỏ hơn khối lượng sản phẩm.");
+      CommonFunc.showToast("Vui lòng nhập đủ thông tin.");
     }
-  } else {
-    CommonFunc.showToast("Vui lòng nhập đủ thông tin.");
   }
-}
-
 }
