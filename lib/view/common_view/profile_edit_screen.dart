@@ -26,27 +26,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _getUserInfo();
     super.initState();
   }
-  
+
   Future<void> _getUserInfo() async {
     List<String> userInfo = await authViewModel.getUserInfo();
     setState(() {
       nameController.text = userInfo[0];
       addressController.text = userInfo[1];
       phoneController.text = userInfo[2];
-      _avatarUrl1= userInfo[3]; 
+      _avatarUrl1 = userInfo[3];
       // Gán đường dẫn của ảnh từ avatarUrl
       print("Ảnh cũ nè");
       print(_avatarUrl1);
     });
   }
-  
-Future<String?> getAvatarUrl(String userId) async {
+
+  Future<String?> getAvatarUrl(String userId) async {
     try {
       // Tạo đối tượng Firebase Storage
-      firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+      firebase_storage.FirebaseStorage storage =
+          firebase_storage.FirebaseStorage.instance;
 
       // Tạo tham chiếu đến thư mục của người dùng
-      firebase_storage.Reference userRef = storage.ref().child('user').child(userId);
+      firebase_storage.Reference userRef =
+          storage.ref().child('user').child(userId);
 
       // Lấy đường dẫn của ảnh đại diện từ thư mục người dùng
       String url = await userRef.getDownloadURL();
@@ -59,6 +61,7 @@ Future<String?> getAvatarUrl(String userId) async {
       return null;
     }
   }
+
   Future<void> editProfile() async {
     print("hàm edit nè");
     String newName = nameController.text;
@@ -87,7 +90,8 @@ Future<String?> getAvatarUrl(String userId) async {
       // }
     }
 
-    bool success = await authViewModel.editProfile(newName, newAddress, newPhone, _imageFile);
+    bool success = await authViewModel.editProfile(
+        newName, newAddress, newPhone, _imageFile);
 
     if (success) {
       Fluttertoast.showToast(
@@ -113,19 +117,17 @@ Future<String?> getAvatarUrl(String userId) async {
   }
 
   Future<void> _pickImage(ImageSource source) async {
-  final picker = ImagePicker();
-  final pickedFile = await picker.pickImage(source: source);
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: source);
 
-  if (pickedFile != null) {
-    setState(() {
-      _imageFile = File(pickedFile.path);
-      _avatarUrl2 = pickedFile.path; // Lưu đường dẫn ảnh đại diện mới
-      print("Ảnh đại diện mới nè: $_avatarUrl2");
-    });
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+        _avatarUrl2 = pickedFile.path; // Lưu đường dẫn ảnh đại diện mới
+        print("Ảnh đại diện mới nè: $_avatarUrl2");
+      });
+    }
   }
-}
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -139,32 +141,32 @@ Future<String?> getAvatarUrl(String userId) async {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-               CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.transparent,
-              child: ClipOval(
-                child: _avatarUrl2 != null
-                    ? Image.file(
-                        File(_avatarUrl2!), // Hiển thị ảnh mới nếu có
-                        fit: BoxFit.cover,
-                        width: 100,
-                        height: 100,
-                      )
-                    : _avatarUrl1 != null
-                        ? Image.network(
-                            _avatarUrl1!, // Hiển thị ảnh ban đầu nếu không có ảnh mới
-                            fit: BoxFit.cover,
-                            width: 100,
-                            height: 100,
-                          )
-                        : Image.asset(
-                            'assets/images/default-avatar.png',
-                            fit: BoxFit.cover,
-                            width: 50,
-                            height: 50,
-                          ),
+              CircleAvatar(
+                radius: 50,
+                backgroundColor: Colors.transparent,
+                child: ClipOval(
+                  child: _avatarUrl2 != null
+                      ? Image.file(
+                          File(_avatarUrl2!), // Hiển thị ảnh mới nếu có
+                          fit: BoxFit.cover,
+                          width: 100,
+                          height: 100,
+                        )
+                      : _avatarUrl1 != null
+                          ? Image.network(
+                              _avatarUrl1!, // Hiển thị ảnh ban đầu nếu không có ảnh mới
+                              fit: BoxFit.cover,
+                              width: 100,
+                              height: 100,
+                            )
+                          : Image.asset(
+                              'assets/images/default-avatar.png',
+                              fit: BoxFit.cover,
+                              width: 50,
+                              height: 50,
+                            ),
+                ),
               ),
-            ),
               SizedBox(height: 13),
               ElevatedButton(
                 onPressed: () {
@@ -183,8 +185,8 @@ Future<String?> getAvatarUrl(String userId) async {
                   child: ElevatedButton(
                     onPressed: editProfile,
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
-                      onPrimary: Colors.white,
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.green,
                     ),
                     child: Text('Cập nhật hồ sơ'),
                   ),

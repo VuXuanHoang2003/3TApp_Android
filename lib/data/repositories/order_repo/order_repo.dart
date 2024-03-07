@@ -14,4 +14,5 @@ abstract class OrderRepo {
 // Future<bool> deleteOrder({required String productId});
   Future<bool> isOrderDone(String orderId);
 
+  Future<List<MyOrder>> getAllOrderSignedIn(bool isSignedIn);
 }

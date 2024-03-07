@@ -1,4 +1,5 @@
 import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class _SalesManagementScreen extends State<SalesManagementScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await orderViewModel.getAllOrder();
+      await orderViewModel.getAllOrderSignedIn(true);
       orderViewModel.getOrderStream.listen((status) {
         if (status == Status.loading) {
         } else if (status == Status.completed) {

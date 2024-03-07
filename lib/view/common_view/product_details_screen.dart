@@ -6,6 +6,7 @@ import '../../model/product.dart';
 import '../../utils/common_func.dart';
 import '../../utils/image_path.dart';
 import '../../viewmodel/auth_viewmodel.dart';
+import '../flutter_flow/flutter_flow.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   Product product;
@@ -33,7 +34,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Chi tiết sản phẩm",
           style: TextStyle(color: Colors.black, fontSize: 18),
         ),
@@ -41,7 +42,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios,
             color: Colors.grey,
             size: 20,
@@ -50,7 +51,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -59,11 +60,80 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             children: [
               productItemImage(),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                child: Text(
-                  widget.product.name,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                padding: const EdgeInsets.all(6),
+                child: Stack(
+                  children: [
+                    const Align(
+                      alignment: AlignmentDirectional(-0.94, 0),
+                      child: Text(
+                        'Khối lượng: ',
+                      ),
+                    ),
+                    Align(
+                      alignment: const AlignmentDirectional(0, 0),
+                      child: Text(
+                        widget.product.name,
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Readex Pro',
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(6),
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: const AlignmentDirectional(0, 0),
+                      child: Text(
+                        "${formatCurrency.format(widget.product.price)} ",
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Readex Pro',
+                              color: const Color(0xFF831B1B),
+                            ),
+                      ),
+                    ),
+                    Align(
+                      alignment: const AlignmentDirectional(-0.94, 0),
+                      child: Text(
+                        'Giá tiền (1 kg): ',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Readex Pro',
+                              color: const Color(0xFF831B1B),
+                              fontStyle: FontStyle.italic,
+                            ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Generated code for this Stack Widget...
+              Padding(
+                padding: const EdgeInsets.all(6),
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: const AlignmentDirectional(0, 0),
+                      child: Text(
+                        "${widget.product.mass} (kg)",
+                        style: FlutterFlowTheme.of(context).bodyMedium,
+                      ),
+                    ),
+                    Align(
+                      alignment: const AlignmentDirectional(-0.94, 0),
+                      child: Text(
+                        'Khối lượng: ',
+                        style: FlutterFlowTheme.of(context).bodyMedium.override(
+                              fontFamily: 'Readex Pro',
+                              fontStyle: FontStyle.italic,
+                            ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const Divider(
@@ -71,42 +141,26 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 color: Colors.green,
                 height: 16,
               ),
-              Text(
-                "${formatCurrency.format(widget.product.price)}",
-                style: TextStyle(color: Colors.redAccent, fontSize: 22, fontStyle: FontStyle.italic),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Text(
-                  "Thể loại: ${CommonFunc.getSenDaNameByType(widget.product.type)}",
-                  style: TextStyle(color: Colors.black, fontSize: 16, fontStyle: FontStyle.italic),
+              const Align(
+                alignment: AlignmentDirectional(0, 0),
+                child: Padding(
+                  padding: EdgeInsets.all(6),
+                  child: Text('Mô tả sản phẩm'),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Text(
-                  "Khối lượng: ${widget.product.mass} (kg)", // Hiển thị khối lượng sản phẩm
-                  style: TextStyle(color: Colors.black, fontSize: 16, fontStyle: FontStyle.italic),
+              Align(
+                alignment: const AlignmentDirectional(0, 0),
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    widget.product.description,
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
+                          fontFamily: 'Readex Pro',
+                          fontSize: 10,
+                        ),
+                  ),
                 ),
-              ),
-              const Divider(
-                thickness: 1,
-                color: Colors.green,
-                height: 16,
-              ),
-              Text(
-                "Mô tả",
-                style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const Padding(padding: EdgeInsets.only(top: 8)),
-              Text(
-                widget.product.description,
-                textAlign: TextAlign.justify,
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontSize: 16,
-                ),
-              ),
+              )
             ],
           ),
         ),
@@ -149,7 +203,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   void getAllImageUrls() async {
     try {
-      ListResult result = await FirebaseStorage.instance.ref(widget.product.image).listAll();
+      ListResult result =
+          await FirebaseStorage.instance.ref(widget.product.image).listAll();
       List<String> urls = [];
       for (Reference ref in result.items) {
         String url = await ref.getDownloadURL();
@@ -174,7 +229,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Close'),
+              child: const Text('Close'),
             ),
           ],
         );

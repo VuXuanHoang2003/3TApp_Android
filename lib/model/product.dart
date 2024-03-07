@@ -50,4 +50,6 @@ class Product {
     uploadDate = json['uploadDate'];
     editDate = json['editDate'];
   }
+
+  static fromMap(Map<String, dynamic> data) {}
 }

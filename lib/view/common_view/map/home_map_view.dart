@@ -27,17 +27,17 @@ class MapSampleState extends State<MapSample> {
               Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
                 return MapSearchPage();
               }));
-            }, child: const Text("Simple Map")),
+            }, child: const Text("Map Search")),
             ElevatedButton(onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
                 return const CurrentLocationScreen();
               }));
-            }, child: const Text("User current location")),
+            }, child: const Text("AutoFill")),
                         ElevatedButton(onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
                 return AddressListScreen();
               }));
-            }, child: const Text("Search Map")),
+            }, child: const Text("Address List")),
           ],
         ),
       )
