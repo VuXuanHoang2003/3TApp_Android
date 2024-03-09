@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,12 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   AuthViewModel authViewModel = AuthViewModel();
   List<String> imageUrls = [];
+  late List<String> userInfo;
 
   @override
   void initState() {
     super.initState();
+    userInfo = authViewModel.getUserInfoWidget();
     getAllImageUrls();
   }
 
@@ -156,8 +159,123 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     widget.product.description,
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                           fontFamily: 'Readex Pro',
-                          fontSize: 10,
+                          fontSize: 14,
                         ),
+                  ),
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                constraints: const BoxConstraints(
+                  maxWidth: 430,
+                ),
+                decoration: BoxDecoration(
+                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                  boxShadow: [
+                    const BoxShadow(
+                      blurRadius: 4,
+                      color: Color(0x33000000),
+                      offset: Offset(0, 2),
+                    )
+                  ],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Thông tin liên hệ',
+                        style: FlutterFlowTheme.of(context).titleLarge,
+                      ),
+                      Divider(
+                        height: 32,
+                        thickness: 2,
+                        color: FlutterFlowTheme.of(context).alternate,
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 12),
+                        child: RichText(
+                          textScaler: MediaQuery.of(context).textScaler,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Khách hàng: ',
+                                style: FlutterFlowTheme.of(context).labelMedium,
+                              ),
+                              TextSpan(
+                                text: userInfo.elementAt(0),
+                                style: TextStyle(),
+                              )
+                            ],
+                            style: FlutterFlowTheme.of(context).labelMedium,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 12),
+                        child: RichText(
+                          textScaler: MediaQuery.of(context).textScaler,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Email: ',
+                                style: FlutterFlowTheme.of(context).labelMedium,
+                              ),
+                              TextSpan(
+                                text: widget.product.uploadBy,
+                                style: TextStyle(),
+                              )
+                            ],
+                            style: FlutterFlowTheme.of(context).labelMedium,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 12),
+                        child: RichText(
+                          textScaler: MediaQuery.of(context).textScaler,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Số điện thoại: ',
+                                style: FlutterFlowTheme.of(context).labelMedium,
+                              ),
+                              TextSpan(
+                                text: userInfo.elementAt(2),
+                                style: TextStyle(),
+                              )
+                            ],
+                            style: FlutterFlowTheme.of(context).labelMedium,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 12),
+                        child: RichText(
+                          textScaler: MediaQuery.of(context).textScaler,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Địa chỉ: ',
+                                style: FlutterFlowTheme.of(context).labelMedium,
+                              ),
+                              TextSpan(
+                                text: userInfo.elementAt(1),
+                                style: TextStyle(),
+                              )
+                            ],
+                            style: FlutterFlowTheme.of(context).labelMedium,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               )

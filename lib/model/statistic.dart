@@ -24,7 +24,9 @@ class Statistic {
         otherRevenue +
         metalRevenue +
         plasticRevenue +
-        plasticRevenue;
+        glassRevenue;
+
+    return sumOfRevenues;
   }
 
   Statistic.fromJson(Map<String, dynamic> json) {

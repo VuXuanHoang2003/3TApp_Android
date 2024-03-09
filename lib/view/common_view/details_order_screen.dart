@@ -23,6 +23,7 @@ class DetailsOrderScreen extends StatefulWidget {
 
 class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
   late DetailsOrderModel _model;
+  late List<String> userInfo;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -33,6 +34,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
   void initState() {
     super.initState();
     getAllImageUrls();
+    userInfo = orderViewModel.getUserInfo();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       reloadView();
     });
@@ -346,12 +348,6 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Divider(
-                                              thickness: 1,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .accent4,
-                                            ),
                                             Row(
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
@@ -399,7 +395,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                           decoration: BoxDecoration(
                             color: FlutterFlowTheme.of(context)
                                 .secondaryBackground,
-                            boxShadow: [
+                            boxShadow: const [
                               BoxShadow(
                                 blurRadius: 4,
                                 color: Color(0x33000000),

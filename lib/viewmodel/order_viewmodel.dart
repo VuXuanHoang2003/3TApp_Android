@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:json_path/fun_extra.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:three_tapp_app/data/repositories/auth_repo/auth_repo_impl.dart';
 
 import '../base/baseviewmodel/base_viewmodel.dart';
 import '../data/repositories/order_repo/order_repo.dart';
@@ -17,10 +18,8 @@ import 'notification_viewmodel.dart';
 
 class OrderViewModel extends BaseViewModel {
   static final OrderViewModel _instance = OrderViewModel._internal();
-  static String? _emailCurrentUser = '';
 
   factory OrderViewModel() {
-    _emailCurrentUser = FirebaseAuth.instance.currentUser!.email;
     return _instance;
   }
 
@@ -191,5 +190,9 @@ class OrderViewModel extends BaseViewModel {
         cancelOrders.add(element);
       }
     }
+  }
+
+  List<String> getUserInfo() {
+    return AuthRepoImpl().getUserInfoWidget();
   }
 }

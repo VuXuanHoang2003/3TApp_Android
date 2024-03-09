@@ -204,17 +204,20 @@ class OrderRepoImpl with OrderRepo {
     List<MyOrder> orders = [];
 
     try {
-      await FirebaseFirestore.instance
-          .collection("ORDERS")
-          .where("seller_email",
-              isEqualTo: FirebaseAuth.instance.currentUser!.email)
-          .get()
-          .then((querySnapshot) {
-        for (var result in querySnapshot.docs) {
-          orders.add(MyOrder.fromJson(result.data()));
-        }
-        print("order length:${orders.length}");
-      });
+      if (FirebaseAuth.instance.currentUser!.email != null) {
+        await FirebaseFirestore.instance
+            .collection("ORDERS")
+            .where("seller_email",
+                isEqualTo: FirebaseAuth.instance.currentUser!.email)
+            .get()
+            .then((querySnapshot) {
+          for (var result in querySnapshot.docs) {
+            orders.add(MyOrder.fromJson(result.data()));
+          }
+          print("order length:${orders.length}");
+        });
+      }
+
       return orders;
     } catch (error) {
       print("error:${error.toString()}");
