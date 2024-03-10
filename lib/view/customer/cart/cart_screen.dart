@@ -5,6 +5,7 @@ import 'package:three_tapp_app/view/common_view/order_item.dart';
 import 'package:three_tapp_app/view/customer/cart/cart_item.dart';
 import 'package:three_tapp_app/viewmodel/cart_viewmodel.dart';
 import 'package:three_tapp_app/viewmodel/order_viewmodel.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../model/status.dart';
 
@@ -62,8 +63,8 @@ class _SalesManagementScreen extends State<CartScreen> {
               ),
             ),
           ),
-          title: const Text(
-            "Trở về trang chủ",
+          title: Text(
+            "${AppLocalizations.of(context)?.backToHome}",
             style: TextStyle(color: Colors.black),
           ),
         ),
@@ -76,11 +77,15 @@ class _SalesManagementScreen extends State<CartScreen> {
                 height: 24,
                 indicatorColor: Colors.blueAccent,
                 labelStyle: TextStyle(color: Colors.black, fontSize: 12)),
-            tabs: const [
-              Text('Mới tạo', style: TextStyle(color: Colors.black)),
-              Text('Đang giao dịch', style: TextStyle(color: Colors.black)),
-              Text('Đã xong', style: TextStyle(color: Colors.black)),
-              Text('Đã huỷ', style: TextStyle(color: Colors.black))
+            tabs: [
+              Text("${AppLocalizations.of(context)?.newOrder}",
+                  style: TextStyle(color: Colors.black)),
+              Text("${AppLocalizations.of(context)?.inProcess}",
+                  style: TextStyle(color: Colors.black)),
+              Text("${AppLocalizations.of(context)?.done}",
+                  style: TextStyle(color: Colors.black)),
+              Text("${AppLocalizations.of(context)?.cancelled}",
+                  style: TextStyle(color: Colors.black))
             ],
             views: [
               newOrderTab(),
@@ -110,7 +115,8 @@ class _SalesManagementScreen extends State<CartScreen> {
                   },
                 ),
               )
-            : const Center(child: Text('Không có đơn hàng nào')),
+            : Center(
+                child: Text("${AppLocalizations.of(context)?.noOrder}")),
       ],
     );
   }
@@ -131,7 +137,8 @@ class _SalesManagementScreen extends State<CartScreen> {
                   },
                 ),
               )
-            : const Center(child: Text('Không có đơn hàng nào')),
+            :  Center(child: Text("${AppLocalizations.of(context)?.noOrder}"
+)),
       ],
     );
   }
@@ -151,7 +158,7 @@ class _SalesManagementScreen extends State<CartScreen> {
                   },
                 ),
               )
-            : const Center(child: Text('Không có đơn hàng nào')),
+            :  Center(child: Text("${AppLocalizations.of(context)?.noOrder}")),
       ],
     );
   }
@@ -171,7 +178,7 @@ class _SalesManagementScreen extends State<CartScreen> {
                   },
                 ),
               )
-            : const Center(child: Text('Không có đơn hàng nào')),
+              :  Center(child: Text("${AppLocalizations.of(context)?.noOrder}")),
       ],
     );
   }

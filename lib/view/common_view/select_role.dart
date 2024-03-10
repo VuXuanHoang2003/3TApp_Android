@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../model/roles_type.dart';
 import '../../viewmodel/auth_viewmodel.dart';
@@ -44,7 +45,7 @@ class _SelectRole extends State<SelectRole> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ListTile(
-              title: const Text('Người mua'),
+              title: Text('${AppLocalizations.of(context)?.customer}'),
               leading: Radio<int>(
                 value: 1,
                 groupValue: selectedRole,
@@ -56,7 +57,7 @@ class _SelectRole extends State<SelectRole> {
               ),
             ),
             ListTile(
-              title: const Text('Người bán'),
+              title: Text('${AppLocalizations.of(context)?.seller}'),
               leading: Radio<int>(
                 value: 2,
                 groupValue: selectedRole,
@@ -93,11 +94,10 @@ class _SelectRole extends State<SelectRole> {
                           timeInSecForIosWeb: 1,
                           backgroundColor: Colors.black45,
                           textColor: Colors.white,
-                          fontSize: 12.0
-                      );
+                          fontSize: 12.0);
                     }
                   },
-                  text: "Xác nhận",
+                  text: "${AppLocalizations.of(context)?.confirm}",
                   textColor: Colors.white,
                   bgColor: Colors.blue),
             )

@@ -7,6 +7,7 @@ import '../../utils/common_func.dart';
 import '../../utils/image_path.dart';
 import '../../viewmodel/auth_viewmodel.dart';
 import '../flutter_flow/flutter_flow.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   Product product;
@@ -34,8 +35,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: const Text(
-          "Chi tiết sản phẩm",
+        title: Text(
+          "${AppLocalizations.of(context)?.productInDetails}",
           style: TextStyle(color: Colors.black, fontSize: 18),
         ),
         leading: IconButton(
@@ -63,11 +64,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 padding: const EdgeInsets.all(6),
                 child: Stack(
                   children: [
-                    const Align(
+                    Align(
                       alignment: AlignmentDirectional(-0.94, 0),
                       child: Text(
-                        'Khối lượng: ',
-                      ),
+                          "${AppLocalizations.of(context)?.productWeight}"),
                     ),
                     Align(
                       alignment: const AlignmentDirectional(0, 0),
@@ -100,7 +100,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     Align(
                       alignment: const AlignmentDirectional(-0.94, 0),
                       child: Text(
-                        'Giá tiền (1 kg): ',
+                        '${AppLocalizations.of(context)?.price} (1 kg): ',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Readex Pro',
                               color: const Color(0xFF831B1B),
@@ -126,7 +126,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     Align(
                       alignment: const AlignmentDirectional(-0.94, 0),
                       child: Text(
-                        'Khối lượng: ',
+                        '${AppLocalizations.of(context)?.productWeight}: ',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Readex Pro',
                               fontStyle: FontStyle.italic,
@@ -141,11 +141,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 color: Colors.green,
                 height: 16,
               ),
-              const Align(
+              Align(
                 alignment: AlignmentDirectional(0, 0),
                 child: Padding(
                   padding: EdgeInsets.all(6),
-                  child: Text('Mô tả sản phẩm'),
+                  child: Text(
+                      '${AppLocalizations.of(context)?.productDescription}'),
                 ),
               ),
               Align(

@@ -6,6 +6,7 @@ import '../../view/flutter_flow/flutter_flow.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../model/statistic_screen_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StatisticScreen extends StatefulWidget {
   const StatisticScreen({super.key});
@@ -81,7 +82,7 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                     alignment:
                                         const AlignmentDirectional(-0.86, -0.45),
                                     child: Text(
-                                      'Số giao dịch thành công:',
+                                      '${AppLocalizations.of(context)?.totalSuccessfulTransactions} :',
                                       textAlign: TextAlign.start,
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium,
@@ -102,7 +103,7 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                     alignment:
                                         const AlignmentDirectional(-0.87, -0.9),
                                     child: Text(
-                                      'Số sản phẩm đã đăng: ',
+                                      '${AppLocalizations.of(context)?.numberOfProductsPosted} :',
                                       textAlign: TextAlign.start,
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium,
@@ -158,7 +159,7 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                         alignment:
                                             const AlignmentDirectional(-0.61, 0),
                                         child: Text(
-                                          'Loại sản phẩm',
+                                          '${AppLocalizations.of(context)?.type}',
                                           style: FlutterFlowTheme.of(context)
                                               .bodyMedium
                                               .override(
@@ -171,7 +172,7 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                         alignment:
                                             const AlignmentDirectional(0.52, 0),
                                         child: Text(
-                                          'Doanh thu',
+                                          '${AppLocalizations.of(context)?.revenue}',
                                           style: FlutterFlowTheme.of(context)
                                               .bodyMedium
                                               .override(
@@ -328,9 +329,9 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                       children: [
                                         Align(
                                           alignment:
-                                              const AlignmentDirectional(-0.63, 0),
+                                              const AlignmentDirectional(-1, 1),
                                           child: Text(
-                                            'Tổng tiền',
+                                            '${AppLocalizations.of(context)?.totalAmount}',
                                             textAlign: TextAlign.start,
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
@@ -342,7 +343,7 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                         ),
                                         Align(
                                           alignment:
-                                              const AlignmentDirectional(0.49, 0),
+                                              const AlignmentDirectional(0.60, 0),
                                           child: Text(
                                             statisticCurrentUser.sumOfRevenues
                                                 .toString(),

@@ -2,6 +2,7 @@ import 'package:contained_tab_bar_view/contained_tab_bar_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../model/status.dart';
 import '../../viewmodel/order_viewmodel.dart';
@@ -51,11 +52,11 @@ class _SalesManagementScreen extends State<SalesManagementScreen> {
               height: 24,
               indicatorColor: Colors.blueAccent,
               labelStyle: TextStyle(color: Colors.black, fontSize: 12)),
-          tabs: const [
-            Text('Mới tạo', style: TextStyle(color: Colors.black)),
-            Text('Đang giao dịch', style: TextStyle(color: Colors.black)),
-            Text('Đã xong', style: TextStyle(color: Colors.black)),
-            Text('Đã huỷ', style: TextStyle(color: Colors.black))
+          tabs:  [
+            Text('${AppLocalizations.of(context)?.newOrder}', style: TextStyle(color: Colors.black)),
+            Text('${AppLocalizations.of(context)?.inProcess}', style: TextStyle(color: Colors.black)),
+            Text('${AppLocalizations.of(context)?.done}', style: TextStyle(color: Colors.black)),
+            Text('${AppLocalizations.of(context)?.cancelled}', style: TextStyle(color: Colors.black))
           ],
           views: [
             newOrderTab(),

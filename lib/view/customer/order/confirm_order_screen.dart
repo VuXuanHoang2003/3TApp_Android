@@ -7,7 +7,7 @@ import 'package:three_tapp_app/data/repositories/auth_repo/auth_repo_impl.dart';
 import 'package:three_tapp_app/data/repositories/order_repo/order_repo.dart';
 import 'package:three_tapp_app/data/repositories/product_repo/product_repo.dart';
 import 'package:three_tapp_app/data/repositories/product_repo/product_repo_impl.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../main.dart';
 import '../../../model/my_order.dart';
 import '../../../model/order_status.dart';
@@ -91,8 +91,8 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           centerTitle: true,
-          title: const Text(
-            "Xác nhận yêu cầu",
+          title: Text(
+            "${AppLocalizations.of(context)?.orderConfirmed}",
             style: TextStyle(color: Colors.black),
           ),
           leading: IconButton(
@@ -115,8 +115,8 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Thông tin đơn hàng",
+                Text(
+                  "${AppLocalizations.of(context)?.productInfo}",
                   style: TextStyle(color: Colors.black, fontSize: 14),
                 ),
                 const Divider(
@@ -149,8 +149,8 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                   ],
                 ),
                 const Padding(padding: EdgeInsets.only(top: 8)),
-                const Text(
-                  "Thông tin liên hệ",
+                Text(
+                  "${AppLocalizations.of(context)?.contactInfo}",
                   style: TextStyle(color: Colors.black, fontSize: 14),
                 ),
                 const Divider(
@@ -165,7 +165,8 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     child: CustomButton(
                       onPressed: _createOrder,
-                      text: 'Tạo giao dịch',
+                      text:
+                          "${AppLocalizations.of(context)?.createTransaction}",
                       textColor: Colors.white,
                       bgColor: Colors.blue,
                     ),
@@ -192,7 +193,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
         ),
         const SizedBox(height: 20), // Khoảng cách giữa ảnh và tên sản phẩm
         Text(
-          "Tên sản phẩm: ${widget.product.name}",
+          "${AppLocalizations.of(context)?.productName}: ${widget.product.name}",
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
@@ -213,7 +214,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
         ),
         const SizedBox(height: 4), // Khoảng cách giữa giá và thể loại
         Text(
-          "Thể loại: ${CommonFunc.getSenDaNameByType(widget.product.type)}",
+          "${AppLocalizations.of(context)?.type}: ${CommonFunc.getSenDaNameByType(context,widget.product.type)}",
           textAlign: TextAlign.center,
           style: const TextStyle(
             color: Colors.black,
@@ -234,7 +235,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
           },
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.all(8),
-            labelText: "Khối lượng (g)",
+            labelText: "${AppLocalizations.of(context)?.productWeight}",
             fillColor: Colors.white,
             focusedBorder: OutlineInputBorder(
               borderSide:
@@ -278,7 +279,9 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
             },
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8),
-              labelText: "Tên khách hàng (Bắt buộc)",
+              // labelText: "Tên khách hàng (Bắt buộc)",
+              labelText:
+                  "${AppLocalizations.of(context)?.customerName} ${AppLocalizations.of(context)?.required}}",
               fillColor: Colors.white,
               focusedBorder: OutlineInputBorder(
                 borderSide:
@@ -306,7 +309,8 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8),
-              labelText: "Số điện thoại (Bắt buộc)",
+              labelText:
+                  "${AppLocalizations.of(context)?.phoneNumber} ${AppLocalizations.of(context)?.required}}",
               fillColor: Colors.white,
               focusedBorder: OutlineInputBorder(
                 borderSide:
@@ -326,7 +330,8 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8),
-              labelText: "Địa chỉ (Bắt buộc)",
+              labelText:
+                  "${AppLocalizations.of(context)?.address} ${AppLocalizations.of(context)?.required}}",
               fillColor: Colors.white,
               focusedBorder: OutlineInputBorder(
                 borderSide:

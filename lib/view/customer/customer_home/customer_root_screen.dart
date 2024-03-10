@@ -3,6 +3,8 @@ import 'package:three_tapp_app/view/common_view/chat/chat_screen.dart';
 import 'package:three_tapp_app/view/common_view/map/home_map_view.dart';
 import '../blogs/blogs_screen.dart';
 import 'customer_home_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class CustomerRootScreen extends StatefulWidget {
   const CustomerRootScreen({super.key});
@@ -36,22 +38,22 @@ class _CustomerRootScreen extends State<CustomerRootScreen> {
         backgroundColor: Colors.white,
         body: _widgetOptions.elementAt(_selectedIndex),
         bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
+          items:  <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: 'Trang chủ',
+              label: '${AppLocalizations.of(context)?.home}',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.note_rounded),
-              label: 'Bài viết',
+              label: '${AppLocalizations.of(context)?.postPage}',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.chat_rounded),
-              label: 'Chat',
+              label: '${AppLocalizations.of(context)?.chat}',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.map_rounded),
-              label: 'Map',
+              label: '${AppLocalizations.of(context)?.map}',
             ),
           ],
           currentIndex: _selectedIndex,

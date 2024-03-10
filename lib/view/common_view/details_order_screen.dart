@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -56,7 +56,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
             backgroundColor: Colors.white,
             centerTitle: true,
             title: Text(
-              "Chi tiết hoá đơn",
+              "${AppLocalizations.of(context)?.invoiceDetails}",
               style: TextStyle(color: Colors.black),
             ),
             leading: IconButton(
@@ -113,7 +113,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Thông tin đơn hàng',
+                                  "${AppLocalizations.of(context)?.productInfo}",
                                   style:
                                       FlutterFlowTheme.of(context).titleLarge,
                                 ),
@@ -225,7 +225,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                                             children: [
                                                               TextSpan(
                                                                 text:
-                                                                    'Số lượng: ',
+                                                                    '${AppLocalizations.of(context)?.quantity}',
                                                                 style:
                                                                     TextStyle(),
                                                               ),
@@ -258,7 +258,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                                             children: [
                                                               TextSpan(
                                                                 text:
-                                                                    'Khối lượng: ',
+                                                                    "${AppLocalizations.of(context)?.productWeight}",
                                                                 style:
                                                                     TextStyle(),
                                                               ),
@@ -306,13 +306,13 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                                     .textScaleFactor,
                                             text: TextSpan(
                                               children: [
-                                                const TextSpan(
-                                                  text: 'Trạng thái: ',
+                                                TextSpan(
+                                                  text: "${AppLocalizations.of(context)?.status}: ",
                                                   style: TextStyle(),
                                                 ),
                                                 TextSpan(
                                                   text: CommonFunc
-                                                      .getOrderStatusName(
+                                                      .getOrderStatusName(context,
                                                           widget.order.status),
                                                   style: const TextStyle(
                                                     color: Colors.red,
@@ -356,7 +356,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Text(
-                                                  'Tổng cộng',
+                                                 "${AppLocalizations.of(context)?.total}",
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .titleMedium
@@ -416,7 +416,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Thông tin liên hệ',
+                                "${AppLocalizations.of(context)?.contactInfo}",
                                   style:
                                       FlutterFlowTheme.of(context).titleLarge,
                                 ),
@@ -434,7 +434,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                     text: TextSpan(
                                       children: [
                                         TextSpan(
-                                          text: 'Khách hàng: ',
+                                          text: "${AppLocalizations.of(context)?.customer}: ",
                                           style: FlutterFlowTheme.of(context)
                                               .labelMedium,
                                         ),
@@ -480,7 +480,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                     text: TextSpan(
                                       children: [
                                         TextSpan(
-                                          text: 'Số điện thoại: ',
+                                          text: "${AppLocalizations.of(context)?.phoneNumber}: ",
                                           style: FlutterFlowTheme.of(context)
                                               .labelMedium,
                                         ),
@@ -503,7 +503,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                     text: TextSpan(
                                       children: [
                                         TextSpan(
-                                          text: 'Địa chỉ: ',
+                                          text: "${AppLocalizations.of(context)?.address}: ",
                                           style: FlutterFlowTheme.of(context)
                                               .labelMedium,
                                         ),
@@ -543,28 +543,28 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
         ),
         SizedBox(height: 16),
         Text(
-          "Tên sản phẩm: ${widget.order.productName}",
+          "${AppLocalizations.of(context)?.productName}: ${widget.order.productName}",
           style: TextStyle(color: Colors.black, fontSize: 14),
         ),
         Text(
-          "Giá thành: ${widget.order.productPrice} (vnđ)",
+          "${AppLocalizations.of(context)?.price}: ${widget.order.productPrice} (vnđ)",
           style: TextStyle(
               color: Colors.redAccent,
               fontSize: 14,
               fontStyle: FontStyle.italic),
         ),
         Text(
-          "Số lượng: ${widget.order.productQuantity}",
+          "${AppLocalizations.of(context)?.quantity}: ${widget.order.productQuantity}",
           style: TextStyle(
               color: Colors.blue, fontSize: 14, fontStyle: FontStyle.italic),
         ),
         Text(
-          "Trạng thái: ${CommonFunc.getOrderStatusName(widget.order.status)}",
+           "${AppLocalizations.of(context)?.status}: ${CommonFunc.getOrderStatusName(context,widget.order.status)}",
           style: TextStyle(
               color: Colors.black, fontSize: 14, fontStyle: FontStyle.italic),
         ),
         Text(
-          "Khối lượng: ${widget.order.productMass} (kg)",
+          "${AppLocalizations.of(context)?.productWeight}: ${widget.order.productMass} (kg)",
           style: TextStyle(
               color: Colors.black, fontSize: 14, fontStyle: FontStyle.italic),
         ),
@@ -576,10 +576,10 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildContactInfoRow("Khách hàng:", widget.order.customerName),
+        buildContactInfoRow("${AppLocalizations.of(context)?.customer}", widget.order.customerName),
         buildContactInfoRow("Email:", widget.order.customerEmail),
-        buildContactInfoRow("Số điện thoại:", widget.order.phoneNumber),
-        buildContactInfoRow("Địa chỉ:", widget.order.address),
+        buildContactInfoRow("${AppLocalizations.of(context)?.phoneNumber}", widget.order.phoneNumber),
+        buildContactInfoRow("${AppLocalizations.of(context)?.address}", widget.order.address),
         SizedBox(height: 32),
       ],
     );

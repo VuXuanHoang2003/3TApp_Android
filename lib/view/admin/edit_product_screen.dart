@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../model/product.dart';
 import '../../model/scrap_type.dart';
@@ -48,7 +49,7 @@ class _EditProductScreen extends State<EditProductScreen> {
     productNameController.text = widget.product.name;
     descriptionController.text = widget.product.description;
     priceController.text = widget.product.price.toString();
-    massController.text=widget.product.mass.toString();
+    massController.text = widget.product.mass.toString();
     selectedType = CommonFunc.getScrapTypeByName(widget.product.type);
   }
 
@@ -90,8 +91,9 @@ class _EditProductScreen extends State<EditProductScreen> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           centerTitle: true,
-          title: const Text(
-            "Cập nhật sản phẩm",
+        
+          title: Text(
+            "${AppLocalizations.of(context)?.edit} ${AppLocalizations.of(context)?.product}",
             style: TextStyle(color: Colors.black),
           ),
           leading: IconButton(
@@ -132,7 +134,7 @@ class _EditProductScreen extends State<EditProductScreen> {
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(8),
-                      labelText: "Tên sản phẩm (*)",
+                      labelText: "${AppLocalizations.of(context)?.productName}(*)",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
@@ -156,14 +158,14 @@ class _EditProductScreen extends State<EditProductScreen> {
                       ),
                     ),
                   ),
-                  const Padding(padding: EdgeInsets.only(top: 8)),
+                  const Padding(padding: EdgeInsets.only(top: 20)),
                   TextFormField(
                     controller: priceController,
                     focusNode: priceFocusNode,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(8),
-                      labelText: "Giá bán (*)",
+                      labelText: "${AppLocalizations.of(context)?.price}(*)",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
@@ -187,7 +189,7 @@ class _EditProductScreen extends State<EditProductScreen> {
                       ),
                     ),
                   ),
-                  const Padding(padding: EdgeInsets.only(top: 8)),
+                  const Padding(padding: EdgeInsets.only(top: 20)),
                   TextFormField(
                     maxLines: null,
                     controller: descriptionController,
@@ -195,7 +197,7 @@ class _EditProductScreen extends State<EditProductScreen> {
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(8),
-                      labelText: "Mô tả",
+                      labelText: "${AppLocalizations.of(context)?.productDescription}",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
@@ -209,14 +211,14 @@ class _EditProductScreen extends State<EditProductScreen> {
                       ),
                     ),
                   ),
-                  const Padding(padding: EdgeInsets.only(top: 8)),
+                  const Padding(padding: EdgeInsets.only(top: 20)),
                   TextFormField(
                     controller: massController,
                     focusNode: massFocusNode,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(8),
-                      labelText: "Khối lượng (kg)",
+                      labelText: "${AppLocalizations.of(context)?.productWeight} (kg)",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
@@ -245,14 +247,14 @@ class _EditProductScreen extends State<EditProductScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0),
-                        child: Text("Loại:"),
+                        child: Text("${AppLocalizations.of(context)?.type}:"),
                       ),
                       Spacer(),
                       DropdownButton<ScrapType>(
                         items: productType.map((ScrapType value) {
                           return DropdownMenuItem<ScrapType>(
                             value: value,
-                            child: Text(CommonFunc.getSenDaNameByType(
+                            child: Text(CommonFunc.getSenDaNameByType(context,
                                 value.toShortString())),
                           );
                         }).toList(),
@@ -278,7 +280,10 @@ class _EditProductScreen extends State<EditProductScreen> {
                                   .toString()
                                   .trim()
                                   .isNotEmpty &&
-                              priceController.text.toString().trim().isNotEmpty) {
+                              priceController.text
+                                  .toString()
+                                  .trim()
+                                  .isNotEmpty) {
                             String name =
                                 productNameController.text.toString().trim();
                             double price = double.parse(
@@ -315,7 +320,7 @@ class _EditProductScreen extends State<EditProductScreen> {
                                 fontSize: 12.0);
                           }
                         },
-                        text: "Cập nhật",
+                        text: "${AppLocalizations.of(context)?.edit}",
                         textColor: Colors.white,
                         bgColor: Colors.blue),
                   ),

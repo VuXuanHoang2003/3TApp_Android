@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../utils/validator.dart';
 import '../../../viewmodel/auth_viewmodel.dart';
 import '../../common_view/custom_button.dart';
@@ -47,8 +47,8 @@ class _LoginScreenState extends State<SignUpScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: const Text(
-          "Đăng ký",
+        title: Text(
+          "${AppLocalizations.of(context)?.signUp}",
           style: TextStyle(color: Colors.black),
         ),
         elevation: 0,
@@ -64,7 +64,7 @@ class _LoginScreenState extends State<SignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Tạo tài khoản',
+                    "${AppLocalizations.of(context)?.createAccount}",
                     style: const TextStyle(
                         color: Colors.black,
                         fontSize: 40,
@@ -75,7 +75,6 @@ class _LoginScreenState extends State<SignUpScreen> {
               const SizedBox(height: 16),
               Column(
                 children: [
-                  // Hiển thị ảnh đại diện trong CircleAvatar
                   CircleAvatar(
                     radius: 50, // Độ lớn của ảnh đại diện
                     backgroundColor:
@@ -96,7 +95,8 @@ class _LoginScreenState extends State<SignUpScreen> {
                   ElevatedButton.icon(
                     onPressed: getImage,
                     icon: Icon(Icons.photo_camera), // Icon chọn ảnh
-                    label: Text('Chọn ảnh đại diện'), // Text nút chọn ảnh
+                    label: Text(
+                        '${AppLocalizations.of(context)?.chooseAva}'), // Text nút chọn ảnh
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.green, // Màu chữ trên nút
@@ -120,7 +120,7 @@ class _LoginScreenState extends State<SignUpScreen> {
                   if (input!.isEmpty || Validators.isValidEmail(input)) {
                     return null;
                   } else {
-                    return "Email không hợp lệ!";
+                    return "Email ${AppLocalizations.of(context)?.invalid}!";
                   }
                 },
                 decoration: InputDecoration(
@@ -156,7 +156,7 @@ class _LoginScreenState extends State<SignUpScreen> {
                 obscureText: obscureText,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(8),
-                  labelText: "Mật khẩu",
+                  labelText: "${AppLocalizations.of(context)?.password}",
                   fillColor: Colors.white,
                   focusedBorder: OutlineInputBorder(
                     borderSide:
@@ -190,7 +190,7 @@ class _LoginScreenState extends State<SignUpScreen> {
                 obscureText: obscureReEnterPassword,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(8),
-                  labelText: "Nhập lại mật khẩu",
+                  labelText: "${AppLocalizations.of(context)?.reenterPassword}",
                   fillColor: Colors.white,
                   focusedBorder: OutlineInputBorder(
                     borderSide:
@@ -223,7 +223,7 @@ class _LoginScreenState extends State<SignUpScreen> {
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(8),
-                  labelText: "Số điện thoại",
+                  labelText: "${AppLocalizations.of(context)?.phoneNumber}",
                   fillColor: Colors.white,
                   focusedBorder: OutlineInputBorder(
                     borderSide:
@@ -242,7 +242,7 @@ class _LoginScreenState extends State<SignUpScreen> {
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(8),
-                  labelText: "Địa chỉ",
+                  labelText: "${AppLocalizations.of(context)?.address}",
                   fillColor: Colors.white,
                   focusedBorder: OutlineInputBorder(
                     borderSide:
@@ -262,7 +262,7 @@ class _LoginScreenState extends State<SignUpScreen> {
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(8),
-                  labelText: "Tên người dùng", // New field
+                  labelText: "${AppLocalizations.of(context)?.userName}",
                   fillColor: Colors.white,
                   focusedBorder: OutlineInputBorder(
                     borderSide:
@@ -346,7 +346,7 @@ class _LoginScreenState extends State<SignUpScreen> {
                       );
                     }
                   },
-                  text: "Đăng ký",
+                  text: "${AppLocalizations.of(context)?.signUp}",
                   textColor: Colors.white,
                   bgColor: Colors.green,
                 ),
@@ -356,8 +356,8 @@ class _LoginScreenState extends State<SignUpScreen> {
                 onTap: () {
                   backToLoginScreen();
                 },
-                child: const Text(
-                  'Đã có tài khoản? Đăng nhập',
+                child: Text(
+                  "${AppLocalizations.of(context)?.accountExist}? ${AppLocalizations.of(context)?.login}",
                   style: TextStyle(color: Colors.black, fontSize: 12),
                 ),
               ),
@@ -372,7 +372,7 @@ class _LoginScreenState extends State<SignUpScreen> {
                     margin: const EdgeInsets.only(right: 8.0),
                   ),
                   Text(
-                    'Đăng nhập bằng',
+                    "${AppLocalizations.of(context)?.loginBy}",
                     style: const TextStyle(color: Colors.black, fontSize: 20),
                   ),
                   Container(

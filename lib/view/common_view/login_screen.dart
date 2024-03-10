@@ -14,6 +14,8 @@ import '../../utils/validator.dart';
 import '../../viewmodel/auth_viewmodel.dart';
 import '../customer/authentication/signup_screen.dart';
 import 'custom_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 // import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -42,7 +44,6 @@ class _LoginScreen extends State<LoginScreen> {
   void signOutGoogle() async {
     try {
       await _googleSignIn.signOut();
-      print("Đăng xuất khỏi tk cũ nè"); // Đăng xuất khỏi tài khoản Google
     } catch (error) {
       print('Error signing out: $error');
     }
@@ -56,7 +57,6 @@ class _LoginScreen extends State<LoginScreen> {
       // await prefs.remove('user_token');
       signOutGoogle(); // Remove the await keyword here
       await _auth.signOut();
-      print("Đăng xuất khỏi fb nè");
     } catch (error) {
       print('Error handling sign out: $error');
     }
@@ -76,7 +76,6 @@ class _LoginScreen extends State<LoginScreen> {
   void signInWithGoogle() async {
     try {
       //handleSignOut();
-      print("Đăng nhập bằng google nè");
       // Gọi hàm signInWithGoogle từ AuthViewModel
       bool signInResult = await authViewModel.signInWithGoogle();
       // ton tai email =false,
@@ -106,8 +105,8 @@ class _LoginScreen extends State<LoginScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: const Text(
-          "Đăng nhập",
+        title:  Text(
+          "${AppLocalizations.of(context)?.login}",
           style: TextStyle(color: Colors.black),
         ),
         leading: IconButton(
@@ -153,7 +152,7 @@ class _LoginScreen extends State<LoginScreen> {
                 children: [
                   Flexible(
                     child: Text(
-                      'Đăng nhập vào tài khoản của bạn',
+                      "${AppLocalizations.of(context)?.loginInAccount}",
                       style: const TextStyle(color: Colors.black, fontSize: 16),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -170,7 +169,7 @@ class _LoginScreen extends State<LoginScreen> {
                   if (input!.isEmpty || Validators.isValidEmail(input)) {
                     return null;
                   } else {
-                    return "Email không hợp lệ!";
+                    return "Email ${AppLocalizations.of(context)?.invalid}";
                   }
                 },
                 decoration: InputDecoration(
@@ -206,7 +205,7 @@ class _LoginScreen extends State<LoginScreen> {
                 obscureText: obscureText,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(8),
-                  labelText: "Mật khẩu",
+                  labelText: "${AppLocalizations.of(context)?.password}",
                   fillColor: Colors.white,
                   focusedBorder: OutlineInputBorder(
                     borderSide:
@@ -270,7 +269,7 @@ class _LoginScreen extends State<LoginScreen> {
                       );
                     }
                   },
-                  text: "ĐĂNG NHẬP",
+                  text: "${AppLocalizations.of(context)?.login}",
                   textColor: Colors.white,
                   bgColor: Colors.green,
                 ),
@@ -278,15 +277,14 @@ class _LoginScreen extends State<LoginScreen> {
               const Padding(padding: EdgeInsets.only(top: 8)),
               GestureDetector(
                 onTap: () {
-                  print('Đăng nhập');
                   if (authViewModel.rolesType == RolesType.seller) {
                     goToSignUpScreen(true);
                   } else {
                     goToSignUpScreen(false);
                   }
                 },
-                child: const Text(
-                  'Bạn chưa có tài khoản? Đăng ký',
+                child: Text(
+                  "${AppLocalizations.of(context)?.noAccountQues}? ${AppLocalizations.of(context)?.signUp}",
                   style: TextStyle(color: Colors.black, fontSize: 12),
                 ),
               ),
@@ -301,7 +299,7 @@ class _LoginScreen extends State<LoginScreen> {
                     margin: const EdgeInsets.only(right: 8.0),
                   ),
                   Text(
-                    'Đăng nhập bằng',
+                    "${AppLocalizations.of(context)?.loginBy}",
                     style: const TextStyle(color: Colors.black, fontSize: 20),
                   ),
                   Container(

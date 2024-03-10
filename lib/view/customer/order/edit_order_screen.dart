@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:three_tapp_app/model/order_status.dart';
 import 'package:three_tapp_app/model/product.dart';
 import 'package:three_tapp_app/viewmodel/cart_viewmodel.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../main.dart';
 import '../../../model/my_order.dart';
@@ -25,7 +26,7 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
   TextEditingController customerNameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-  
+
   FocusNode customerNameFocusNode = FocusNode();
   FocusNode phoneNumberFocusNode = FocusNode();
   FocusNode addressFocusNode = FocusNode();
@@ -79,8 +80,8 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
           appBar: AppBar(
             backgroundColor: Colors.white,
             centerTitle: true,
-            title: const Text(
-              "Cập nhật đơn hàng",
+            title: Text(
+              "${AppLocalizations.of(context)?.edit} ${AppLocalizations.of(context)?.product}}",
               style: TextStyle(color: Colors.black),
             ),
             leading: IconButton(
@@ -102,8 +103,8 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Thông tin đơn hàng",
+                  Text(
+                    "${AppLocalizations.of(context)?.productInfo}",
                     style: TextStyle(color: Colors.black, fontSize: 14),
                   ),
                   const Divider(
@@ -133,8 +134,8 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
                     ],
                   ),
                   const Padding(padding: EdgeInsets.only(top: 8)),
-                  const Text(
-                    "Thông tin liên hệ",
+                  Text(
+                    "${AppLocalizations.of(context)?.contactInfo}",
                     style: TextStyle(color: Colors.black, fontSize: 14),
                   ),
                   const Divider(
@@ -169,7 +170,7 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
                               customerEmail: order.customerEmail,
                               phoneNumber: phoneNumber,
                               address: address,
-                              type:order.type,
+                              type: order.type,
                               status: order.status,
                               createDate: order.createDate,
                               updateDate: DateTime.now().toString(),
@@ -183,7 +184,8 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
                           CommonFunc.showToast("Vui lòng nhập đủ thông tin.");
                         }
                       },
-                      text: 'Cập nhật đơn hàng',
+                      text:
+                          "${AppLocalizations.of(context)?.edit} ${AppLocalizations.of(context)?.product}",
                       textColor: Colors.white,
                       bgColor: Colors.blue,
                     ),
@@ -196,7 +198,8 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
                         onPressed: () async {
                           await showDialogConfirmCancelOrder();
                         },
-                        text: 'Hủy đơn hàng', // Bổ sung văn bản cho nút nếu cần
+                        text:
+                            "${AppLocalizations.of(context)?.cancel} ${AppLocalizations.of(context)?.product}", // Bổ sung văn bản cho nút nếu cần
                         textColor: Colors.white, // Màu văn bản của nút
                         bgColor: Colors.blue, // Màu nền của nút
                       ),
@@ -211,13 +214,13 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
 
   showDialogConfirmCancelOrder() {
     Widget noButton = TextButton(
-      child: const Text("Không"),
+      child: Text("${AppLocalizations.of(context)?.no}"),
       onPressed: () {
         Navigator.of(context).pop();
       },
     );
     Widget yesButton = TextButton(
-      child: const Text("Có"),
+      child: Text("${AppLocalizations.of(context)?.yes}"),
       onPressed: () async {
         Navigator.of(context).maybePop();
         await cartViewModel.updateOrderStatus(
@@ -227,7 +230,7 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
     );
 
     AlertDialog alert = AlertDialog(
-      content: Text("Bạn có chắc muốn huỷ đơn hàng này?",
+      content: Text("${AppLocalizations.of(context)?.cancelQues} ?",
           textAlign: TextAlign.center),
       actions: [
         noButton,
@@ -254,7 +257,8 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
               borderRadius: BorderRadius.circular(10),
               child: productItemImage()),
         ),
-        Text("Tên sản phẩm: ${widget.order.productName}",
+        Text(
+            "${AppLocalizations.of(context)?.productName}: ${widget.order.productName}",
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
@@ -286,12 +290,13 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
               if (input!.isNotEmpty) {
                 return null;
               } else {
-                return "Tên khách hàng không hợp lệ";
+                return "${AppLocalizations.of(context)?.customerName} ${AppLocalizations.of(context)?.invalid}";
               }
             },
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8),
-              labelText: "Tên khách hàng (Bắt buộc)",
+              labelText:
+                  "${AppLocalizations.of(context)?.customerName} (${AppLocalizations.of(context)?.required})",
               fillColor: Colors.white,
               focusedBorder: OutlineInputBorder(
                 borderSide:
@@ -319,7 +324,8 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8),
-              labelText: "Số điện thoại (Bắt buộc)",
+              labelText:
+                  "${AppLocalizations.of(context)?.phoneNumber} (${AppLocalizations.of(context)?.required})",
               fillColor: Colors.white,
               focusedBorder: OutlineInputBorder(
                 borderSide:
@@ -339,7 +345,8 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8),
-              labelText: "Địa chỉ (Bắt buộc)",
+              labelText:
+                  "${AppLocalizations.of(context)?.address} (${AppLocalizations.of(context)?.required})",
               fillColor: Colors.white,
               focusedBorder: OutlineInputBorder(
                 borderSide:
@@ -358,32 +365,7 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
     );
   }
 
-  // Widget productItemImage() {
-  //   if (widget.order.productName.isNotEmpty) {
-  //     return Image.network(
-  //       height: 76,
-  //       width: 76,
-  //       widget.order.productImage,
-  //       loadingBuilder: (context, child, loadingProgress) {
-  //         if (loadingProgress == null) return child;
-  //         return Center(
-  //           child: CircularProgressIndicator(
-  //             value: loadingProgress.expectedTotalBytes != null
-  //                 ? loadingProgress.cumulativeBytesLoaded /
-  //                     loadingProgress.expectedTotalBytes!
-  //                 : null,
-  //           ),
-  //         );
-  //       },
-  //     );
-  //   } else {
-  //     return Image.asset(
-  //       ImagePath.imgImageUpload,
-  //       height: 76,
-  //       width: 76,
-  //     );
-  //   }
-  // }
+  
   void showImageDialog(BuildContext context, String imageUrl) {
     showDialog(
       context: context,

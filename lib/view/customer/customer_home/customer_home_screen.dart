@@ -10,6 +10,7 @@ import '../../../utils/common_func.dart';
 import '../../../viewmodel/product_viewmodel.dart';
 import '../../common_view/product_item_customer_view.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../common_view/product_list_screen.dart';
 
@@ -24,7 +25,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   FocusNode searchBarFocusNode = FocusNode();
   AuthViewModel authViewModel = AuthViewModel();
   User? user;
-  String ? _avatarUrl;
+  String? _avatarUrl;
   @override
   void initState() {
     _getUserInfo();
@@ -39,91 +40,94 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
       });
     });
   }
+
   Future<void> _getUserInfo() async {
     List<String> userInfo = await authViewModel.getUserInfo();
-      setState(() {
-
-    
-    _avatarUrl = userInfo[3]; // Gán đường dẫn của ảnh từ avatarUrl
-    
-      });
+    setState(() {
+      _avatarUrl = userInfo[3]; // Gán đường dẫn của ảnh từ avatarUrl
+    });
   }
+
   void reloadView() {
     setState(() {});
   }
 
   Widget buildHeader() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              GestureDetector(
-  onTap: () {
-    // Xử lý khi nhấn vào hình ảnh để xem hồ sơ
-    CommonFunc.goToProfileScreen(); // hoặc hành động bạn muốn thực hiện
-  },
-  child: CircleAvatar(
-    radius: 30,
-    backgroundColor: Colors.transparent,
-    child: ClipOval(
-      child: _avatarUrl != null
-          ? Image.network(
-              _avatarUrl!,
-              fit: BoxFit.cover,
-              width: 30,
-              height: 30,
-            )
-          : Image.asset(
-              'assets/images/d.png',
-              fit: BoxFit.cover,
-              width: 50,
-              height: 50,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    // Xử lý khi nhấn vào hình ảnh để xem hồ sơ
+                    CommonFunc
+                        .goToProfileScreen(); // hoặc hành động bạn muốn thực hiện
+                  },
+                  child:
+                      // Ảnh đại diện
+                      CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.transparent,
+                    child: ClipOval(
+                      child: _avatarUrl != null
+                          ? Image.network(
+                              _avatarUrl!,
+                              fit: BoxFit.cover,
+                              width: 40,
+                              height: 40,
+                            )
+                          : Image.asset(
+                              'assets/images/default-avatar.png',
+                              fit: BoxFit.cover,
+                              width: 50,
+                              height: 50,
+                            ),
+                    ),
+                  ),
+                ),
+                FutureBuilder<String>(
+                  future: AuthViewModel().getUsername(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      String username = snapshot.data ?? "Unknown";
+                    
+                 
+                      return Text(
+                        '${AppLocalizations.of(context)?.helloWorld}, $username',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    } else {
+                      return CircularProgressIndicator(); // Show a loading indicator while fetching data
+                    }
+                  },
+                ),
+              ],
             ),
-    ),
-  ),
-),
-
-              FutureBuilder<String>(
-                future: AuthViewModel().getUsername(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    String username = snapshot.data ?? "Unknown";
-                    return Text(
-                      'Xin chào, $username',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    );
-                  } else {
-                    return CircularProgressIndicator(); // Show a loading indicator while fetching data
-                  }
-                },
-              ),
-            ],
-          ),
-          SizedBox(
-            width: 36,
-            height: 36,
-            // child: FloatingActionButton(
-            //   backgroundColor: Colors.white,
-            //   onPressed: goToCartScreen,
-            //   child: Icon(
-            //     Icons.notifications,
-            //     color: Colors.blue,
-            //   ),
-            // ),
-          ),
-        ],
-      ),
-    ],
-  );
-}
+            SizedBox(
+              width: 36,
+              height: 36,
+              // child: FloatingActionButton(
+              //   backgroundColor: Colors.white,
+              //   onPressed: goToCartScreen,
+              //   child: Icon(
+              //     Icons.notifications,
+              //     color: Colors.blue,
+              //   ),
+              // ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -204,10 +208,10 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                     onSubmitted: (value) async {
                       await onSearchSubmitted();
                     },
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       isDense: true,
                       contentPadding: EdgeInsets.all(8.0),
-                      hintText: "Bạn muốn tìm gì?",
+                      hintText: "${AppLocalizations.of(context)?.searchQues}",
                       border: InputBorder.none,
                     ),
                   ),
@@ -217,7 +221,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                 onPressed: () async {
                   await onSearchSubmitted();
                 },
-                child: Text("Tìm kiếm"),
+                child: Text("${AppLocalizations.of(context)?.search}"),
               ),
             ],
           ),
@@ -242,92 +246,96 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
     }
   }
 
- 
 // Inside _CustomerHomeScreenState class
 
-Widget buildScrapTypeWithButton(String title, String imageUrl, List<Product> products) {
-  return Column(
-    children: [
-      const SizedBox(height: 20),
-      InkWell(
-        onTap: () {
-          // Call the navigation function for the specific scrap type
-          navigateToScrapList(products, title);
-        },
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.4,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey),
-          ),
-          child: Column(
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  fontStyle: FontStyle.italic,
+  Widget buildScrapTypeWithButton(
+      String title, String imageUrl, List<Product> products) {
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        InkWell(
+          onTap: () {
+            // Call the navigation function for the specific scrap type
+            navigateToScrapList(products, title);
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.4,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.grey),
+            ),
+            child: Column(
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    fontStyle: FontStyle.italic,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              Image.asset(
-                imageUrl,
-                height: MediaQuery.of(context).size.height * 0.15,
-                width: MediaQuery.of(context).size.width * 0.4,
-                fit: BoxFit.cover,
-              ),
-            ],
+                const SizedBox(height: 8),
+                Image.asset(
+                  imageUrl,
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  fit: BoxFit.cover,
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    ],
-  );
-}
-
-void navigateToScrapList(List<Product> products, String category) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => ProductListScreen(products: products, category: category),
-    ),
-  );
-}
-
-Widget buildProductLists() {
-  return SingleChildScrollView(
-    physics: const AlwaysScrollableScrollPhysics(),
-    child: Wrap(
-      spacing: 40.0,
-      runSpacing: 10.0,
-      alignment: WrapAlignment.start,
-      children: [
-        buildScrapTypeWithButton("Giấy", "assets/images/paper.jpg", productViewModel.listGiay),
-        buildScrapTypeWithButton("Nhựa", "assets/images/plastic.jpg", productViewModel.listNhua),
-        buildScrapTypeWithButton("Kim loại", "assets/images/metal.jpg", productViewModel.listKimLoai),
-        buildScrapTypeWithButton("Thủy tinh", "assets/images/glass.jpeg", productViewModel.listThuytinh),
-        buildScrapTypeWithButton("Khác", "assets/images/donaso-logo.png", productViewModel.listGiayKhac),
       ],
-    ),
-  );
-}
+    );
+  }
 
-Widget listScrapByType(List<Product> sendas) {
-  return SizedBox(
-    height: MediaQuery.of(context).size.height * 0.7, // Căn đều theo chiều cao của thiết bị
-    child: ListView.builder(
-      scrollDirection: Axis.horizontal,
-      itemCount: sendas.length,
-      itemBuilder: (context, index) {
-        return ProductItemCustomerView(product: sendas[index]);
-      },
-    ),
-  );
-}
+  void navigateToScrapList(List<Product> products, String category) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            ProductListScreen(products: products, category: category),
+      ),
+    );
+  }
 
+  Widget buildProductLists() {
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      child: Wrap(
+        spacing: 40.0,
+        runSpacing: 10.0,
+        alignment: WrapAlignment.start,
+        children: [
+          buildScrapTypeWithButton(
+              "${AppLocalizations.of(context)?.paper}", "assets/images/paper.jpg", productViewModel.listGiay),
+          buildScrapTypeWithButton(
+              "${AppLocalizations.of(context)?.plastic}", "assets/images/plastic.jpg", productViewModel.listNhua),
+          buildScrapTypeWithButton("${AppLocalizations.of(context)?.mental}", "assets/images/metal.jpg",
+              productViewModel.listKimLoai),
+          buildScrapTypeWithButton("${AppLocalizations.of(context)?.glass}", "assets/images/glass.jpeg",
+              productViewModel.listThuytinh),
+          buildScrapTypeWithButton("${AppLocalizations.of(context)?.other}", "assets/images/donaso-logo.png",
+              productViewModel.listGiayKhac),
+        ],
+      ),
+    );
+  }
 
-
+  Widget listScrapByType(List<Product> sendas) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height *
+          0.7, // Căn đều theo chiều cao của thiết bị
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: sendas.length,
+        itemBuilder: (context, index) {
+          return ProductItemCustomerView(product: sendas[index]);
+        },
+      ),
+    );
+  }
 
   void goToCartScreen() {
     Navigator.push(
@@ -340,7 +348,10 @@ Widget listScrapByType(List<Product> sendas) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ProductListScreen(products: products, category: '',),
+        builder: (context) => ProductListScreen(
+          products: products,
+          category: '',
+        ),
       ),
     );
   }

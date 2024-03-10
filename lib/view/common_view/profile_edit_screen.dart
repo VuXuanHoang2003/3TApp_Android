@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:three_tapp_app/viewmodel/auth_viewmodel.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
@@ -34,9 +35,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       addressController.text = userInfo[1];
       phoneController.text = userInfo[2];
       _avatarUrl1 = userInfo[3];
-      // Gán đường dẫn của ảnh từ avatarUrl
-      print("Ảnh cũ nè");
-      print(_avatarUrl1);
+      
+     
     });
   }
 
@@ -63,7 +63,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> editProfile() async {
-    print("hàm edit nè");
     String newName = nameController.text;
     String newAddress = addressController.text;
     String newPhone = phoneController.text;
@@ -71,7 +70,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     // Nếu chọn ảnh mới
     if (_imageFile != null) {
-      print("Chọn ảnh đại diện mới rồi");
       // bool success = await authViewModel.uploadAvatar(_imageFile!, userId!);
 
       // if (success) {
@@ -124,7 +122,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       setState(() {
         _imageFile = File(pickedFile.path);
         _avatarUrl2 = pickedFile.path; // Lưu đường dẫn ảnh đại diện mới
-        print("Ảnh đại diện mới nè: $_avatarUrl2");
       });
     }
   }
@@ -133,7 +130,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chỉnh sửa hồ sơ'),
+        title: Text('${AppLocalizations.of(context)?.editProfile}'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -172,12 +169,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 onPressed: () {
                   _pickImage(ImageSource.gallery);
                 },
-                child: Text('Chọn ảnh đại diện mới'),
+                child: Text('${AppLocalizations.of(context)?.chooseAva}'),
               ),
               SizedBox(height: 13),
-              _buildTextField('Name:', nameController, height: 40),
-              _buildTextField('Address:', addressController, height: 40),
-              _buildTextField('Phone:', phoneController, height: 40),
+              _buildTextField('${AppLocalizations.of(context)?.userName}', nameController, height: 40),
+              _buildTextField('${AppLocalizations.of(context)?.address}', addressController, height: 40),
+              _buildTextField('${AppLocalizations.of(context)?.phoneNumber}', phoneController, height: 40),
               Align(
                 alignment: Alignment.center,
                 child: Container(
@@ -188,7 +185,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.green,
                     ),
-                    child: Text('Cập nhật hồ sơ'),
+                    child: Text('${AppLocalizations.of(context)?.editProfile}'),
                   ),
                 ),
               ),

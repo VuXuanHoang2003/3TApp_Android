@@ -3,6 +3,7 @@ import 'package:three_tapp_app/model/product.dart';
 import 'package:three_tapp_app/utils/common_func.dart';
 import 'package:three_tapp_app/view/common_view/product_details_screen.dart';
 import 'package:three_tapp_app/viewmodel/order_per_person_view_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OrderPerPersonScreen extends StatefulWidget {
   final String address;
@@ -33,7 +34,7 @@ class _OrderPerPersonScreenState extends State<OrderPerPersonScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Đơn hàng của ${widget.address}', style: TextStyle(color: Colors.white)),
+        title: Text('${AppLocalizations.of(context)?.product} ${AppLocalizations.of(context)?.oF} ${widget.address}', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blue,
       ),
       body: StreamBuilder<List<Product>>(
@@ -59,14 +60,14 @@ class _OrderPerPersonScreenState extends State<OrderPerPersonScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Thông tin người dùng:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Text('${AppLocalizations.of(context)?.info} ${AppLocalizations.of(context)?.user}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           SizedBox(height: 8),
-          _buildUserInfoRow('Tên:', userData['username']),
+          _buildUserInfoRow('${AppLocalizations.of(context)?.customerName}:', userData['username']),
           _buildUserInfoRow('Email:', userData['email']),
-          _buildUserInfoRow('Số điện thoại:', userData['phone']),
-          _buildUserInfoRow('Địa chỉ:', widget.address),
+          _buildUserInfoRow('${AppLocalizations.of(context)?.phoneNumber}:', userData['phone']),
+          _buildUserInfoRow('${AppLocalizations.of(context)?.address}:', widget.address),
           SizedBox(height: 20),
-          Text('Đơn hàng:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Text('${AppLocalizations.of(context)?.orders}:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           _buildOrdersList(orders),
         ],
       ),
@@ -104,11 +105,11 @@ class _OrderPerPersonScreenState extends State<OrderPerPersonScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Sản phẩm: ${order.name}', style: TextStyle(fontSize: 18, color: Colors.red)),
+                  Text('${AppLocalizations.of(context)?.product}: ${order.name}', style: TextStyle(fontSize: 18, color: Colors.red)),
                   SizedBox(height: 4),
-                  Text('Khối lượng: ${order.mass} kg', style: TextStyle(fontSize: 16)),
-                  Text('Loại: ${CommonFunc.getSenDaNameByType(order.type)}', style: TextStyle(fontSize: 16)),
-                  Text('Giá: ${order.price} vnd', style: TextStyle(fontSize: 16)),
+                  Text('${AppLocalizations.of(context)?.productWeight}: ${order.mass} kg', style: TextStyle(fontSize: 16)),
+                  Text('${AppLocalizations.of(context)?.type}: ${CommonFunc.getSenDaNameByType(context,order.type)}', style: TextStyle(fontSize: 16)),
+                  Text('${AppLocalizations.of(context)?.price}: ${order.price} vnd', style: TextStyle(fontSize: 16)),
                 ],
               ),
             ),

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../model/product.dart';
 import '../../../model/status.dart';
@@ -69,8 +70,8 @@ class _ProductManagementScreen extends State<ProductManagementScreen> {
                 width: MediaQuery.of(context).size.width,
                 child: userProducts.isNotEmpty
                     ? allProduct(productViewModel.products)
-                    : const Center(
-                        child: Text("Không có sản phẩm."),
+                    :  Center(
+                        child: Text("${AppLocalizations.of(context)?.noProducts}."),
                       ),
               ),
             )

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../model/roles_type.dart';
 import '../../utils/common_func.dart';
@@ -53,8 +54,8 @@ class _ProfileScreen extends State<ProfileScreen> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           centerTitle: true,
-          title: const Text(
-            "Thông tin cá nhân",
+          title: Text(
+            "${AppLocalizations.of(context)?.yourProfile}",
             style: TextStyle(color: Colors.black),
           ),
           leading: IconButton(
@@ -101,8 +102,8 @@ class _ProfileScreen extends State<ProfileScreen> {
               ),
               Center(
                   child: Text(authViewModel.rolesType == RolesType.seller
-                      ? "(Người bán)"
-                      : "(Người mua)")),
+                      ? "${AppLocalizations.of(context)?.customer}"
+                      : "${AppLocalizations.of(context)?.seller}")),
               const Divider(
                 thickness: 0.5,
                 color: Colors.grey,

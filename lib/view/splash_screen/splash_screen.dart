@@ -27,16 +27,17 @@ class _SplashScreen extends State<SplashScreen> {
   late PostViewModel postViewModel;
   late OrderViewModel orderViewModel;
   final notifController = NotificationController();
+
   @override
   void initState() {
     super.initState();
 
     notifController.checkPermission();
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       Future.delayed(const Duration(milliseconds: 5000), () {
         if (FirebaseAuth.instance.currentUser == null) {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => SelectRole()),
           );
@@ -50,13 +51,13 @@ class _SplashScreen extends State<SplashScreen> {
             bool isAdmin = value['isAdmin'] as bool;
             if (isAdmin) {
               authViewModel.onRolesChanged(RolesType.seller);
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => AdminRootScreen()),
               );
             } else {
               authViewModel.onRolesChanged(RolesType.customer);
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => CustomerRootScreen()),
               );
@@ -70,10 +71,10 @@ class _SplashScreen extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    authViewModel = Provider.of<AuthViewModel>(context, listen: true);
-    productViewModel = Provider.of<ProductViewModel>(context, listen: true);
-    postViewModel = Provider.of<PostViewModel>(context, listen: true);
-    orderViewModel = Provider.of<OrderViewModel>(context, listen: true);
+    authViewModel = Provider.of<AuthViewModel>(context);
+    productViewModel = Provider.of<ProductViewModel>(context);
+    postViewModel = Provider.of<PostViewModel>(context);
+    orderViewModel = Provider.of<OrderViewModel>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(

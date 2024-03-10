@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:three_tapp_app/model/roles_type.dart';
 import 'package:three_tapp_app/utils/common_func.dart';
 import 'package:three_tapp_app/viewmodel/auth_viewmodel.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SimpleSignInScreen extends StatefulWidget {
   // final String email;
@@ -58,7 +59,7 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
-          "Đăng ký",
+          "${AppLocalizations.of(context)?.signUp}",
           style: TextStyle(color: Colors.black),
         ),
         elevation: 0,
@@ -74,7 +75,7 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Tạo tài khoản',
+                    "${AppLocalizations.of(context)?.createAccount}",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 40,
@@ -108,7 +109,8 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
                   ElevatedButton.icon(
                     onPressed: getImage,
                     icon: Icon(Icons.photo_camera), // Icon chọn ảnh
-                    label: Text('Chọn ảnh đại diện'), // Text nút chọn ảnh
+                    label: Text(
+                        "${AppLocalizations.of(context)?.chooseAva}"), // Text nút chọn ảnh
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.green, // Màu chữ trên nút
@@ -128,7 +130,7 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(8),
-                  labelText: "Tên",
+                  labelText: "${AppLocalizations.of(context)?.userName}",
                   fillColor: Colors.white,
                   focusedBorder: OutlineInputBorder(
                     borderSide:
@@ -149,7 +151,7 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(8),
-                  labelText: "Số điện thoại",
+                  labelText: "${AppLocalizations.of(context)?.phoneNumber}",
                   fillColor: Colors.white,
                   focusedBorder: OutlineInputBorder(
                     borderSide:
@@ -170,7 +172,7 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(8),
-                  labelText: "Địa chỉ",
+                  labelText: "${AppLocalizations.of(context)?.address}",
                   fillColor: Colors.white,
                   focusedBorder: OutlineInputBorder(
                     borderSide:
@@ -194,7 +196,8 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
                     String phone = phoneController.text.toString().trim();
                     String address = addressController.text.toString().trim();
 
-                    if (name.isNotEmpty &&
+                    if (_image != null &&
+                        name.isNotEmpty &&
                         phone.isNotEmpty &&
                         address.isNotEmpty) {
                       // Thực hiện thêm thông tin người dùng vào Firestore
@@ -247,7 +250,7 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
                       );
                     }
                   },
-                  child: Text("Đăng ký"),
+                  child: Text("${AppLocalizations.of(context)?.signUp}"),
                 ),
               ),
 
@@ -257,7 +260,7 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
                   backToLoginScreen();
                 },
                 child: Text(
-                  'Đã có tài khoản? Đăng nhập',
+                  "${AppLocalizations.of(context)?.accountExist}? ${AppLocalizations.of(context)?.login}",
                   style: TextStyle(color: Colors.black, fontSize: 12),
                 ),
               ),

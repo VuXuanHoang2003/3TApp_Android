@@ -1,0 +1,124 @@
+{
+    "helloWorld":"Xin chào",
+    "searchQues":"Bạn muốn tìm gì ?",
+    "paper":"Giấy",
+    "plastic":"Nhựa",
+    "mental":"Kim loại",
+    "glass":"Thủy tinh",
+    "other":"Khác",
+    "home":"Trang chủ",
+    "post":"Bài viết",
+    "chat":"Trò chuyện",
+    "map":"Bản đồ",
+    "search":"Tìm kiếm",
+    "backToHome":"Trở về trang chủ",
+    "newOrder":"Mới tạo",
+    "inProcess":"Đang giao dịch",
+    "done":"Đã xong",
+    "cancelled":"Đã hủy",
+    "noOrder":"Không có đơn hàng nào",
+    "yourProfile":"Thông tin của bạn",
+    "editProfile":"Chỉnh sửa hồ sơ",
+    "history":"Lịch sử",
+    "guide":"Hướng dẫn",
+    "language":"Ngôn ngữ",
+    "signOut":"Đăng xuất",
+    "productList":"Danh sách sản phẩm",
+    "createOrder":"Tạo đơn",
+    "orderConfirmed":"Xác nhận yêu cầu",
+    "productInfo":"thông tin đơn hàng",
+    "productName":"Tên sản phẩm",
+    "productWeight":"Khối lượng",
+    "contactInfo":"Thông tin liên hệ",
+    "customerName":"Tên khách hàng",
+    "required":"Bắt buộc",
+    "phoneNumber":"Số điện thoại",
+    "address":"Địa chỉ",
+    "type":"Thể loại",
+    "createTransaction":"Tạo giao dịch",
+    "productInDetails":"Chi tiết sản phẩm",
+    "price":"Giá tiền",
+    "productDescription":"Mô tả sản phẩm",
+    "status":"Trạng thái",
+    "customer":"Khách hàng",
+    "created_date":"Ngày tạo",
+    "passwordChange":"Đổi mật khẩu",
+    "oldPassword":"Mật khẩu cũ",
+    "newPassword":"Mật khẩu mới",
+    "reenterPassword":"Nhập lại mật khẩu mới",
+    "languageChange":"Thay đổi ngôn ngữ",
+    "english": "Tiếng Anh",
+    "vietnamese":"Tiếng Việt",
+    "add":"Thêm",
+    "addProduct":"Thêm sản phẩm",
+    "product":"Sản phẩm",
+    "postedBy":"Được đưang bởi",
+    "orders":"Đơn hàng",
+    "postPage":"Bài viết",
+    "noProducts":"Không có sản phẩm nào",
+    "statistics":"Thống kê",
+    "edit":"Cập nhật",
+    "numberOfProductsPosted":"Số sản phẩm đã đăng",
+    "totalSuccessfulTransactions":"Số giao dịch thành công",
+    "revenue":"Doanh thu",
+    "totalAmount":"Tổng tiền",
+    "cancel":"Hủy",
+    "yes":"Có",
+    "no":"Không",
+    "cancelQues":"Bạn có chắc muốn huỷ đơn hàng này",
+    "invalid":"không hợp lệ",
+    "user":"người dùng",
+    "info":"thông tin",
+    "oF":"của",
+    "seller": "Người bán",
+    "signUp":"Đăng ký",
+    "createAccount":"Tạo tài khoản",
+    "chooseAva":"Chọn ảnh đại diện",
+    "userName":"Tên người dùng",
+    "accountExist":"Đã có tài khoản",
+    "login":"Đăng nhập",
+    "loginBy":"Đăng nhập bằng",
+    "password":"Mật khẩu",
+    "error":"lỗi",
+    "noMatch":"không trùng khớp",
+    "invoiceDetails":"Chi tiết hóa đơn",
+    "quantity":"Số lượng",
+    "total":"Tổng cộng",
+    "loginInAccount":"Đăng nhập vào tài khoản của bạn",
+    "noAccountQues":"Bạn chưa có tài khoản ",
+    "chooseStatus":"Chọn trạng thái",
+    "changeStatus":"Thay đổi trạng thái",
+    "cancelOrder":"Hủy đơn",
+    "deleteProductQues":"Bạn có chắc chắn muốn xóa sản phẩm này",
+    "editDate":"Ngày chỉnh sửa",
+    "details":"Chi tiết",
+    "confirm":"Xác nhận"
+
+
+
+
+
+    
+
+
+
+
+
+
+ 
+
+
+
+
+    
+    
+
+
+    
+
+
+    
+    
+
+
+}

@@ -12,6 +12,7 @@ import '../../utils/common_func.dart';
 import '../../utils/image_path.dart';
 import '../../viewmodel/product_viewmodel.dart';
 import '../common_view/custom_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddProductScreen extends StatefulWidget {
   @override
@@ -24,14 +25,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController massController = TextEditingController();
-  FocusNode massFocusNode=FocusNode();
+  FocusNode massFocusNode = FocusNode();
   FocusNode productFocusNode = FocusNode();
   FocusNode descriptionFocusNode = FocusNode();
   FocusNode priceFocusNode = FocusNode();
   User? user;
   List<File> _images = [];
-  
-  
 
   @override
   void initState() {
@@ -81,8 +80,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           centerTitle: true,
-          title: const Text(
-            "Thêm sản phẩm",
+          title: Text(
+            AppLocalizations.of(context)!.addProduct,
             style: TextStyle(color: Colors.black),
           ),
           leading: IconButton(
@@ -138,7 +137,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   focusNode: productFocusNode,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                    labelText: "Tên sản phẩm (*)",
+                    labelText: '${AppLocalizations.of(context)?.price}(*) ',
                     fillColor: Colors.white,
                     focusedBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
@@ -168,7 +167,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   focusNode: priceFocusNode,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: "Giá bán (*)",
+                    labelText: '${AppLocalizations.of(context)?.price}(*) ',
                     fillColor: Colors.white,
                     focusedBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
@@ -199,7 +198,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   focusNode: descriptionFocusNode,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                    labelText: "Mô tả",
+                    labelText:
+                        '${AppLocalizations.of(context)?.productDescription}(*) ',
                     fillColor: Colors.white,
                     focusedBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
@@ -223,15 +223,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     ),
                   ),
                 ),
-                                const SizedBox(height: 8),
-
+                const SizedBox(height: 8),
                 TextFormField(
                   maxLines: null,
                   controller: massController,
                   focusNode: massFocusNode,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                    labelText: "Khối lượng",
+                    labelText:
+                        '${AppLocalizations.of(context)?.productWeight}(*) ',
                     fillColor: Colors.white,
                     focusedBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
@@ -260,7 +260,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 8),
-                      child: Text("Loại:"),
+                      child: Text('${AppLocalizations.of(context)?.type}(*) '),
                     ),
                     Spacer(),
                     DropdownButton<ScrapType>(
@@ -268,7 +268,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         return DropdownMenuItem<ScrapType>(
                           value: type,
                           child: Text(CommonFunc.getSenDaNameByType(
-                              type.toShortString())),
+                              context,type.toShortString())),
                         );
                       }).toList(),
                       value: selectedType,
@@ -296,7 +296,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         double price =
                             double.parse(priceController.text.trim());
                         String description = descriptionController.text.trim();
-                        double mass= double.parse(massController.text.trim());
+                        double mass = double.parse(massController.text.trim());
 
                         Product product = Product(
                           id: UniqueKey().toString(),
@@ -328,7 +328,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         );
                       }
                     },
-                    text: "Thêm",
+                    //text: "Thêm",
+                  text: "${AppLocalizations.of(context)?.add}",
+
+ 
                     textColor: Colors.white,
                     bgColor: Colors.blue,
                   ),

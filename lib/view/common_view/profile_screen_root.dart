@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:three_tapp_app/view/common_view/change_password_screen.dart';
+import 'package:three_tapp_app/view/common_view/language_change.dart';
 import 'package:three_tapp_app/view/common_view/profile_edit_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../model/roles_type.dart';
 import '../../utils/common_func.dart';
@@ -25,7 +27,7 @@ class _ProfileScreenRootState extends State<ProfileScreenRoot> {
 
   @override
   void initState() {
-   _getUserInfo();
+    _getUserInfo();
 
     super.initState();
     user = FirebaseAuth.instance.currentUser;
@@ -34,13 +36,11 @@ class _ProfileScreenRootState extends State<ProfileScreenRoot> {
   }
 
   Future<void> _getUserInfo() async {
-  List<String> userInfo = await authViewModel.getUserInfo();
-  setState(() {
-    _avatarUrl = userInfo[3]; // Gán đường dẫn của ảnh từ avatarUrl
-    print("Hello root");
-    print(_avatarUrl);
-  });
-}
+    List<String> userInfo = await authViewModel.getUserInfo();
+    setState(() {
+      _avatarUrl = userInfo[3]; // Gán đường dẫn của ảnh từ avatarUrl
+    });
+  }
 
   Future<void> getUserAdditionalInfo() async {
     try {
@@ -63,7 +63,7 @@ class _ProfileScreenRootState extends State<ProfileScreenRoot> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Thông tin của bạn'),
+        title: Text('${AppLocalizations.of(context)?.yourProfile}'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -129,7 +129,7 @@ class _ProfileScreenRootState extends State<ProfileScreenRoot> {
                           backgroundColor: Colors.green, // Màu nền xanh lá
                         ),
                         child: Text(
-                          'Chỉnh sửa hồ sơ',
+                          '${AppLocalizations.of(context)?.editProfile}',
                           style: TextStyle(color: Colors.white),
                         ), // Màu chữ đen
                       ),
@@ -143,12 +143,13 @@ class _ProfileScreenRootState extends State<ProfileScreenRoot> {
             Expanded(
               child: ListView(
                 children: [
-                  CustomListTile('Lịch sử'),
-                  CustomListTile('Hướng dẫn'),
-                  CustomListTile('Ngôn ngữ'),
+                  CustomListTile('${AppLocalizations.of(context)?.history}'),
+                  CustomListTile('${AppLocalizations.of(context)?.guide}'),
+                  CustomListTile('${AppLocalizations.of(context)?.language}'),
                   if (authViewModel.userMode == 1)
-                    CustomListTile('Đổi mật khẩu'),
-                  CustomListTile('Thoát tài khoản'),
+                    CustomListTile(
+                        '${AppLocalizations.of(context)?.passwordChange}'),
+                  CustomListTile('${AppLocalizations.of(context)?.signOut}'),
                 ],
               ),
             ),
@@ -176,19 +177,21 @@ class CustomListTile extends StatelessWidget {
         ],
       ),
       onTap: () async {
-        if (itemName == 'Thông tin') {
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => ProfileScreen()),
-          // );
-        } else if (itemName == 'Lịch sử') {
+        if (itemName == '${AppLocalizations.of(context)?.info}') {
+        
+        } else if (itemName == '${AppLocalizations.of(context)?.history}') {
           // Xử lý khi chọn "Lịch sử"
-        } else if (itemName == 'Đổi mật khẩu') {
-          Navigator.pushReplacement(
+        } else if (itemName == '${AppLocalizations.of(context)?.language}') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => LanguageChangePage()),
+          );
+        } else if (itemName == '${AppLocalizations.of(context)?.passwordChange}') {
+          Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => ChangePasswordPage()),
           );
-        } else if (itemName == 'Thoát tài khoản') {
+        } else if (itemName == '${AppLocalizations.of(context)?.signOut}') {
           await authViewModel.logout();
         } else {
           // Xử lý khi bấm vào các mục khác
@@ -211,10 +214,10 @@ class DetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chi tiết'),
+        title: Text('${AppLocalizations.of(context)?.details}'),
       ),
       body: Center(
-        child: Text('Chi tiết về $itemName'),
+        child: Text('${AppLocalizations.of(context)?.details} ${AppLocalizations.of(context)?.oF} $itemName'),
       ),
     );
   }

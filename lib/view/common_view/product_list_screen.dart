@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:three_tapp_app/model/product.dart';
 import 'package:three_tapp_app/view/common_view/product_item_customer_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductListScreen extends StatelessWidget {
   final String category;
@@ -13,7 +14,7 @@ Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
       title: Text(
-        '$category - Danh sách sản phẩm',
+        '$category - ${AppLocalizations.of(context)?.productList}',
         style: TextStyle(fontSize: 15.0),
       ),
     ),

@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:three_tapp_app/view/common_view/profile_screen_root.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../main.dart';
 import '../model/scrap_type.dart';
@@ -62,18 +63,35 @@ class CommonFunc {
     );
   }
 
-  static String getSenDaNameByType(String sendaType) {
+  // static String getSenDaNameByType(String sendaType) {
+  //   switch (sendaType) {
+  //     case "giay":
+  //       return "${AppLocalizations.of(context)?.paper}";
+  //     case "nhua":
+  //       return "Nhựa";
+  //     case "kim_loai":
+  //       return "Kim loại";
+  //     case "thuy_tinh":
+  //       return "Thủy tinh";
+  //     default:
+  //       return "Khác";
+  //   }
+  // }
+  static String getSenDaNameByType(BuildContext context, String sendaType) {
     switch (sendaType) {
       case "giay":
-        return "Giấy";
+        return "${AppLocalizations.of(context)?.paper}";
       case "nhua":
-        return "Nhựa";
+        return "${AppLocalizations.of(context)?.plastic}";
+
       case "kim_loai":
-        return "Kim loại";
+        return "${AppLocalizations.of(context)?.mental}";
+
       case "thuy_tinh":
-        return "Thủy tinh";
+        return "${AppLocalizations.of(context)?.glass}";
+
       default:
-        return "Khác";
+        return "${AppLocalizations.of(context)?.other}";
     }
   }
 
@@ -98,32 +116,36 @@ class CommonFunc {
     }
     return email.split("@").first;
   }
+
   static Future<String> getUsernameByUid(String uid) async {
-  try {
-    // Kết nối đến Firestore collection 'USERS'
-    final CollectionReference usersCollection = FirebaseFirestore.instance.collection('USERS');
+    try {
+      // Kết nối đến Firestore collection 'USERS'
+      final CollectionReference usersCollection =
+          FirebaseFirestore.instance.collection('USERS');
 
-    // Truy vấn người dùng có UID tương ứng
-    QuerySnapshot querySnapshot = await usersCollection.where('uid', isEqualTo: uid).get();
+      // Truy vấn người dùng có UID tương ứng
+      QuerySnapshot querySnapshot =
+          await usersCollection.where('uid', isEqualTo: uid).get();
 
-    // Lấy danh sách các tài khoản có UID tương ứng
-    List<DocumentSnapshot> userList = querySnapshot.docs;
+      // Lấy danh sách các tài khoản có UID tương ứng
+      List<DocumentSnapshot> userList = querySnapshot.docs;
 
-    // Kiểm tra xem có người dùng nào hay không
-    if (userList.isNotEmpty) {
-      // Lấy username từ người dùng đầu tiên (nếu có nhiều người dùng cùng UID)
-      String username = getUsernameByEmail(userList.first['email']);
-      return username;
-    } else {
+      // Kiểm tra xem có người dùng nào hay không
+      if (userList.isNotEmpty) {
+        // Lấy username từ người dùng đầu tiên (nếu có nhiều người dùng cùng UID)
+        String username = getUsernameByEmail(userList.first['email']);
+        return username;
+      } else {
+        return "Unknown username";
+      }
+    } catch (e) {
+      print('Lỗi khi truy cập Firestore: $e');
       return "Unknown username";
     }
-  } catch (e) {
-    print('Lỗi khi truy cập Firestore: $e');
-    return "Unknown username";
   }
-}
 
-  static Future<Map<String, dynamic>?> getUserInfoFromFirebase(String uid) async {
+  static Future<Map<String, dynamic>?> getUserInfoFromFirebase(
+      String uid) async {
     try {
       DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
           await FirebaseFirestore.instance.collection('USERS').doc(uid).get();
@@ -137,18 +159,21 @@ class CommonFunc {
     return null;
   }
 
-  static String getOrderStatusName(String status) {
+  static String getOrderStatusName(BuildContext context,String status) {
     switch (status) {
       case "NEW":
-        return "Mới tạo";
+        return "${AppLocalizations.of(context)?.newOrder}";
       case "PROCESSING":
-        return "Đang xử lý";
+        return "${AppLocalizations.of(context)?.inProcess}";
+
       case "DONE":
-        return "Đã giao";
+        return "${AppLocalizations.of(context)?.done}";
+
       case "CANCEL":
-        return "Đã huỷ";
+        return "${AppLocalizations.of(context)?.cancelled}";
+
       default:
-        return "Mới tạo";
+        return "${AppLocalizations.of(context)?.newOrder}";
     }
   }
 

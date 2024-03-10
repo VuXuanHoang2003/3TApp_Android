@@ -1,0 +1,134 @@
+{
+    "helloWorld":"Hello",
+    "searchQues":"What do you want to find ?",
+    "paper":"Paper",
+    "plastic":"Plasic",
+    "mental":"Mental",
+    "glass":"Glass",
+    "other":"Other",
+    "home":"Home",
+    "post":"Post",
+    "chat":"Chat",
+    "map":"Map",
+    "search":"Search",
+    "backToHome":"Back To Home",
+    "newOrder":"New",
+    "inProcess":"In Process",
+    "done":"Done",
+    "cancelled":"Cancelled",
+    "noOrder":"No order available",
+    "yourProfile":"Your Profile",
+    "editProfile":"Profile Editing",
+    "history":"History",
+    "guide":"Guide",
+    "language":"Language",
+    "signOut":"Sign Out",
+    "productList":"Product List",
+    "createOrder":"Create Orders",
+    "orderConfirmed":"Confirm Request",
+    "productInfo":"Product Information",
+    "productName":"Product Name",
+    "productWeight":"Product Weight",
+    "contactInfo":"Contact Information",
+    "customerName":"Customer Name",
+    "required":"Required",
+    "phoneNumber":"Phone Number",
+    "address":"Address",
+    "type":"Type",
+    "createTransaction":"Create Transaction",
+    "productInDetails":"Product Details",
+    "price":"Price",
+    "productDescription":"Product Description",
+    "status":"Status",
+    "customer":"Customer",
+    "created_date":"Creation Date",
+    "passwordChange":"Change Password",
+    "oldPassword":"Old Password",
+    "newPassword":"New Password",
+    "reenterPassword":"Re-Enter New Password",
+    "languageChange":"Change Language",
+    "english": "English",
+    "vietnamese":"Vietnamese",
+    "add":"Add",
+    "addProduct":"Add New Product",
+    "product":"Product",
+    "postedBy":"Posted By",
+    "orders":"Orders",
+    "postPage":"Post",
+    "edit":"Edit",
+    "noProducts":"No product available",
+
+    "statistics":"Statistics",
+    "numberOfProductsPosted":"Number of product posted",
+    "totalSuccessfulTransactions":"Total successful transactions",
+    "revenue":"Revenue",
+    "totalAmount":"Total amount",
+    "cancel":"Cancel", 
+    "yes":"Yes",
+    "no":"No",
+    "cancelQues":"Are you sure you want to cancel this order?",
+    "invalid":"invalid",
+    "user":"user",
+    "info":"information",
+    "oF":"of",
+    "seller": "Seller",
+    "signUp":"Sign Up",
+    "createAccount":"Create Account",
+    "chooseAva":"Choose profile picture",
+    "userName":"Username",
+    "accountExist":"Already have an account",
+    "login":"Log in",
+    "loginBy":"Log in with",
+    "password":"Password",
+    "error":"Lỗi",
+    "noMatch":"do not match",
+    "invoiceDetails":"Invoice details",
+    "quantity":"Quantity",
+    "total":"Total",
+    "loginInAccount":"Log in to your account",
+    "noAccountQues":"You dont have an account yet",
+    "chooseStatus":"Choose status",
+    "changeStatus":"Update status",
+    "cancelOrder":"Cancel",
+    "deleteProductQues":"Are you sure you want to delete this product",
+    "editDate":"Edit date",
+    "details":"Detail",
+    "confirm":"Confirm"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+}

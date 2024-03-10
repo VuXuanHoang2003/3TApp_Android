@@ -9,6 +9,7 @@ import 'package:three_tapp_app/utils/image_path.dart';
 import 'package:three_tapp_app/view/common_view/details_order_screen.dart';
 import 'package:three_tapp_app/view/customer/order/edit_order_screen.dart';
 import 'package:three_tapp_app/viewmodel/order_viewmodel.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CartItem extends StatefulWidget {
   MyOrder order;
@@ -29,61 +30,6 @@ class _OrderItem extends State<CartItem> {
           builder: (context) => DetailsOrderScreen(order: widget.order)),
     );
   }
-
-  // showDialogChangeOrderStatus() {
-  //   Widget newButton = TextButton(
-  //     child: const Text("Mới tạo"),
-  //     onPressed: () async {
-  //       await orderViewModel.updateOrderStatus(
-  //           orderId: widget.order.id,
-  //           newStatus: OrderStatus.NEW.toShortString());
-  //       Navigator.of(context).pop();
-  //     },
-  //   );
-  //   Widget processButton = TextButton(
-  //     child: const Text("Đang xử lý"),
-  //     onPressed: () async {
-  //       await orderViewModel.updateOrderStatus(
-  //           orderId: widget.order.id,
-  //           newStatus: OrderStatus.PROCESSING.toShortString());
-  //       Navigator.of(context).pop();
-  //     },
-  //   );
-  
-  //   Widget doneButton = TextButton(
-  //     child: const Text("Đã xong"),
-  //     onPressed: () async {
-  //       await orderViewModel.updateOrderStatus(
-  //           orderId: widget.order.id,
-  //           newStatus: OrderStatus.DONE.toShortString());
-  //       Navigator.of(context).pop();
-  //     },
-  //   );
-  
-  //   Widget cancelButton = TextButton(
-  //     child: Text("Huỷ đơn"),
-  //     onPressed: () async {
-  //       await orderViewModel.updateOrderStatus(
-  //           orderId: widget.order.id,
-  //           newStatus: OrderStatus.CANCEL.toShortString());
-  //       Navigator.of(context).pop();
-  //     },
-  //   );
-  
-  //   AlertDialog alert = AlertDialog(
-  //     actionsOverflowAlignment: OverflowBarAlignment.start,
-  //     content: const Text("Chọn trạng thái?", textAlign: TextAlign.center),
-  //     actions: [newButton, processButton, doneButton, cancelButton],
-  //   );
-  
-  //   // show the dialog
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return alert;
-  //     },
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +69,8 @@ class _OrderItem extends State<CartItem> {
                   child: productItemImage(),
                 ),
               ),
-              const SizedBox(width: 8), // Thêm khoảng cách giữa hình ảnh và nội dung
+              const SizedBox(
+                  width: 8), // Thêm khoảng cách giữa hình ảnh và nội dung
               Expanded(
                 flex: 8,
                 child: Column(
@@ -139,8 +86,8 @@ class _OrderItem extends State<CartItem> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                   Text(
-                      "Giá thành : ${widget.order.productPrice} (vnđ)",
+                    Text(
+                      "${AppLocalizations.of(context)?.price} : ${widget.order.productPrice} (vnđ)",
                       style: const TextStyle(
                         color: Colors.redAccent,
                         fontSize: 12,
@@ -148,7 +95,7 @@ class _OrderItem extends State<CartItem> {
                       ),
                     ),
                     Text(
-                      "Khối lượng: ${widget.order.productMass} (kg)",
+                      "${AppLocalizations.of(context)?.productWeight} : ${widget.order.productMass} (kg)",
                       style: const TextStyle(
                         color: Colors.blue,
                         fontSize: 12,
@@ -157,7 +104,7 @@ class _OrderItem extends State<CartItem> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Khách hàng: ${widget.order.customerName}",
+                      "${AppLocalizations.of(context)?.customer}: ${widget.order.customerName}",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -167,7 +114,7 @@ class _OrderItem extends State<CartItem> {
                       ),
                     ),
                     Text(
-                      "Ngày tạo: ${widget.order.createDate}",
+                      "${AppLocalizations.of(context)?.created_date}: ${widget.order.createDate}",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -178,8 +125,8 @@ class _OrderItem extends State<CartItem> {
                     ),
                     Row(
                       children: [
-                        const Text(
-                          "Trạng thái: ",
+                        Text(
+                          "${AppLocalizations.of(context)?.status}: ",
                           style: TextStyle(
                             color: Colors.black54,
                             fontSize: 12,
@@ -187,9 +134,10 @@ class _OrderItem extends State<CartItem> {
                           ),
                         ),
                         Text(
-                          CommonFunc.getOrderStatusName(widget.order.status),
+                          CommonFunc.getOrderStatusName(context,widget.order.status),
                           style: TextStyle(
-                            color: CommonFunc.getOrderStatusColor(widget.order.status),
+                            color: CommonFunc.getOrderStatusColor(
+                                widget.order.status),
                             fontSize: 12,
                             fontStyle: FontStyle.italic,
                           ),
@@ -205,8 +153,8 @@ class _OrderItem extends State<CartItem> {
                   width: 100,
                   child: TextButton(
                     onPressed: goToEditOrderScreen,
-                    child: const Text(
-                      "Chỉnh sửa",
+                    child: Text(
+                     "${AppLocalizations.of(context)?.edit}",
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.blueAccent,

@@ -1,7 +1,7 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../main.dart';
 import '../../model/my_order.dart';
 import '../../model/order_status.dart';
@@ -32,7 +32,7 @@ class _OrderItem extends State<OrderItem> {
 
   showDialogChangeOrderStatus() {
     Widget newButton = TextButton(
-      child: const Text("Mới tạo"),
+      child: Text("${AppLocalizations.of(context)?.newOrder}"),
       onPressed: () async {
         await orderViewModel.updateOrderStatus(
             orderId: widget.order.id,
@@ -41,7 +41,7 @@ class _OrderItem extends State<OrderItem> {
       },
     );
     Widget processButton = TextButton(
-      child: const Text("Đang xử lý"),
+      child: Text("${AppLocalizations.of(context)?.inProcess}"),
       onPressed: () async {
         await orderViewModel.updateOrderStatus(
             orderId: widget.order.id,
@@ -51,7 +51,7 @@ class _OrderItem extends State<OrderItem> {
     );
 
     Widget doneButton = TextButton(
-      child: const Text("Đã xong"),
+      child: Text("${AppLocalizations.of(context)?.done}"),
       onPressed: () async {
         await orderViewModel.updateOrderStatus(
             orderId: widget.order.id,
@@ -61,7 +61,7 @@ class _OrderItem extends State<OrderItem> {
     );
 
     Widget cancelButton = TextButton(
-      child: const Text("Huỷ đơn"),
+      child: Text("${AppLocalizations.of(context)?.cancel}"),
       onPressed: () async {
         await orderViewModel.updateOrderStatus(
             orderId: widget.order.id,
@@ -72,7 +72,7 @@ class _OrderItem extends State<OrderItem> {
 
     AlertDialog alert = AlertDialog(
       actionsOverflowAlignment: OverflowBarAlignment.start,
-      content: const Text("Chọn trạng thái?", textAlign: TextAlign.center),
+      content: Text("${AppLocalizations.of(context)?.chooseAva}", textAlign: TextAlign.center),
       actions: [newButton, processButton, doneButton, cancelButton],
     );
 
@@ -153,7 +153,7 @@ class _OrderItem extends State<OrderItem> {
                           ),
                         ),
                         Text(
-                          "Số lượng:${widget.order.productQuantity}",
+                          "${AppLocalizations.of(context)?.quantity}:${widget.order.productQuantity}",
                           style: const TextStyle(
                             color: Colors.blue,
                             fontSize: 10,
@@ -161,7 +161,7 @@ class _OrderItem extends State<OrderItem> {
                           ),
                         ),
                         Text(
-                          "Khách hàng:${widget.order.customerName}",
+                          "${AppLocalizations.of(context)?.customer}:${widget.order.customerName}",
                           style: const TextStyle(
                             color: Colors.black54,
                             fontSize: 10,
@@ -169,7 +169,7 @@ class _OrderItem extends State<OrderItem> {
                           ),
                         ),
                         Text(
-                          "Ngày tạo:${widget.order.createDate}",
+                          "${AppLocalizations.of(context)?.created_date}:${widget.order.createDate}",
                           style: const TextStyle(
                             color: Colors.black54,
                             fontSize: 10,
@@ -178,8 +178,8 @@ class _OrderItem extends State<OrderItem> {
                         ),
                         Row(
                           children: [
-                            const Text(
-                              "Trạng thái: ",
+                            Text(
+                             "${AppLocalizations.of(context)?.status} :",
                               style: TextStyle(
                                 color: Colors.black54,
                                 fontSize: 10,
@@ -187,7 +187,7 @@ class _OrderItem extends State<OrderItem> {
                               ),
                             ),
                             Text(
-                              CommonFunc.getOrderStatusName(
+                              CommonFunc.getOrderStatusName(context,
                                   widget.order.status),
                               style: TextStyle(
                                 color: CommonFunc.getOrderStatusColor(
@@ -210,8 +210,8 @@ class _OrderItem extends State<OrderItem> {
                   onPressed: () {
                     showDialogChangeOrderStatus();
                   },
-                  child: const Text(
-                    "Đổi trạng thái",
+                  child: Text(
+                    "${AppLocalizations.of(context)?.changeStatus}",
                     style: TextStyle(
                       fontSize: 10,
                       color: Colors.blueAccent,
@@ -227,32 +227,6 @@ class _OrderItem extends State<OrderItem> {
     );
   }
 
-  // Widget productItemImage() {
-  //   if (widget.order.productImage.isNotEmpty) {
-  //     return Image.network(
-  //       widget.order.productImage,
-  //       width: 48,
-  //       height: 48,
-  //       loadingBuilder: (context, child, loadingProgress) {
-  //         if (loadingProgress == null) return child;
-  //         return Center(
-  //           child: CircularProgressIndicator(
-  //             value: loadingProgress.expectedTotalBytes != null
-  //                 ? loadingProgress.cumulativeBytesLoaded /
-  //                     loadingProgress.expectedTotalBytes!
-  //                 : null,
-  //           ),
-  //         );
-  //       },
-  //     );
-  //   } else {
-  //     return Image.asset(
-  //       ImagePath.imgImageUpload,
-  //       width: 48,
-  //       height: 48,
-  //     );
-  //   }
-  // }
   Widget productItemImage() {
     if (widget.order.productImage.isNotEmpty) {
       return FutureBuilder<String>(

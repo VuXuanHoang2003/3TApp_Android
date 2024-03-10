@@ -6,6 +6,7 @@ import '../../model/product.dart';
 import '../../utils/image_path.dart';
 import '../../viewmodel/product_viewmodel.dart';
 import '../admin/edit_product_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductItemAdminView extends StatefulWidget {
   final Product product;
@@ -47,13 +48,13 @@ class _ProductItemAdminViewState extends State<ProductItemAdminView> {
 
   void showDialogConfirmDeleteProduct() {
     Widget noButton = TextButton(
-      child: const Text("Không"),
+      child: Text("${AppLocalizations.of(context)?.no}"),
       onPressed: () {
         Navigator.of(context).pop();
       },
     );
     Widget yesButton = TextButton(
-      child: const Text("Có"),
+      child: Text("${AppLocalizations.of(context)?.yes}"),
       onPressed: () {
         productViewModel.deleteProduct(productId: widget.product.id);
         Navigator.of(context).pop();
@@ -61,8 +62,8 @@ class _ProductItemAdminViewState extends State<ProductItemAdminView> {
     );
 
     AlertDialog alert = AlertDialog(
-      content: const Text(
-        "Bạn có chắc muốn xóa sản phẩm này?",
+      content:  Text(
+        "${AppLocalizations.of(context)?.deleteProductQues}",
         textAlign: TextAlign.center,
       ),
       actions: [
@@ -83,7 +84,8 @@ class _ProductItemAdminViewState extends State<ProductItemAdminView> {
   void getFirstImageUrl() async {
     try {
       // Lấy danh sách tệp tin trong thư mục
-      ListResult result = await FirebaseStorage.instance.ref(widget.product.image).list();
+      ListResult result =
+          await FirebaseStorage.instance.ref(widget.product.image).list();
       // Lấy URL của ảnh đầu tiên nếu danh sách không rỗng
       if (result.items.isNotEmpty) {
         String firstImageURL = await result.items[0].getDownloadURL();
@@ -142,7 +144,7 @@ class _ProductItemAdminViewState extends State<ProductItemAdminView> {
                         ),
                       ),
                       Text(
-                        "Đăng bởi: ${widget.product.uploadBy}",
+                        "${AppLocalizations.of(context)?.postedBy}: ${widget.product.uploadBy}",
                         style: TextStyle(
                           color: Colors.black54,
                           fontSize: 12,
@@ -150,7 +152,7 @@ class _ProductItemAdminViewState extends State<ProductItemAdminView> {
                         ),
                       ),
                       Text(
-                        "Ngày chỉnh sửa: ${widget.product.uploadDate}",
+                        "${AppLocalizations.of(context)?.editDate}: ${widget.product.uploadDate}",
                         style: TextStyle(
                           color: Colors.black54,
                           fontSize: 12,

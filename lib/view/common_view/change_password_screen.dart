@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:three_tapp_app/viewmodel/auth_viewmodel.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   @override
@@ -17,7 +18,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Đổi mật khẩu'),
+        title: Text('${AppLocalizations.of(context)?.passwordChange}'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -29,7 +30,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               controller: _oldPasswordController,
               obscureText: _obscureText,
               decoration: InputDecoration(
-                labelText: 'Mật khẩu cũ',
+                labelText: "${AppLocalizations.of(context)?.oldPassword}",
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscureText ? Icons.visibility : Icons.visibility_off,
@@ -47,7 +48,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               controller: _newPasswordController,
               obscureText: _obscureText,
               decoration: InputDecoration(
-                labelText: 'Mật khẩu mới',
+                labelText: "${AppLocalizations.of(context)?.newPassword}",
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscureText ? Icons.visibility : Icons.visibility_off,
@@ -65,7 +66,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               controller: _confirmPasswordController,
               obscureText: _obscureText,
               decoration: InputDecoration(
-                labelText: 'Nhập lại mật khẩu mới',
+                labelText: "${AppLocalizations.of(context)?.reenterPassword}",
+
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscureText ? Icons.visibility : Icons.visibility_off,
@@ -83,7 +85,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               onPressed: () {
                 _changePassword();
               },
-              child: Text('Đổi mật khẩu'),
+              child: Text("${AppLocalizations.of(context)?.passwordChange}"),
             ),
           ],
         ),
@@ -98,8 +100,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Lỗi'),
-            content: Text('Mật khẩu mới không trùng khớp.'),
+            title: Text("${AppLocalizations.of(context)?.error}"),
+            content: Text('${AppLocalizations.of(context)?.newPassword} ${AppLocalizations.of(context)?.noMatch}'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -114,7 +116,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       return;
     }
 
-   
     AuthViewModel().changePassword(_newPasswordController.text);
   }
 }

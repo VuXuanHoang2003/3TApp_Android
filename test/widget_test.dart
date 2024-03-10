@@ -13,7 +13,11 @@ import 'package:three_tapp_app/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    // await tester.pumpWidget(const MyApp());
+     final Locale testLocale = const Locale('vi');
+    
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(MyApp(locale: testLocale));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
