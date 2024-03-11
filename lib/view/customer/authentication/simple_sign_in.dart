@@ -212,7 +212,8 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
 
                       if (addUserResult) {
                         Fluttertoast.showToast(
-                          msg: "Đăng ký thành công!",
+                          msg:
+                              "${AppLocalizations.of(context)?.signUpSuccessMsg}",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.CENTER,
                           timeInSecForIosWeb: 1,
@@ -229,7 +230,7 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
                         }
                       } else {
                         Fluttertoast.showToast(
-                          msg: "Đã xảy ra lỗi khi đăng ký.",
+                          msg: "${AppLocalizations.of(context)?.signUpFailMsg}",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.CENTER,
                           timeInSecForIosWeb: 1,
@@ -240,7 +241,7 @@ class _SimpleSignInScreenState extends State<SimpleSignInScreen> {
                       }
                     } else {
                       Fluttertoast.showToast(
-                        msg: "Vui lòng nhập đủ thông tin.",
+                        msg: "${AppLocalizations.of(context)?.infoMsg}",
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
                         timeInSecForIosWeb: 1,

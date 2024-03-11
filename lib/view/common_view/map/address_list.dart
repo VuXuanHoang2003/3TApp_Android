@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -5,6 +6,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../customer/order/order_per_person_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // Trang chính hiển thị danh sách địa chỉ
 class AddressListScreen extends StatefulWidget {
@@ -45,7 +47,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
 
     permission = await Geolocator.checkPermission();
 
-    if(permission == LocationPermission.denied) {
+    if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
 
       if (permission == LocationPermission.denied) {
@@ -74,7 +76,8 @@ class _AddressListScreenState extends State<AddressListScreen> {
         );
         double distanceInKm = distanceInMeters / 1000;
         Fluttertoast.showToast(
-          msg: 'Khoảng cách đến $address: ${distanceInKm.toStringAsFixed(2)} km',
+          msg:
+              '${AppLocalizations.of(context)?.distanceMsg} $address: ${distanceInKm.toStringAsFixed(2)} km',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -87,7 +90,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
         _openGoogleMaps(latitude, longitude);
       } else {
         Fluttertoast.showToast(
-          msg: 'Không thể tìm thấy địa chỉ này',
+          msg: '${AppLocalizations.of(context)?.addressMsg}',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -108,7 +111,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
       await launch(googleMapsUrl);
     } else {
       Fluttertoast.showToast(
-        msg: 'Không thể mở Google Maps',
+        msg: '${AppLocalizations.of(context)?.googleMapMsg}',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -134,7 +137,9 @@ class _AddressListScreenState extends State<AddressListScreen> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
-            List<String> addresses = snapshot.data!.docs.map((document) => document.data()['address'] as String).toList();
+            List<String> addresses = snapshot.data!.docs
+                .map((document) => document.data()['address'] as String)
+                .toList();
             return _buildAddressList(addresses);
           }
         },
@@ -166,7 +171,8 @@ class _AddressListScreenState extends State<AddressListScreen> {
   Widget _buildListTile(List<String> sortedAddresses, int index) {
     return FutureBuilder<Location>(
       future: _currentPosition != null
-          ? locationFromAddress(sortedAddresses[index]).then((locations) => locations.first)
+          ? locationFromAddress(sortedAddresses[index])
+              .then((locations) => locations.first)
           : null,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -185,18 +191,20 @@ class _AddressListScreenState extends State<AddressListScreen> {
           return Card(
             child: ListTile(
               title: Text(sortedAddresses[index]),
-              subtitle: Text('Khoảng cách: ${distanceInKm.toStringAsFixed(2)} km'),
+              subtitle:
+                  Text('${AppLocalizations.of(context)?.distance}: ${distanceInKm.toStringAsFixed(2)} km'),
               leading: Icon(Icons.location_on),
               trailing: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => OrderPerPersonScreen(address: sortedAddresses[index]),
+                      builder: (context) =>
+                          OrderPerPersonScreen(address: sortedAddresses[index]),
                     ),
                   );
                 },
-                child: Text('Xem đơn'),
+                child: Text('${AppLocalizations.of(context)?.viewOrder}'),
               ),
               onTap: () {
                 _onAddressTapped(sortedAddresses[index]);
@@ -204,7 +212,7 @@ class _AddressListScreenState extends State<AddressListScreen> {
             ),
           );
         } else {
-          return ListTile(title: Text('Loading...'));
+          return ListTile(title: Text('${AppLocalizations.of(context)?.loading}'));
         }
       },
     );
@@ -230,9 +238,11 @@ class _AddressListScreenState extends State<AddressListScreen> {
             });
           }
         }
-        addressDetails.sort((a, b) =>
-            (a['distanceInKm'] as double).compareTo(b['distanceInKm'] as double));
-        return addressDetails.map((details) => details['address'] as String).toList();
+        addressDetails.sort((a, b) => (a['distanceInKm'] as double)
+            .compareTo(b['distanceInKm'] as double));
+        return addressDetails
+            .map((details) => details['address'] as String)
+            .toList();
       } else {
         return addresses;
       }

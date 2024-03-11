@@ -92,7 +92,37 @@
     "deleteProductQues":"Bạn có chắc chắn muốn xóa sản phẩm này",
     "editDate":"Ngày chỉnh sửa",
     "details":"Chi tiết",
-    "confirm":"Xác nhận"
+    "confirm":"Xác nhận",
+    "infoMsg":"Vui lòng nhập đủ thông tin",
+    "fail":"thất bại.",
+    "success":"thành công.",
+    "formatMsg":"Vui lòng nhập đúng định dạng!",
+    "updateInfoMsg":"Cập nhật thông tin",
+    "updateProfileMsg":"Cập nhật hồ sơ",
+    "roleMsg":"Vui lòng chọn vai trò của bạn!",
+    "distanceMsg":"Khoảng cách đến",
+    "addressMsg":"Không tìm thấy địa chỉ này!",
+    "googleMapMsg":"Không thể mở Google Maps!",
+    "googleMapInstallMsg":"Google Map không được cài đặt!",
+    "reenterPasswordMsg":"Nhập lại mật khẩu không khớp!",
+    "signUpSuccessMsg":"Đăng ký thành công!",
+    "signUpFailMsg":"Đã xảy ra lỗi khi đăng ký!",
+    "fetchErrorMsg":"Lỗi khi truy xuất dữ liệu người dùng và đơn hàng!",
+    "distance":"Khoảng cách",
+    "viewOrder":"Xem đơn",
+    "loading":"Đang tải....",
+    "inputAddress":"Nhập địa chỉ cần tìm"
+
+
+
+
+
+
+
+
+
+
+
 
 
 

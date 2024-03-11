@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:three_tapp_app/model/product.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OrderPerPersonViewModel {
   final String address;

@@ -35,8 +35,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       addressController.text = userInfo[1];
       phoneController.text = userInfo[2];
       _avatarUrl1 = userInfo[3];
-      
-     
     });
   }
 
@@ -93,7 +91,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     if (success) {
       Fluttertoast.showToast(
-        msg: "Cập nhật hồ sơ thành công.",
+        msg: "${AppLocalizations.of(context)?.updateProfileMsg}",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,
@@ -103,7 +101,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       );
     } else {
       Fluttertoast.showToast(
-        msg: "Cập nhật thông tin thất bại.",
+        msg:
+            "${AppLocalizations.of(context)?.updateInfoMsg} ${AppLocalizations.of(context)?.fail}",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,
@@ -172,9 +171,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: Text('${AppLocalizations.of(context)?.chooseAva}'),
               ),
               SizedBox(height: 13),
-              _buildTextField('${AppLocalizations.of(context)?.userName}', nameController, height: 40),
-              _buildTextField('${AppLocalizations.of(context)?.address}', addressController, height: 40),
-              _buildTextField('${AppLocalizations.of(context)?.phoneNumber}', phoneController, height: 40),
+              _buildTextField(
+                  '${AppLocalizations.of(context)?.userName}', nameController,
+                  height: 40),
+              _buildTextField(
+                  '${AppLocalizations.of(context)?.address}', addressController,
+                  height: 40),
+              _buildTextField('${AppLocalizations.of(context)?.phoneNumber}',
+                  phoneController,
+                  height: 40),
               Align(
                 alignment: Alignment.center,
                 child: Container(

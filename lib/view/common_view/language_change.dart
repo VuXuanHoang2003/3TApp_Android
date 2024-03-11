@@ -1,56 +1,7 @@
-
-
-// import 'package:flutter/material.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:three_tapp_app/main.dart';
-
-// class LanguageChangePage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Change Language'),
-//       ),
-//       body: Center(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             RadioListTile<String>(
-//               title: Text('English'),
-//               value: 'en',
-//               groupValue: _selectedLanguage,
-//               onChanged: (value) {
-//                 _saveLanguage(value!);
-//                 MyApp.setLocale(context, const Locale('en'));
-//               },
-//             ),
-//             RadioListTile<String>(
-//               title: Text('Vietnamese'),
-//               value: 'vi',
-//               groupValue: _selectedLanguage,
-//               onChanged: (value) {
-//                 _saveLanguage(value!);
-//                 MyApp.setLocale(context, const Locale('vi'));
-//               },
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-
-//   String _selectedLanguage = '';
-
-//   Future<void> _saveLanguage(String languageCode) async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     await prefs.setString('languageCode', languageCode);
-//     _selectedLanguage = languageCode;
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:three_tapp_app/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LanguageChangePage extends StatefulWidget {
   @override
@@ -77,14 +28,14 @@ class _LanguageChangePageState extends State<LanguageChangePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Change Language'),
+        title: Text('${AppLocalizations.of(context)?.languageChange}'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             RadioListTile<String>(
-              title: Text('English'),
+              title: Text('${AppLocalizations.of(context)?.english}'),
               value: 'en',
               groupValue: _selectedLanguage,
               onChanged: (value) {
@@ -97,7 +48,7 @@ class _LanguageChangePageState extends State<LanguageChangePage> {
               selected: _selectedLanguage == 'en',
             ),
             RadioListTile<String>(
-              title: Text('Vietnamese'),
+              title: Text('${AppLocalizations.of(context)?.vietnamese}'),
               value: 'vi',
               groupValue: _selectedLanguage,
               onChanged: (value) {

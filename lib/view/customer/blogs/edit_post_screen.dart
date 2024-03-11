@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../model/post.dart';
 import '../../../utils/image_path.dart';
@@ -84,7 +85,11 @@ class _EditPostScreen extends State<EditPostScreen> {
           elevation: 0,
         ),
         body: Padding(
-          padding: EdgeInsets.only(left: 16, top: 8, right: 16, bottom: MediaQuery.of(context).padding.bottom + 16),
+          padding: EdgeInsets.only(
+              left: 16,
+              top: 8,
+              right: 16,
+              bottom: MediaQuery.of(context).padding.bottom + 16),
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Container(
@@ -111,11 +116,13 @@ class _EditPostScreen extends State<EditPostScreen> {
                       labelText: "Tiêu đề",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.blueAccent, width: 2.0),
+                        borderSide: const BorderSide(
+                            color: Colors.blueAccent, width: 2.0),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.grey, width: 1),
+                        borderSide:
+                            const BorderSide(color: Colors.grey, width: 1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
@@ -131,11 +138,13 @@ class _EditPostScreen extends State<EditPostScreen> {
                       labelText: "Nội dung",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.blueAccent, width: 2.0),
+                        borderSide: const BorderSide(
+                            color: Colors.blueAccent, width: 2.0),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.grey, width: 1),
+                        borderSide:
+                            const BorderSide(color: Colors.grey, width: 1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
@@ -145,10 +154,18 @@ class _EditPostScreen extends State<EditPostScreen> {
                     width: MediaQuery.of(context).size.width,
                     child: CustomButton(
                         onPressed: () async {
-                          if (titleController.text.toString().trim().isNotEmpty &&
-                              contentController.text.toString().trim().isNotEmpty) {
-                            String title = titleController.text.toString().trim();
-                            String content = contentController.text.toString().trim();
+                          if (titleController.text
+                                  .toString()
+                                  .trim()
+                                  .isNotEmpty &&
+                              contentController.text
+                                  .toString()
+                                  .trim()
+                                  .isNotEmpty) {
+                            String title =
+                                titleController.text.toString().trim();
+                            String content =
+                                contentController.text.toString().trim();
 
                             Post post = Post(
                               id: widget.post.id,
@@ -162,11 +179,12 @@ class _EditPostScreen extends State<EditPostScreen> {
                               updateDate: DateTime.now().toString(),
                             );
 
-                            await postViewModel.updatePost(post: post, imageFile: _image);
+                            await postViewModel.updatePost(
+                                post: post, imageFile: _image);
                             Navigator.of(context).pop();
                           } else {
                             Fluttertoast.showToast(
-                                msg: "Vui lòng nhập đủ thông tin.",
+                                msg: "${AppLocalizations.of(context)?.infoMsg}",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.CENTER,
                                 timeInSecForIosWeb: 1,

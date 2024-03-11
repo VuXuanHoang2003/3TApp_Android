@@ -105,7 +105,7 @@ class _LoginScreen extends State<LoginScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
-        title:  Text(
+        title: Text(
           "${AppLocalizations.of(context)?.login}",
           style: TextStyle(color: Colors.black),
         ),
@@ -241,7 +241,7 @@ class _LoginScreen extends State<LoginScreen> {
                           passwordController.text.toString().trim();
                       if (!Validators.isValidEmail(email)) {
                         Fluttertoast.showToast(
-                          msg: "Vui lòng nhập đúng định dạng email.",
+                          msg: "${AppLocalizations.of(context)?.formatMsg}",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.CENTER,
                           timeInSecForIosWeb: 1,
@@ -259,7 +259,7 @@ class _LoginScreen extends State<LoginScreen> {
                       }
                     } else {
                       Fluttertoast.showToast(
-                        msg: "Vui lòng nhập đủ thông tin.",
+                        msg: "${AppLocalizations.of(context)?.infoMsg}",
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
                         timeInSecForIosWeb: 1,
@@ -284,7 +284,7 @@ class _LoginScreen extends State<LoginScreen> {
                   }
                 },
                 child: Text(
-                  "${AppLocalizations.of(context)?.noAccountQues}? ${AppLocalizations.of(context)?.signUp}",
+                  "${AppLocalizations.of(context)?.noAccountQues}?  ${AppLocalizations.of(context)?.signUp}",
                   style: TextStyle(color: Colors.black, fontSize: 12),
                 ),
               ),

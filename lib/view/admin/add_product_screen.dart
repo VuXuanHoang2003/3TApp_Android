@@ -318,7 +318,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         Navigator.of(context).pop();
                       } else {
                         Fluttertoast.showToast(
-                          msg: "Vui lòng nhập đủ thông tin.",
+                          msg: "${AppLocalizations.of(context)?.infoMsg}",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.CENTER,
                           timeInSecForIosWeb: 1,

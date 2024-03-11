@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../model/post.dart';
 import '../../../utils/common_func.dart';
@@ -79,10 +80,7 @@ class _AddPostScreen extends State<AddPostScreen> {
               left: 16,
               top: 8,
               right: 16,
-              bottom: MediaQuery
-                  .of(context)
-                  .padding
-                  .bottom + 16),
+              bottom: MediaQuery.of(context).padding.bottom + 16),
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
             child: Container(
@@ -93,22 +91,22 @@ class _AddPostScreen extends State<AddPostScreen> {
                 children: [
                   Center(
                       child: GestureDetector(
-                        onTap: () async {
-                          print("pick image");
-                          getImage();
-                        },
-                        child: _image == null
-                            ? Image.asset(
-                          ImagePath.imgImageUpload,
-                          width: 64,
-                          height: 64,
-                        )
-                            : Image.file(
-                          _image!,
-                          width: 64,
-                          height: 64,
-                        ),
-                      )),
+                    onTap: () async {
+                      print("pick image");
+                      getImage();
+                    },
+                    child: _image == null
+                        ? Image.asset(
+                            ImagePath.imgImageUpload,
+                            width: 64,
+                            height: 64,
+                          )
+                        : Image.file(
+                            _image!,
+                            width: 64,
+                            height: 64,
+                          ),
+                  )),
                   const Padding(padding: EdgeInsets.only(top: 32)),
                   TextFormField(
                     maxLines: null,
@@ -126,7 +124,7 @@ class _AddPostScreen extends State<AddPostScreen> {
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide:
-                        const BorderSide(color: Colors.grey, width: 1),
+                            const BorderSide(color: Colors.grey, width: 1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
@@ -148,48 +146,48 @@ class _AddPostScreen extends State<AddPostScreen> {
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide:
-                        const BorderSide(color: Colors.grey, width: 1),
+                            const BorderSide(color: Colors.grey, width: 1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                   ),
                   const Padding(padding: EdgeInsets.only(top: 32)),
                   SizedBox(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                    width: MediaQuery.of(context).size.width,
                     child: CustomButton(
                         onPressed: () async {
                           if (titleController.text
-                              .toString()
-                              .trim()
-                              .isNotEmpty && contentController.text
-                              .toString()
-                              .trim()
-                              .isNotEmpty) {
+                                  .toString()
+                                  .trim()
+                                  .isNotEmpty &&
+                              contentController.text
+                                  .toString()
+                                  .trim()
+                                  .isNotEmpty) {
                             String title =
-                            titleController.text.toString().trim();
+                                titleController.text.toString().trim();
                             String content =
-                            contentController.text.toString().trim();
+                                contentController.text.toString().trim();
 
                             Post post = Post(
                               id: UniqueKey().toString(),
                               title: title,
                               image: '',
-                              authorName: CommonFunc.getUsernameByEmail(user?.email ?? "Unknown user"),
+                              authorName: CommonFunc.getUsernameByEmail(
+                                  user?.email ?? "Unknown user"),
                               authorEmail: user?.email ?? "Unknown user",
                               content: content,
                               numberLike: 0,
                               createDate: DateTime.now().toString(),
-                              updateDate: DateTime.now().toString(),);
+                              updateDate: DateTime.now().toString(),
+                            );
 
-
-                            await postViewModel.addPost(post:post, imageFile: _image);
+                            await postViewModel.addPost(
+                                post: post, imageFile: _image);
                             Navigator.of(context).pop();
                           } else {
                             Fluttertoast.showToast(
-                                msg: "Vui lòng nhập đủ thông tin.",
+                                msg: "${AppLocalizations.of(context)?.infoMsg}",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.CENTER,
                                 timeInSecForIosWeb: 1,

@@ -301,7 +301,8 @@ class _LoginScreenState extends State<SignUpScreen> {
                       bool isAdmin = widget.isAdmin;
                       if (!Validators.isValidEmail(email)) {
                         Fluttertoast.showToast(
-                          msg: "Vui lòng nhập đúng định dạng email.",
+                          msg:
+                              "${AppLocalizations.of(context)?.formatMsg} email",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.CENTER,
                           timeInSecForIosWeb: 1,
@@ -311,7 +312,8 @@ class _LoginScreenState extends State<SignUpScreen> {
                         );
                       } else if (password != reEnterPassword) {
                         Fluttertoast.showToast(
-                          msg: "Nhập lại mật khẩu không khớp.",
+                          msg:
+                              "${AppLocalizations.of(context)?.reenterPassword}",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.CENTER,
                           timeInSecForIosWeb: 1,
@@ -336,7 +338,7 @@ class _LoginScreenState extends State<SignUpScreen> {
                       }
                     } else {
                       Fluttertoast.showToast(
-                        msg: "Vui lòng nhập đủ thông tin.",
+                        msg: "${AppLocalizations.of(context)?.infoMsg}",
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
                         timeInSecForIosWeb: 1,

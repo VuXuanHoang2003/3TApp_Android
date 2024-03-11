@@ -88,7 +88,7 @@ class _SelectRole extends State<SelectRole> {
                       moveToLoginScreen(rolesType);
                     } else {
                       Fluttertoast.showToast(
-                          msg: "Vui lòng chọn vai trò của bạn.",
+                          msg: "${AppLocalizations.of(context)?.roleMsg}",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.CENTER,
                           timeInSecForIosWeb: 1,

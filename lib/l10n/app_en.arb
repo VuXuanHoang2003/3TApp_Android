@@ -93,7 +93,36 @@
     "deleteProductQues":"Are you sure you want to delete this product",
     "editDate":"Edit date",
     "details":"Detail",
-    "confirm":"Confirm"
+    "confirm":"Confirm",
+    "infoMsg": "Please enter complete information",
+    "fail": "failed.",
+    "success": "successful.",
+    "formatMsg": "Please enter the correct format!",
+    "updateInfoMsg": "Update information",
+    "updateProfileMsg": "Update profile",
+    "roleMsg": "Please select your role!",
+    "distanceMsg": "Distance to",
+    "addressMsg": "Address not found!",
+    "googleMapMsg": "Unable to open Google Maps!",
+    "googleMapInstallMsg": "Google Map is not installed!",
+    "reenterPasswordMsg": "Re-entered password does not match!",
+    "signUpSuccessMsg": "Sign up successful!",
+    "signUpFailMsg": "An error occurred while signing up!",
+    "fetchErrorMsg": "Error fetching user data and orders!",
+    "distance":"Distance",
+    "viewOrder":"View Order",
+    "loading":"Loading....",
+    "inputAddress":"Please enter the address to search for."
+
+
+
+
+
+
+
+
+
+
 
 
 

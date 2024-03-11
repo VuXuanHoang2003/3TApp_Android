@@ -91,7 +91,6 @@ class _EditProductScreen extends State<EditProductScreen> {
         appBar: AppBar(
           backgroundColor: Colors.white,
           centerTitle: true,
-        
           title: Text(
             "${AppLocalizations.of(context)?.edit} ${AppLocalizations.of(context)?.product}",
             style: TextStyle(color: Colors.black),
@@ -134,7 +133,8 @@ class _EditProductScreen extends State<EditProductScreen> {
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(8),
-                      labelText: "${AppLocalizations.of(context)?.productName}(*)",
+                      labelText:
+                          "${AppLocalizations.of(context)?.productName}(*)",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
@@ -197,7 +197,8 @@ class _EditProductScreen extends State<EditProductScreen> {
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(8),
-                      labelText: "${AppLocalizations.of(context)?.productDescription}",
+                      labelText:
+                          "${AppLocalizations.of(context)?.productDescription}",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
@@ -218,7 +219,8 @@ class _EditProductScreen extends State<EditProductScreen> {
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(8),
-                      labelText: "${AppLocalizations.of(context)?.productWeight} (kg)",
+                      labelText:
+                          "${AppLocalizations.of(context)?.productWeight} (kg)",
                       fillColor: Colors.white,
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
@@ -254,8 +256,8 @@ class _EditProductScreen extends State<EditProductScreen> {
                         items: productType.map((ScrapType value) {
                           return DropdownMenuItem<ScrapType>(
                             value: value,
-                            child: Text(CommonFunc.getSenDaNameByType(context,
-                                value.toShortString())),
+                            child: Text(CommonFunc.getSenDaNameByType(
+                                context, value.toShortString())),
                           );
                         }).toList(),
                         value: selectedType,
@@ -311,7 +313,7 @@ class _EditProductScreen extends State<EditProductScreen> {
                             Navigator.of(context).pop();
                           } else {
                             Fluttertoast.showToast(
-                                msg: "Vui lòng nhập đủ thông tin.",
+                                msg: "${AppLocalizations.of(context)?.infoMsg}",
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.CENTER,
                                 timeInSecForIosWeb: 1,
