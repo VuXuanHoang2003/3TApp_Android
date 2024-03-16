@@ -21,6 +21,6 @@ abstract class AuthRepo {
     String oldPassword,
     String newPassword,
   );
-  List<String> getUserInfoWidget();
-  Future<List<String>>getUserInfo();
+  Future<List<String>> getUserInfoWidget(String id);
+  Future<List<String>> getUserInfo();
 }

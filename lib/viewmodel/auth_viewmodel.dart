@@ -177,17 +177,4 @@ class AuthViewModel extends BaseViewModel {
       ]; // Trả về danh sách rỗng trong trường hợp có lỗi xảy ra
     }
   }
-
-  List<String> getUserInfoWidget() {
-    try {
-      return authRepo.getUserInfoWidget();
-    } catch (error) {
-      print('Error fetching user info: $error');
-      return [
-        '',
-        '',
-        ''
-      ]; // Trả về danh sách rỗng trong trường hợp có lỗi xảy ra
-    }
-  }
 }

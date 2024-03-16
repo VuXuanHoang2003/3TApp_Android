@@ -258,36 +258,28 @@ class AuthRepoImpl with AuthRepo {
     }
   }
 
-  List<String> getUserInfoWidget() {
+  Future<List<String>> getUserInfoWidget(String email) async {
     try {
-      // Lấy dữ liệu người dùng từ Firestore
-      DocumentSnapshot userSnapshot = FirebaseFirestore.instance
+      // Lấy danh sách người dùng có email tương ứng
+      QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
           .collection('USERS')
-          .doc(_currentUid!)
-          .get() as DocumentSnapshot<Object?>;
+          .where('email', isEqualTo: email)
+          .get();
 
-      // Kiểm tra xem dữ liệu người dùng có tồn tại không
-      if (userSnapshot.exists) {
-        // Lấy thông tin từ dữ liệu người dùng
+      if (usersSnapshot.docs.isNotEmpty) {
+        DocumentSnapshot userSnapshot = usersSnapshot.docs.first;
+
         String username = userSnapshot.get('username') ?? '';
         String address = userSnapshot.get('address') ?? '';
         String phone = userSnapshot.get('phone') ?? '';
 
-        // Trả về kết quả dưới dạng danh sách
-        return [
-          username,
-          address,
-          phone,
-        ];
-      } else {
-        // Trường hợp dữ liệu người dùng không tồn tại, trả về danh sách rỗng
-        return ['', '', ''];
+        return [username, address, phone];
       }
-    } catch (error) {
-      // Xử lý lỗi nếu có
-      print('Error getting user data: $error');
 
-      // Trả về danh sách rỗng trong trường hợp có lỗi xảy ra
+      // Không tìm thấy người dùng với email tương ứng
+      return ['', '', ''];
+    } catch (error) {
+      print('Error getting user data: $error');
       return ['', '', ''];
     }
   }

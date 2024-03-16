@@ -21,12 +21,11 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   AuthViewModel authViewModel = AuthViewModel();
   List<String> imageUrls = [];
-  late List<String> userInfo;
+  // late List<String> userInfo;    
 
   @override
   void initState() {
     super.initState();
-    userInfo = authViewModel.getUserInfoWidget();
     getAllImageUrls();
   }
 
@@ -207,7 +206,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 style: FlutterFlowTheme.of(context).labelMedium,
                               ),
                               TextSpan(
-                                text: userInfo.elementAt(0),
+                                // text: userInfo.elementAt(0),
                                 style: TextStyle(),
                               )
                             ],
@@ -247,7 +246,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 style: FlutterFlowTheme.of(context).labelMedium,
                               ),
                               TextSpan(
-                                text: userInfo.elementAt(2),
+                                // text: userInfo.elementAt(2),
                                 style: TextStyle(),
                               )
                             ],
@@ -266,8 +265,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 text: 'Địa chỉ: ',
                                 style: FlutterFlowTheme.of(context).labelMedium,
                               ),
-                              TextSpan(
-                                text: userInfo.elementAt(1),
+                              const TextSpan(
+                                // text: userInfo.elementAt(1),
                                 style: TextStyle(),
                               )
                             ],

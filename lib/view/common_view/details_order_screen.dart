@@ -34,7 +34,6 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
   void initState() {
     super.initState();
     getAllImageUrls();
-    userInfo = orderViewModel.getUserInfo();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       reloadView();
     });

@@ -192,7 +192,7 @@ class OrderViewModel extends BaseViewModel {
     }
   }
 
-  List<String> getUserInfo() {
-    return AuthRepoImpl().getUserInfoWidget();
+  Future<List<String>> getUserInfo(String email) {
+    return AuthRepoImpl().getUserInfoWidget(email);
   }
 }
