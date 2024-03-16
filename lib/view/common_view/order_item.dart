@@ -72,7 +72,8 @@ class _OrderItem extends State<OrderItem> {
 
     AlertDialog alert = AlertDialog(
       actionsOverflowAlignment: OverflowBarAlignment.start,
-      content: Text("${AppLocalizations.of(context)?.chooseAva}", textAlign: TextAlign.center),
+      content: Text("${AppLocalizations.of(context)?.chooseAva}",
+          textAlign: TextAlign.center),
       actions: [newButton, processButton, doneButton, cancelButton],
     );
 
@@ -179,7 +180,7 @@ class _OrderItem extends State<OrderItem> {
                         Row(
                           children: [
                             Text(
-                             "${AppLocalizations.of(context)?.status} :",
+                              "${AppLocalizations.of(context)?.status} :",
                               style: TextStyle(
                                 color: Colors.black54,
                                 fontSize: 10,
@@ -187,8 +188,8 @@ class _OrderItem extends State<OrderItem> {
                               ),
                             ),
                             Text(
-                              CommonFunc.getOrderStatusName(context,
-                                  widget.order.status),
+                              CommonFunc.getOrderStatusName(
+                                  context, widget.order.status),
                               style: TextStyle(
                                 color: CommonFunc.getOrderStatusColor(
                                   widget.order.status,

@@ -43,7 +43,8 @@ class _ChatPageState extends State<ChatPage> {
         return;
       }
       if (_videoPlayerController.value.hasError) {
-        print('Video player error: ${_videoPlayerController.value.errorDescription}');
+        print(
+            'Video player error: ${_videoPlayerController.value.errorDescription}');
       }
     });
   }
@@ -56,7 +57,8 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _selectImage() async {
-    final pickedFile = await _imagePicker.pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _selectedImage = File(pickedFile.path);
@@ -65,7 +67,8 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void _selectVideo() async {
-    final pickedFile = await _imagePicker.pickVideo(source: ImageSource.gallery);
+    final pickedFile =
+        await _imagePicker.pickVideo(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _selectedVideo = File(pickedFile.path);
@@ -186,8 +189,7 @@ class _ChatPageState extends State<ChatPage> {
 
   // Build message item
   Widget _buildMessageItem(DocumentSnapshot document) {
-    Map<String, dynamic> data =
-        document.data() as Map<String, dynamic>;
+    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
     // Align the message to the right if the sender is the current user, otherwise align to the left
     var alignment = (data['senderId'] == _firebaseAuth.currentUser!.uid)
         ? Alignment.centerRight
@@ -198,9 +200,10 @@ class _ChatPageState extends State<ChatPage> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
-          crossAxisAlignment: (data['senderId'] == _firebaseAuth.currentUser!.uid)
-              ? CrossAxisAlignment.end
-              : CrossAxisAlignment.start,
+          crossAxisAlignment:
+              (data['senderId'] == _firebaseAuth.currentUser!.uid)
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
           mainAxisAlignment:
               (data['senderId'] == _firebaseAuth.currentUser!.uid)
                   ? MainAxisAlignment.end

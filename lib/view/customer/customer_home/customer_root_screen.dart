@@ -5,7 +5,6 @@ import '../blogs/blogs_screen.dart';
 import 'customer_home_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class CustomerRootScreen extends StatefulWidget {
   const CustomerRootScreen({super.key});
 
@@ -38,7 +37,7 @@ class _CustomerRootScreen extends State<CustomerRootScreen> {
         backgroundColor: Colors.white,
         body: _widgetOptions.elementAt(_selectedIndex),
         bottomNavigationBar: BottomNavigationBar(
-          items:  <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: '${AppLocalizations.of(context)?.home}',

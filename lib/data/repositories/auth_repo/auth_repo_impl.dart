@@ -634,4 +634,10 @@ Future<String?> getLatestImageURL(String userId) async {
       throw e; // Ném ra lỗi nếu có
     }
   }
+  
+  @override
+  Future<List<String>> getUserInfoWidget(String id) {
+    // TODO: implement getUserInfoWidget
+    throw UnimplementedError();
+  }
 }

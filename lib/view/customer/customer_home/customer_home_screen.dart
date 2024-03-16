@@ -94,8 +94,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
                       String username = snapshot.data ?? "Unknown";
-                    
-                 
+
                       return Text(
                         '${AppLocalizations.of(context)?.helloWorld}, $username',
                         style: const TextStyle(
@@ -208,7 +207,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                     onSubmitted: (value) async {
                       await onSearchSubmitted();
                     },
-                    decoration:  InputDecoration(
+                    decoration: InputDecoration(
                       isDense: true,
                       contentPadding: EdgeInsets.all(8.0),
                       hintText: "${AppLocalizations.of(context)?.searchQues}",
@@ -308,16 +307,16 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
         runSpacing: 10.0,
         alignment: WrapAlignment.start,
         children: [
-          buildScrapTypeWithButton(
-              "${AppLocalizations.of(context)?.paper}", "assets/images/paper.jpg", productViewModel.listGiay),
-          buildScrapTypeWithButton(
-              "${AppLocalizations.of(context)?.plastic}", "assets/images/plastic.jpg", productViewModel.listNhua),
-          buildScrapTypeWithButton("${AppLocalizations.of(context)?.mental}", "assets/images/metal.jpg",
-              productViewModel.listKimLoai),
-          buildScrapTypeWithButton("${AppLocalizations.of(context)?.glass}", "assets/images/glass.jpeg",
-              productViewModel.listThuytinh),
-          buildScrapTypeWithButton("${AppLocalizations.of(context)?.other}", "assets/images/donaso-logo.png",
-              productViewModel.listGiayKhac),
+          buildScrapTypeWithButton("${AppLocalizations.of(context)?.paper}",
+              "assets/images/paper.jpg", productViewModel.listGiay),
+          buildScrapTypeWithButton("${AppLocalizations.of(context)?.plastic}",
+              "assets/images/plastic.jpg", productViewModel.listNhua),
+          buildScrapTypeWithButton("${AppLocalizations.of(context)?.mental}",
+              "assets/images/metal.jpg", productViewModel.listKimLoai),
+          buildScrapTypeWithButton("${AppLocalizations.of(context)?.glass}",
+              "assets/images/glass.jpeg", productViewModel.listThuytinh),
+          buildScrapTypeWithButton("${AppLocalizations.of(context)?.other}",
+              "assets/images/donaso-logo.png", productViewModel.listGiayKhac),
         ],
       ),
     );

@@ -159,7 +159,7 @@ class CommonFunc {
     return null;
   }
 
-  static String getOrderStatusName(BuildContext context,String status) {
+  static String getOrderStatusName(BuildContext context, String status) {
     switch (status) {
       case "NEW":
         return "${AppLocalizations.of(context)?.newOrder}";

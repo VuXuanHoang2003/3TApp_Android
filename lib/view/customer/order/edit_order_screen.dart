@@ -365,7 +365,6 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
     );
   }
 
-  
   void showImageDialog(BuildContext context, String imageUrl) {
     showDialog(
       context: context,

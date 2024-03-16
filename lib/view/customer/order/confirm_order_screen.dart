@@ -214,7 +214,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
         ),
         const SizedBox(height: 4), // Khoảng cách giữa giá và thể loại
         Text(
-          "${AppLocalizations.of(context)?.type}: ${CommonFunc.getSenDaNameByType(context,widget.product.type)}",
+          "${AppLocalizations.of(context)?.type}: ${CommonFunc.getSenDaNameByType(context, widget.product.type)}",
           textAlign: TextAlign.center,
           style: const TextStyle(
             color: Colors.black,

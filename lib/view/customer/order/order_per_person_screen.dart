@@ -8,7 +8,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class OrderPerPersonScreen extends StatefulWidget {
   final String address;
 
-  const OrderPerPersonScreen({Key? key, required this.address}) : super(key: key);
+  const OrderPerPersonScreen({Key? key, required this.address})
+      : super(key: key);
 
   @override
   _OrderPerPersonScreenState createState() => _OrderPerPersonScreenState();
@@ -34,7 +35,9 @@ class _OrderPerPersonScreenState extends State<OrderPerPersonScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${AppLocalizations.of(context)?.product} ${AppLocalizations.of(context)?.oF} ${widget.address}', style: TextStyle(color: Colors.white)),
+        title: Text(
+            '${AppLocalizations.of(context)?.product} ${AppLocalizations.of(context)?.oF} ${widget.address}',
+            style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blue,
       ),
       body: StreamBuilder<List<Product>>(
@@ -44,7 +47,8 @@ class _OrderPerPersonScreenState extends State<OrderPerPersonScreen> {
             return _buildContent(snapshot.data!, _viewModel.userData);
           } else if (snapshot.hasError) {
             return Center(
-              child: Text('Error: ${snapshot.error}', style: TextStyle(color: Colors.red)),
+              child: Text('Error: ${snapshot.error}',
+                  style: TextStyle(color: Colors.red)),
             );
           } else {
             return Center(child: CircularProgressIndicator());
@@ -60,14 +64,20 @@ class _OrderPerPersonScreenState extends State<OrderPerPersonScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('${AppLocalizations.of(context)?.info} ${AppLocalizations.of(context)?.user}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Text(
+              '${AppLocalizations.of(context)?.info} ${AppLocalizations.of(context)?.user}',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           SizedBox(height: 8),
-          _buildUserInfoRow('${AppLocalizations.of(context)?.customerName}:', userData['username']),
+          _buildUserInfoRow('${AppLocalizations.of(context)?.customerName}:',
+              userData['username']),
           _buildUserInfoRow('Email:', userData['email']),
-          _buildUserInfoRow('${AppLocalizations.of(context)?.phoneNumber}:', userData['phone']),
-          _buildUserInfoRow('${AppLocalizations.of(context)?.address}:', widget.address),
+          _buildUserInfoRow('${AppLocalizations.of(context)?.phoneNumber}:',
+              userData['phone']),
+          _buildUserInfoRow(
+              '${AppLocalizations.of(context)?.address}:', widget.address),
           SizedBox(height: 20),
-          Text('${AppLocalizations.of(context)?.orders}:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Text('${AppLocalizations.of(context)?.orders}:',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           _buildOrdersList(orders),
         ],
       ),
@@ -78,7 +88,8 @@ class _OrderPerPersonScreenState extends State<OrderPerPersonScreen> {
     return Row(
       children: [
         Text('$label ', style: TextStyle(fontSize: 18)),
-        Text(value, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Text(value,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
       ],
     );
   }
@@ -94,7 +105,8 @@ class _OrderPerPersonScreenState extends State<OrderPerPersonScreen> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: order)),
+              MaterialPageRoute(
+                  builder: (context) => ProductDetailsScreen(product: order)),
             );
           },
           child: Card(
@@ -105,11 +117,19 @@ class _OrderPerPersonScreenState extends State<OrderPerPersonScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('${AppLocalizations.of(context)?.product}: ${order.name}', style: TextStyle(fontSize: 18, color: Colors.red)),
+                  Text(
+                      '${AppLocalizations.of(context)?.product}: ${order.name}',
+                      style: TextStyle(fontSize: 18, color: Colors.red)),
                   SizedBox(height: 4),
-                  Text('${AppLocalizations.of(context)?.productWeight}: ${order.mass} kg', style: TextStyle(fontSize: 16)),
-                  Text('${AppLocalizations.of(context)?.type}: ${CommonFunc.getSenDaNameByType(context,order.type)}', style: TextStyle(fontSize: 16)),
-                  Text('${AppLocalizations.of(context)?.price}: ${order.price} vnd', style: TextStyle(fontSize: 16)),
+                  Text(
+                      '${AppLocalizations.of(context)?.productWeight}: ${order.mass} kg',
+                      style: TextStyle(fontSize: 16)),
+                  Text(
+                      '${AppLocalizations.of(context)?.type}: ${CommonFunc.getSenDaNameByType(context, order.type)}',
+                      style: TextStyle(fontSize: 16)),
+                  Text(
+                      '${AppLocalizations.of(context)?.price}: ${order.price} vnd',
+                      style: TextStyle(fontSize: 16)),
                 ],
               ),
             ),

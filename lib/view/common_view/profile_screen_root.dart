@@ -178,7 +178,6 @@ class CustomListTile extends StatelessWidget {
       ),
       onTap: () async {
         if (itemName == '${AppLocalizations.of(context)?.info}') {
-        
         } else if (itemName == '${AppLocalizations.of(context)?.history}') {
           // Xử lý khi chọn "Lịch sử"
         } else if (itemName == '${AppLocalizations.of(context)?.language}') {
@@ -186,7 +185,8 @@ class CustomListTile extends StatelessWidget {
             context,
             MaterialPageRoute(builder: (context) => LanguageChangePage()),
           );
-        } else if (itemName == '${AppLocalizations.of(context)?.passwordChange}') {
+        } else if (itemName ==
+            '${AppLocalizations.of(context)?.passwordChange}') {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => ChangePasswordPage()),
@@ -217,7 +217,8 @@ class DetailsScreen extends StatelessWidget {
         title: Text('${AppLocalizations.of(context)?.details}'),
       ),
       body: Center(
-        child: Text('${AppLocalizations.of(context)?.details} ${AppLocalizations.of(context)?.oF} $itemName'),
+        child: Text(
+            '${AppLocalizations.of(context)?.details} ${AppLocalizations.of(context)?.oF} $itemName'),
       ),
     );
   }

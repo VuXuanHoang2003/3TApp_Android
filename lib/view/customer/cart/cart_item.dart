@@ -134,7 +134,8 @@ class _OrderItem extends State<CartItem> {
                           ),
                         ),
                         Text(
-                          CommonFunc.getOrderStatusName(context,widget.order.status),
+                          CommonFunc.getOrderStatusName(
+                              context, widget.order.status),
                           style: TextStyle(
                             color: CommonFunc.getOrderStatusColor(
                                 widget.order.status),
@@ -154,7 +155,7 @@ class _OrderItem extends State<CartItem> {
                   child: TextButton(
                     onPressed: goToEditOrderScreen,
                     child: Text(
-                     "${AppLocalizations.of(context)?.edit}",
+                      "${AppLocalizations.of(context)?.edit}",
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.blueAccent,
