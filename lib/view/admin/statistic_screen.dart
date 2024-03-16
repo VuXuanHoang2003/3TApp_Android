@@ -79,8 +79,8 @@ class _StatisticScreenState extends State<StatisticScreen> {
                               child: Stack(
                                 children: [
                                   Align(
-                                    alignment:
-                                        const AlignmentDirectional(-0.86, -0.45),
+                                    alignment: const AlignmentDirectional(
+                                        -0.86, -0.45),
                                     child: Text(
                                       '${AppLocalizations.of(context)?.totalSuccessfulTransactions} :',
                                       textAlign: TextAlign.start,
@@ -156,8 +156,8 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                   Stack(
                                     children: [
                                       Align(
-                                        alignment:
-                                            const AlignmentDirectional(-0.61, 0),
+                                        alignment: const AlignmentDirectional(
+                                            -0.61, 0),
                                         child: Text(
                                           '${AppLocalizations.of(context)?.type}',
                                           style: FlutterFlowTheme.of(context)
@@ -188,8 +188,8 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                     child: Stack(
                                       children: [
                                         Align(
-                                          alignment:
-                                              const AlignmentDirectional(-0.63, 0),
+                                          alignment: const AlignmentDirectional(
+                                              -0.63, 0),
                                           child: Text(
                                             'Giấy',
                                             textAlign: TextAlign.start,
@@ -198,8 +198,8 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                           ),
                                         ),
                                         Align(
-                                          alignment:
-                                              const AlignmentDirectional(0.49, 0),
+                                          alignment: const AlignmentDirectional(
+                                              0.49, 0),
                                           child: Text(
                                             statisticCurrentUser.paperRevenue
                                                 .toString(),
@@ -216,8 +216,8 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                     child: Stack(
                                       children: [
                                         Align(
-                                          alignment:
-                                              const AlignmentDirectional(-0.63, 0),
+                                          alignment: const AlignmentDirectional(
+                                              -0.63, 0),
                                           child: Text(
                                             'Nhựa',
                                             textAlign: TextAlign.start,
@@ -226,8 +226,8 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                           ),
                                         ),
                                         Align(
-                                          alignment:
-                                              const AlignmentDirectional(0.49, 0),
+                                          alignment: const AlignmentDirectional(
+                                              0.49, 0),
                                           child: Text(
                                             statisticCurrentUser.plasticRevenue
                                                 .toString(),
@@ -244,8 +244,8 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                     child: Stack(
                                       children: [
                                         Align(
-                                          alignment:
-                                              const AlignmentDirectional(-0.63, 0),
+                                          alignment: const AlignmentDirectional(
+                                              -0.63, 0),
                                           child: Text(
                                             'Kim loại',
                                             textAlign: TextAlign.start,
@@ -254,8 +254,8 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                           ),
                                         ),
                                         Align(
-                                          alignment:
-                                              const AlignmentDirectional(0.49, 0),
+                                          alignment: const AlignmentDirectional(
+                                              0.49, 0),
                                           child: Text(
                                             statisticCurrentUser.metalRevenue
                                                 .toString(),
@@ -272,8 +272,8 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                     child: Stack(
                                       children: [
                                         Align(
-                                          alignment:
-                                              const AlignmentDirectional(-0.63, 0),
+                                          alignment: const AlignmentDirectional(
+                                              -0.63, 0),
                                           child: Text(
                                             'Thuỷ tinh',
                                             textAlign: TextAlign.start,
@@ -282,8 +282,8 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                           ),
                                         ),
                                         Align(
-                                          alignment:
-                                              const AlignmentDirectional(0.49, 0),
+                                          alignment: const AlignmentDirectional(
+                                              0.49, 0),
                                           child: Text(
                                             statisticCurrentUser.glassRevenue
                                                 .toString(),
@@ -300,8 +300,8 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                     child: Stack(
                                       children: [
                                         Align(
-                                          alignment:
-                                              const AlignmentDirectional(-0.63, 0),
+                                          alignment: const AlignmentDirectional(
+                                              -0.63, 0),
                                           child: Text(
                                             'Khác',
                                             textAlign: TextAlign.start,
@@ -310,8 +310,8 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                           ),
                                         ),
                                         Align(
-                                          alignment:
-                                              const AlignmentDirectional(0.49, 0),
+                                          alignment: const AlignmentDirectional(
+                                              0.49, 0),
                                           child: Text(
                                             statisticCurrentUser.otherRevenue
                                                 .toString(),
@@ -342,8 +342,8 @@ class _StatisticScreenState extends State<StatisticScreen> {
                                           ),
                                         ),
                                         Align(
-                                          alignment:
-                                              const AlignmentDirectional(0.60, 0),
+                                          alignment: const AlignmentDirectional(
+                                              0.60, 0),
                                           child: Text(
                                             statisticCurrentUser.sumOfRevenues
                                                 .toString(),
