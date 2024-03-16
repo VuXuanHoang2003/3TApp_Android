@@ -33,6 +33,8 @@ class ChatViewModel extends ChangeNotifier {
         .add(newMessage.toMap());
   }
 
+
+
   Stream<QuerySnapshot> getMessages(String userId, String otherUserId) {
     List<String> ids = [userId, otherUserId];
     ids.sort();
@@ -45,4 +47,25 @@ class ChatViewModel extends ChangeNotifier {
         .orderBy('timestamp', descending: false)
         .snapshots();
   }
+
+Future<List<String>> getChatRoomIds() async {
+  try {
+    QuerySnapshot chatRoomsSnapshot = await _firestore.collection('/chat_rooms').get();
+    if (chatRoomsSnapshot.docs.isEmpty) {
+      print("No documents in chat_rooms");
+      return [];
+    }
+    for (DocumentSnapshot doc in chatRoomsSnapshot.docs) {
+      print("Document ID: ${doc.id}");
+      print("Document Data: ${doc.data()}"); // In ra dữ liệu của tài liệu
+    }
+    List<String> chatRoomIds = chatRoomsSnapshot.docs.map((doc) => doc.id).toList();
+    //print("chatroomIds: $chatRoomIds");
+    return chatRoomIds;
+  } catch (e) {
+    print("Error getting chat room ids: $e");
+    return [];
+  }
+}
+
 }

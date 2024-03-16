@@ -364,6 +364,32 @@ class AuthRepoImpl with AuthRepo {
       return ['', '', '', ''];
     }
   }
+  Future<List<String>> getUserInfoWidget(String email) async {
+  try {
+    // Lấy danh sách người dùng có email tương ứng
+    QuerySnapshot usersSnapshot = await FirebaseFirestore.instance
+        .collection('USERS')
+        .where('email', isEqualTo: email)
+        .get();
+
+    if (usersSnapshot.docs.isNotEmpty) {
+      DocumentSnapshot userSnapshot = usersSnapshot.docs.first;
+
+      String username = userSnapshot.get('username') ?? '';
+      String address = userSnapshot.get('address') ?? '';
+      String phone = userSnapshot.get('phone') ?? '';
+
+      return [username, address, phone ];
+    }
+
+    // Không tìm thấy người dùng với email tương ứng
+    return ['', '', ''];
+  } catch (error) {
+    print('Error getting user data: $error');
+    return ['', '', ''];
+  }
+}
+
 //   Future<String?> getLatestImageURL(String userId) async {
 //   try {
 //     // Tạo tham chiếu tới thư mục 'users/$userId'
