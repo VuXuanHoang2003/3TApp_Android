@@ -5,9 +5,8 @@ import '../blogs/blogs_screen.dart';
 import 'customer_home_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class CustomerRootScreen extends StatefulWidget {
-  const CustomerRootScreen({super.key});
+  const CustomerRootScreen({Key? key});
 
   @override
   State<StatefulWidget> createState() => _CustomerRootScreen();
@@ -17,7 +16,6 @@ class _CustomerRootScreen extends State<CustomerRootScreen> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
     CustomerHomeScreen(),
-    BlogsScreen(),
     ChatScreen(),
     MapSample(),
   ];
@@ -38,14 +36,10 @@ class _CustomerRootScreen extends State<CustomerRootScreen> {
         backgroundColor: Colors.white,
         body: _widgetOptions.elementAt(_selectedIndex),
         bottomNavigationBar: BottomNavigationBar(
-          items:  <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: '${AppLocalizations.of(context)?.home}',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.note_rounded),
-              label: '${AppLocalizations.of(context)?.postPage}',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.chat_rounded),

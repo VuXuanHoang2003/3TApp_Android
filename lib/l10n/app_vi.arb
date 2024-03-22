@@ -26,7 +26,7 @@
     "productList":"Danh sách sản phẩm",
     "createOrder":"Tạo đơn",
     "orderConfirmed":"Xác nhận yêu cầu",
-    "productInfo":"thông tin đơn hàng",
+    "productInfo":"Thông tin đơn hàng",
     "productName":"Tên sản phẩm",
     "productWeight":"Khối lượng",
     "contactInfo":"Thông tin liên hệ",
@@ -111,7 +111,11 @@
     "distance":"Khoảng cách",
     "viewOrder":"Xem đơn",
     "loading":"Đang tải....",
-    "inputAddress":"Nhập địa chỉ cần tìm"
+    "inputAddress":"Nhập địa chỉ cần tìm",
+    "close":"Đóng",
+    "delete":"Xóa",
+    "picture":"ảnh",
+    "selectImageToDelete":"Chọn ảnh để xóa"
 
 
 

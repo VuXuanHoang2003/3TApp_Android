@@ -115,8 +115,7 @@ class _SalesManagementScreen extends State<CartScreen> {
                   },
                 ),
               )
-            : Center(
-                child: Text("${AppLocalizations.of(context)?.noOrder}")),
+            : Center(child: Text("${AppLocalizations.of(context)?.noOrder}")),
       ],
     );
   }
@@ -137,8 +136,7 @@ class _SalesManagementScreen extends State<CartScreen> {
                   },
                 ),
               )
-            :  Center(child: Text("${AppLocalizations.of(context)?.noOrder}"
-)),
+            : Center(child: Text("${AppLocalizations.of(context)?.noOrder}")),
       ],
     );
   }
@@ -158,7 +156,7 @@ class _SalesManagementScreen extends State<CartScreen> {
                   },
                 ),
               )
-            :  Center(child: Text("${AppLocalizations.of(context)?.noOrder}")),
+            : Center(child: Text("${AppLocalizations.of(context)?.noOrder}")),
       ],
     );
   }
@@ -178,7 +176,7 @@ class _SalesManagementScreen extends State<CartScreen> {
                   },
                 ),
               )
-              :  Center(child: Text("${AppLocalizations.of(context)?.noOrder}")),
+            : Center(child: Text("${AppLocalizations.of(context)?.noOrder}")),
       ],
     );
   }

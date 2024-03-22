@@ -52,11 +52,15 @@ class _SalesManagementScreen extends State<SalesManagementScreen> {
               height: 24,
               indicatorColor: Colors.blueAccent,
               labelStyle: TextStyle(color: Colors.black, fontSize: 12)),
-          tabs:  [
-            Text('${AppLocalizations.of(context)?.newOrder}', style: TextStyle(color: Colors.black)),
-            Text('${AppLocalizations.of(context)?.inProcess}', style: TextStyle(color: Colors.black)),
-            Text('${AppLocalizations.of(context)?.done}', style: TextStyle(color: Colors.black)),
-            Text('${AppLocalizations.of(context)?.cancelled}', style: TextStyle(color: Colors.black))
+          tabs: [
+            Text('${AppLocalizations.of(context)?.newOrder}',
+                style: TextStyle(color: Colors.black)),
+            Text('${AppLocalizations.of(context)?.inProcess}',
+                style: TextStyle(color: Colors.black)),
+            Text('${AppLocalizations.of(context)?.done}',
+                style: TextStyle(color: Colors.black)),
+            Text('${AppLocalizations.of(context)?.cancelled}',
+                style: TextStyle(color: Colors.black))
           ],
           views: [
             newOrderTab(),

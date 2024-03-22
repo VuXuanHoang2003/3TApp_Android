@@ -90,7 +90,7 @@ class _ChatScreenState extends State<ChatScreen> {
     // Lọc danh sách người dùng dựa trên điều kiện userId của người tham gia chat room không phải là userId hiện tại và userId nằm trong danh sách chatRoomIds
     List<DocumentSnapshot> filteredUsers = users.where((user) {
       String userId = user.id; // Sử dụng document.id thay vì truy cập vào userData
-      return userId != currentUserId && chatRoomIds.contains(userId);
+      return userId != currentUserId;
     }).toList();
     //print(filteredUsers);
     return filteredUsers;

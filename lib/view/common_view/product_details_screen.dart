@@ -11,6 +11,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   Product product;
+  AuthViewModel authViewModel = AuthViewModel();
 
   ProductDetailsScreen({required this.product});
 
@@ -21,186 +22,545 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   AuthViewModel authViewModel = AuthViewModel();
   List<String> imageUrls = [];
+  Future<List<String>>? userInfo;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     getAllImageUrls();
+    _getUserInfo();
   }
 
-  @override
+  Future<void> _getUserInfo() async {
+    List<String> userInfo =
+        await authViewModel.getUserInfoWidget(widget.product.uploadBy);
+    setState(() {
+      nameController.text = userInfo[0];
+      addressController.text = userInfo[1];
+      phoneController.text = userInfo[2];
+      print(nameController.text);
+    });
+  }
+
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Text(
-          "${AppLocalizations.of(context)?.productInDetails}",
-          style: TextStyle(color: Colors.black, fontSize: 18),
-        ),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.grey,
-            size: 20,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            centerTitle: true,
+            title: Text(
+              "${AppLocalizations.of(context)?.productInDetails}",
+              style: TextStyle(color: Colors.black, fontSize: 18),
+            ),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.grey,
+                size: 20,
+              ),
+            ),
+            elevation: 0,
           ),
-        ),
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              productItemImage(),
-              Padding(
-                padding: const EdgeInsets.all(6),
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: AlignmentDirectional(-0.94, 0),
-                      child: Text(
-                          "${AppLocalizations.of(context)?.productWeight}"),
-                    ),
-                    Align(
-                      alignment: const AlignmentDirectional(0, 0),
-                      child: Text(
-                        widget.product.name,
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Readex Pro',
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(6),
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: const AlignmentDirectional(0, 0),
-                      child: Text(
-                        "${formatCurrency.format(widget.product.price)} ",
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Readex Pro',
-                              color: const Color(0xFF831B1B),
-                            ),
-                      ),
-                    ),
-                    Align(
-                      alignment: const AlignmentDirectional(-0.94, 0),
-                      child: Text(
-                        '${AppLocalizations.of(context)?.price} (1 kg): ',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Readex Pro',
-                              color: const Color(0xFF831B1B),
-                              fontStyle: FontStyle.italic,
-                            ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // Generated code for this Stack Widget...
-              Padding(
-                padding: const EdgeInsets.all(6),
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: const AlignmentDirectional(0, 0),
-                      child: Text(
-                        "${widget.product.mass} (kg)",
-                        style: FlutterFlowTheme.of(context).bodyMedium,
-                      ),
-                    ),
-                    Align(
-                      alignment: const AlignmentDirectional(-0.94, 0),
-                      child: Text(
-                        '${AppLocalizations.of(context)?.productWeight}: ',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Readex Pro',
-                              fontStyle: FontStyle.italic,
-                            ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Divider(
-                thickness: 1,
-                color: Colors.green,
-                height: 16,
-              ),
+          body: // Generated code for this Column Widget...
               Align(
-                alignment: AlignmentDirectional(0, 0),
-                child: Padding(
-                  padding: EdgeInsets.all(6),
-                  child: Text(
-                      '${AppLocalizations.of(context)?.productDescription}'),
-                ),
-              ),
-              Align(
-                alignment: const AlignmentDirectional(0, 0),
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    widget.product.description,
-                    style: FlutterFlowTheme.of(context).bodyMedium.override(
-                          fontFamily: 'Readex Pro',
-                          fontSize: 10,
+            alignment: AlignmentDirectional(0, -1),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 24),
+                    child: Wrap(
+                      spacing: 16,
+                      runSpacing: 16,
+                      alignment: WrapAlignment.start,
+                      crossAxisAlignment: WrapCrossAlignment.start,
+                      direction: Axis.horizontal,
+                      runAlignment: WrapAlignment.start,
+                      verticalDirection: VerticalDirection.down,
+                      clipBehavior: Clip.none,
+                      children: [
+                        Container(
+                          constraints: BoxConstraints(
+                            maxWidth: 750,
+                          ),
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 4,
+                                color: Color(0x33000000),
+                                offset: Offset(0, 2),
+                              )
+                            ],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${AppLocalizations.of(context)?.productInfo}",
+                                  style:
+                                      FlutterFlowTheme.of(context).titleLarge,
+                                ),
+                                ListView(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0, 0, 0, 12),
+                                      child: Container(
+                                        width: MediaQuery.sizeOf(context).width,
+                                        decoration: BoxDecoration(
+                                          color: FlutterFlowTheme.of(context)
+                                              .secondaryBackground,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              blurRadius: 0,
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .alternate,
+                                              offset: Offset(0, 1),
+                                            )
+                                          ],
+                                          borderRadius:
+                                              BorderRadius.circular(0),
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0, 4, 0, 12),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    child: productItemImage(),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: MediaQuery.sizeOf(context).width,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 4, 0, 12),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                flex: 3,
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional
+                                                      .fromSTEB(8, 0, 4, 0),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "${AppLocalizations.of(context)?.productName} : ${widget.product.name}",
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .titleLarge,
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0, 0, 4, 0),
+                                                        child: RichText(
+                                                          textScaleFactor:
+                                                              MediaQuery.of(
+                                                                      context)
+                                                                  .textScaleFactor,
+                                                          text: TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                text:
+                                                                    '${AppLocalizations.of(context)?.created_date} : ',
+                                                                style:
+                                                                    TextStyle(),
+                                                              ),
+                                                              TextSpan(
+                                                                text: widget
+                                                                    .product
+                                                                    .uploadDate,
+                                                                style:
+                                                                    TextStyle(),
+                                                              )
+                                                            ],
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .labelSmall,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsetsDirectional
+                                                                .fromSTEB(
+                                                                    0, 4, 0, 0),
+                                                        child: RichText(
+                                                          textScaleFactor:
+                                                              MediaQuery.of(
+                                                                      context)
+                                                                  .textScaleFactor,
+                                                          text: TextSpan(
+                                                            children: [
+                                                              TextSpan(
+                                                                text:
+                                                                    "${AppLocalizations.of(context)?.productWeight} : ",
+                                                                style:
+                                                                    TextStyle(),
+                                                              ),
+                                                              TextSpan(
+                                                                text:
+                                                                    "${widget.product.mass} (kg)",
+                                                                style:
+                                                                    TextStyle(),
+                                                              )
+                                                            ],
+                                                            style: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .labelSmall,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(18, 0, 0, 0),
+                                                child: Text(
+                                                  "",
+                                                  textAlign: TextAlign.end,
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .titleLarge,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 4, 0, 0),
+                                          child: RichText(
+                                            textScaleFactor:
+                                                MediaQuery.of(context)
+                                                    .textScaleFactor,
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text:
+                                                      "${AppLocalizations.of(context)?.price}: ",
+                                                  style: TextStyle(),
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      "${formatCurrency.format(widget.product.price)} ",
+                                                  style: const TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                )
+                                              ],
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .labelSmall,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 0, 0, 24),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0, 0, 0, 24),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0, 8, 0, 8),
+                                              child: Text(
+                                                "${AppLocalizations.of(context)?.productDescription}: ",
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .titleMedium
+                                                        .override(
+                                                          fontFamily: 'Outfit',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .secondaryText,
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                                height:
+                                                    8), // Thêm một khoảng trống giữa phần mô tả sản phẩm và phần text ""
+                                            Text(
+                                              widget.product
+                                                  .description, // Phần text trống
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .displaySmall,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
+                        Container(
+                          width: double.infinity,
+                          constraints: BoxConstraints(
+                            maxWidth: 430,
+                          ),
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 4,
+                                color: Color(0x33000000),
+                                offset: Offset(0, 2),
+                              )
+                            ],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(16, 16, 16, 24),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${AppLocalizations.of(context)?.contactInfo}",
+                                  style:
+                                      FlutterFlowTheme.of(context).titleLarge,
+                                ),
+                                Divider(
+                                  height: 32,
+                                  thickness: 2,
+                                  color: FlutterFlowTheme.of(context).alternate,
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 4, 0, 12),
+                                  child: RichText(
+                                    textScaleFactor:
+                                        MediaQuery.of(context).textScaleFactor,
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                              "${AppLocalizations.of(context)?.customer}: ",
+                                          style: FlutterFlowTheme.of(context)
+                                              .labelMedium,
+                                        ),
+                                        TextSpan(
+                                          text: nameController.text,
+                                          style: TextStyle(),
+                                        )
+                                      ],
+                                      style: FlutterFlowTheme.of(context)
+                                          .labelMedium,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 4, 0, 12),
+                                  child: RichText(
+                                    textScaleFactor:
+                                        MediaQuery.of(context).textScaleFactor,
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                              'Email: ${widget.product.uploadBy}',
+                                          style: FlutterFlowTheme.of(context)
+                                              .labelMedium,
+                                        ),
+                                        TextSpan(
+                                          text: "",
+                                          style: TextStyle(),
+                                        )
+                                      ],
+                                      style: FlutterFlowTheme.of(context)
+                                          .labelMedium,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 4, 0, 12),
+                                  child: RichText(
+                                    textScaleFactor:
+                                        MediaQuery.of(context).textScaleFactor,
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                              "${AppLocalizations.of(context)?.phoneNumber}: ",
+                                          style: FlutterFlowTheme.of(context)
+                                              .labelMedium,
+                                        ),
+                                        TextSpan(
+                                          text: phoneController.text,
+                                          style: TextStyle(),
+                                        )
+                                      ],
+                                      style: FlutterFlowTheme.of(context)
+                                          .labelMedium,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 4, 0, 12),
+                                  child: RichText(
+                                    textScaleFactor:
+                                        MediaQuery.of(context).textScaleFactor,
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                              "${AppLocalizations.of(context)?.address}: ",
+                                          style: FlutterFlowTheme.of(context)
+                                              .labelMedium,
+                                        ),
+                                        TextSpan(
+                                          text: addressController.text,
+                                          style: TextStyle(),
+                                        )
+                                      ],
+                                      style: FlutterFlowTheme.of(context)
+                                          .labelMedium,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
+                ],
+              ),
+            ),
+          )),
     );
   }
 
+  @override
+
+  
   Widget productItemImage() {
-    if (imageUrls.isNotEmpty) {
-      return SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: imageUrls.map((imageUrl) {
-            return GestureDetector(
+  if (imageUrls.isNotEmpty) {
+    return Container(
+      constraints: BoxConstraints(maxWidth: 328.7), // Limit the width of the container
+      child: Wrap(
+        spacing: 8, // Adjust the spacing between images
+        runSpacing: 8, // Adjust the run spacing between rows of images
+        children: [
+          for (String imageUrl in imageUrls)
+            GestureDetector(
               onTap: () {
                 showImageDialog(context, imageUrl);
               },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Image.network(
-                  imageUrl,
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.cover,
-                ),
+              child: Image.network(
+                imageUrl,
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
               ),
-            );
-          }).toList(),
-        ),
-      );
-    } else {
-      return Image.asset(
-        ImagePath.imgImageUpload,
-        width: 200,
-        height: 200,
-        fit: BoxFit.cover,
-      );
-    }
+            ),
+        ],
+      ),
+    );
+  } else {
+    return Image.asset(
+      ImagePath.imgImageUpload,
+      width: 200,
+      height: 200,
+      fit: BoxFit.cover,
+    );
   }
+}
+
 
   void getAllImageUrls() async {
     try {
@@ -230,7 +590,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Close'),
+              child:  Text('${AppLocalizations.of(context)?.close}'),
             ),
           ],
         );

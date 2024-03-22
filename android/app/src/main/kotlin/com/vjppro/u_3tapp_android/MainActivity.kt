@@ -1,0 +1,6 @@
+package com.vjppro.u_3tapp_android
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}

@@ -323,7 +323,19 @@ class AuthViewModel extends BaseViewModel {
       ]; // Trả về danh sách rỗng trong trường hợp có lỗi xảy ra
     }
   }
-
+  Future<List<String>> getUserInfoWidget(String email) async {
+    try {
+      return await authRepo.getUserInfoWidget(email);
+    } catch (error) {
+      print('Error fetching user info: $error');
+      return [
+        '',
+        '',
+        '',
+        
+      ]; // Trả về danh sách rỗng trong trường hợp có lỗi xảy ra
+    }
+  }
   Future<bool> signInWithGoogle() async {
     // Gọi hàm signInWithGoogle từ model và nhận giá trị trả về
     bool isSignedIn = await authRepo.signInWithGoogle();

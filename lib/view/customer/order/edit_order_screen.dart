@@ -365,7 +365,6 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
     );
   }
 
-  
   void showImageDialog(BuildContext context, String imageUrl) {
     showDialog(
       context: context,
@@ -377,7 +376,7 @@ class _EditOrderScreenState extends State<EditOrderScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Close'),
+              child: Text('${AppLocalizations.of(context)?.close}'),
             ),
           ],
         );

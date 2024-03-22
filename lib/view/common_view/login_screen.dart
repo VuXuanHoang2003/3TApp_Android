@@ -253,8 +253,10 @@ class _LoginScreen extends State<LoginScreen> {
                         authViewModel.login(
                           email: email,
                           password: password,
-                          isCheckAdmin:
-                              authViewModel.rolesType == RolesType.seller,
+                          // isCheckAdmin:
+                          //     authViewModel.rolesType == RolesType.seller,
+                          isCheckAdmin: authViewModel.rolesType == RolesType.seller
+      
                         );
                       }
                     } else {

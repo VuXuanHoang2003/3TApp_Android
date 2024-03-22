@@ -53,7 +53,7 @@ class _LanguageChangePageState extends State<LanguageChangePage> {
               groupValue: _selectedLanguage,
               onChanged: (value) {
                 _saveLanguage(value!);
-                MyApp.setLocale(context, const Locale('vi'));
+                MyApp.setLocale(context, const Locale('vi')); 
                 setState(() {
                   _selectedLanguage = value;
                 });

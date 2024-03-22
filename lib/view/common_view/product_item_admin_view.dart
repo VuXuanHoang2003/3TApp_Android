@@ -62,7 +62,7 @@ class _ProductItemAdminViewState extends State<ProductItemAdminView> {
     );
 
     AlertDialog alert = AlertDialog(
-      content:  Text(
+      content: Text(
         "${AppLocalizations.of(context)?.deleteProductQues}",
         textAlign: TextAlign.center,
       ),

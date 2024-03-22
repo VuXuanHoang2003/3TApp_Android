@@ -62,13 +62,17 @@ class _ProductItemCustomerView extends State<ProductItemCustomerView> {
                   child: productItemImage()),
               Padding(
                 padding: const EdgeInsets.all(4.0),
-                child: Text(widget.product.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold)),
+                child: Text(
+                  widget.product.name,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign
+                      .center, // Đặt giá trị TextAlign.center để căn giữa văn bản
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
               Text(
                 "${formatCurrency.format(widget.product.price)}",

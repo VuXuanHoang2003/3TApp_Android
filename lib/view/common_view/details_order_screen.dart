@@ -307,12 +307,14 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                             text: TextSpan(
                                               children: [
                                                 TextSpan(
-                                                  text: "${AppLocalizations.of(context)?.status}: ",
+                                                  text:
+                                                      "${AppLocalizations.of(context)?.status}: ",
                                                   style: TextStyle(),
                                                 ),
                                                 TextSpan(
                                                   text: CommonFunc
-                                                      .getOrderStatusName(context,
+                                                      .getOrderStatusName(
+                                                          context,
                                                           widget.order.status),
                                                   style: const TextStyle(
                                                     color: Colors.red,
@@ -346,17 +348,12 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Divider(
-                                              thickness: 1,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .accent4,
-                                            ),
+                                           
                                             Row(
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
                                                 Text(
-                                                 "${AppLocalizations.of(context)?.total}",
+                                                  "${AppLocalizations.of(context)?.total}",
                                                   style: FlutterFlowTheme.of(
                                                           context)
                                                       .titleMedium
@@ -416,7 +413,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                "${AppLocalizations.of(context)?.contactInfo}",
+                                  "${AppLocalizations.of(context)?.contactInfo}",
                                   style:
                                       FlutterFlowTheme.of(context).titleLarge,
                                 ),
@@ -434,7 +431,8 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                     text: TextSpan(
                                       children: [
                                         TextSpan(
-                                          text: "${AppLocalizations.of(context)?.customer}: ",
+                                          text:
+                                              "${AppLocalizations.of(context)?.customer}: ",
                                           style: FlutterFlowTheme.of(context)
                                               .labelMedium,
                                         ),
@@ -480,7 +478,8 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                     text: TextSpan(
                                       children: [
                                         TextSpan(
-                                          text: "${AppLocalizations.of(context)?.phoneNumber}: ",
+                                          text:
+                                              "${AppLocalizations.of(context)?.phoneNumber}: ",
                                           style: FlutterFlowTheme.of(context)
                                               .labelMedium,
                                         ),
@@ -503,7 +502,8 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                                     text: TextSpan(
                                       children: [
                                         TextSpan(
-                                          text: "${AppLocalizations.of(context)?.address}: ",
+                                          text:
+                                              "${AppLocalizations.of(context)?.address}: ",
                                           style: FlutterFlowTheme.of(context)
                                               .labelMedium,
                                         ),
@@ -559,7 +559,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
               color: Colors.blue, fontSize: 14, fontStyle: FontStyle.italic),
         ),
         Text(
-           "${AppLocalizations.of(context)?.status}: ${CommonFunc.getOrderStatusName(context,widget.order.status)}",
+          "${AppLocalizations.of(context)?.status}: ${CommonFunc.getOrderStatusName(context, widget.order.status)}",
           style: TextStyle(
               color: Colors.black, fontSize: 14, fontStyle: FontStyle.italic),
         ),
@@ -576,10 +576,13 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildContactInfoRow("${AppLocalizations.of(context)?.customer}", widget.order.customerName),
+        buildContactInfoRow("${AppLocalizations.of(context)?.customer}",
+            widget.order.customerName),
         buildContactInfoRow("Email:", widget.order.customerEmail),
-        buildContactInfoRow("${AppLocalizations.of(context)?.phoneNumber}", widget.order.phoneNumber),
-        buildContactInfoRow("${AppLocalizations.of(context)?.address}", widget.order.address),
+        buildContactInfoRow("${AppLocalizations.of(context)?.phoneNumber}",
+            widget.order.phoneNumber),
+        buildContactInfoRow(
+            "${AppLocalizations.of(context)?.address}", widget.order.address),
         SizedBox(height: 32),
       ],
     );
@@ -622,7 +625,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Close'),
+              child: Text('${AppLocalizations.of(context)?.close}'),
             ),
           ],
         );

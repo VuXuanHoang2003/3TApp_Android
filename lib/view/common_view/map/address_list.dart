@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -191,8 +190,8 @@ class _AddressListScreenState extends State<AddressListScreen> {
           return Card(
             child: ListTile(
               title: Text(sortedAddresses[index]),
-              subtitle:
-                  Text('${AppLocalizations.of(context)?.distance}: ${distanceInKm.toStringAsFixed(2)} km'),
+              subtitle: Text(
+                  '${AppLocalizations.of(context)?.distance}: ${distanceInKm.toStringAsFixed(2)} km'),
               leading: Icon(Icons.location_on),
               trailing: ElevatedButton(
                 onPressed: () {
@@ -212,7 +211,8 @@ class _AddressListScreenState extends State<AddressListScreen> {
             ),
           );
         } else {
-          return ListTile(title: Text('${AppLocalizations.of(context)?.loading}'));
+          return ListTile(
+              title: Text('${AppLocalizations.of(context)?.loading}'));
         }
       },
     );

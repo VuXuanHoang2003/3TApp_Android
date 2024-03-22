@@ -57,7 +57,9 @@
     "postPage":"Post",
     "edit":"Edit",
     "noProducts":"No product available",
-
+    "close":"Close",
+    "delete":"Delete",
+    "picture":"picture",
     "statistics":"Statistics",
     "numberOfProductsPosted":"Number of product posted",
     "totalSuccessfulTransactions":"Total successful transactions",
@@ -112,7 +114,9 @@
     "distance":"Distance",
     "viewOrder":"View Order",
     "loading":"Loading....",
-    "inputAddress":"Please enter the address to search for."
+    "inputAddress":"Please enter the address to search for.",
+    "selectImageToDelete":"Select image to delete"
+
 
 
 

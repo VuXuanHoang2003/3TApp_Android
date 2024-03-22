@@ -35,6 +35,7 @@ class NotificationController {
         onFcmTokenHandle: NotificationController.myFcmTokenHandle,
         // Method này dùng để phát hiện khi nhận được native token mới.
         onNativeTokenHandle: NotificationController.myNativeTokenHandle,
+        // Bài sau mình sẽ đi chi tiết hơn về 3 Method trên nhé.
 
         // This license key is necessary only to remove the watermark for
         // push notifications in release mode. To know more about it, please

@@ -11,36 +11,43 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Google Maps"),
-        centerTitle: true,
-      ),
-      body: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          children: [
-            ElevatedButton(onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                return MapSearchPage();
-              }));
-            }, child: const Text("Map Search")),
-            ElevatedButton(onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                return const CurrentLocationScreen();
-              }));
-            }, child: const Text("AutoFill")),
-                        ElevatedButton(onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                return AddressListScreen();
-              }));
-            }, child: const Text("Address List")),
-          ],
+        appBar: AppBar(
+          title: const Text("Google Maps"),
+          centerTitle: true,
         ),
-      )
-    );
+        body: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return MapSearchPage();
+                    }));
+                  },
+                  child: const Text("Map Search")),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return const CurrentLocationScreen();
+                    }));
+                  },
+                  child: const Text("AutoFill")),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return AddressListScreen();
+                    }));
+                  },
+                  child: const Text("Address List")),
+            ],
+          ),
+        ));
   }
 }

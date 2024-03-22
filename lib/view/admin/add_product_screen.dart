@@ -69,6 +69,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
     }
   }
 
+  bool isAddingProduct = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -137,7 +139,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   focusNode: productFocusNode,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
-                    labelText: '${AppLocalizations.of(context)?.price}(*) ',
+                    labelText: '${AppLocalizations.of(context)?.productName}(*) ',
                     fillColor: Colors.white,
                     focusedBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
@@ -268,7 +270,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         return DropdownMenuItem<ScrapType>(
                           value: type,
                           child: Text(CommonFunc.getSenDaNameByType(
-                              context,type.toShortString())),
+                              context, type.toShortString())),
                         );
                       }).toList(),
                       value: selectedType,
@@ -289,49 +291,54 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   width: MediaQuery.of(context).size.width,
                   child: CustomButton(
                     onPressed: () async {
-                      if (productNameController.text.isNotEmpty &&
-                          priceController.text.isNotEmpty &&
-                          _images.isNotEmpty) {
-                        String name = productNameController.text.trim();
-                        double price =
-                            double.parse(priceController.text.trim());
-                        String description = descriptionController.text.trim();
-                        double mass = double.parse(massController.text.trim());
+                      if (!isAddingProduct) {
+                        isAddingProduct = true;
+                        if (productNameController.text.isNotEmpty &&
+                            priceController.text.isNotEmpty &&
+                            _images.isNotEmpty) {
+                          String name = productNameController.text.trim();
+                          double price =
+                              double.parse(priceController.text.trim());
+                          String description =
+                              descriptionController.text.trim();
+                          double mass =
+                              double.parse(massController.text.trim());
 
-                        Product product = Product(
-                          id: UniqueKey().toString(),
-                          name: name,
-                          image: '', // Cập nhật sau khi tải ảnh lên
-                          description: description,
-                          price: price,
-                          type: selectedType.toShortString(),
-                          uploadBy: user?.email ?? "Unknown user",
-                          uploadDate: DateTime.now().toString(),
-                          editDate: DateTime.now().toString(),
-                          mass: mass,
-                        );
+                          Product product = Product(
+                            id: UniqueKey().toString(),
+                            name: name,
+                            image: '', // Cập nhật sau khi tải ảnh lên
+                            description: description,
+                            price: price,
+                            type: selectedType.toShortString(),
+                            uploadBy: user?.email ?? "Unknown user",
+                            uploadDate: DateTime.now().toString(),
+                            editDate: DateTime.now().toString(),
+                            mass: mass,
+                          );
 
-                        await productViewModel.addProduct(
-                          product: product,
-                          imageFiles: _images,
-                        );
-                        Navigator.of(context).pop();
-                      } else {
-                        Fluttertoast.showToast(
-                          msg: "${AppLocalizations.of(context)?.infoMsg}",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.black45,
-                          textColor: Colors.white,
-                          fontSize: 12.0,
-                        );
+                          await productViewModel.addProduct(
+                            product: product,
+                            imageFiles: _images,
+                          );
+                          Navigator.of(context).pop();
+                        } else {
+                          Fluttertoast.showToast(
+                            msg: "${AppLocalizations.of(context)?.infoMsg}",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.black45,
+                            textColor: Colors.white,
+                            fontSize: 12.0,
+                          );
+                        }
+                        isAddingProduct = false;
                       }
                     },
                     //text: "Thêm",
-                  text: "${AppLocalizations.of(context)?.add}",
+                    text: "${AppLocalizations.of(context)?.add}",
 
- 
                     textColor: Colors.white,
                     bgColor: Colors.blue,
                   ),

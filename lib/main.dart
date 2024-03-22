@@ -16,7 +16,6 @@ import 'package:three_tapp_app/viewmodel/post_viewmodel.dart';
 import 'package:three_tapp_app/viewmodel/product_viewmodel.dart';
 import 'package:intl/intl.dart';
 
-
 GlobalKey<NavigatorState> navigationKey = GlobalKey();
 
 final formatCurrency =
@@ -36,14 +35,15 @@ void main() async {
   // Lấy ngôn ngữ được lưu từ shared preferences
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? languageCode = prefs.getString('languageCode');
-  Locale locale = languageCode != null ? Locale(languageCode) : const Locale('vi');
+  Locale locale =
+      languageCode != null ? Locale(languageCode) : const Locale('vi');
 
   runApp(MyApp(locale: locale));
 }
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key, required this.locale}) : super(key: key);
-  
+
   static void setLocale(BuildContext context, Locale newLocale) {
     final _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
     if (state != null) {

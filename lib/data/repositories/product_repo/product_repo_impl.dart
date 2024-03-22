@@ -127,75 +127,89 @@ Future<void> uploadImagesToFirebaseStorage({
 
   @override
   Future<bool> updateProduct(
-      {required Product product, required File? imageFile}) async {
-    //Add image storage
-    if (imageFile != null) {
-      // Create a storage reference from our app
-      final storageRef = FirebaseStorage.instance.ref();
+    {required Product product, required List<File> imageFiles}) async {
+  //Add image storage
+  if (imageFiles != null) {
+    String productFolder = 'products/${product.id}';
+    product.image = productFolder;
 
-      try {
-        var snapshot = await storageRef
-            .child('images/${product.id}.jpg')
-            .putFile(imageFile);
-        var downloadUrl = await snapshot.ref.getDownloadURL();
+    // Xóa tất cả các ảnh trong thư mục `product/product.id`
+    await deleteImagesInFirebaseStorage(productFolder);
 
-        //Assign image path for product
-        product.image = downloadUrl;
+    // Tải lên các hình ảnh mới
+    await uploadImagesToFirebaseStorage(
+        imageFiles: imageFiles, productFolder: productFolder);
 
-        //Add to firestore
-        Map<String, dynamic> productMap = {
-          "id": product.id,
-          "name": product.name,
-          "image": product.image,
-          "description": product.description,
-          "price": product.price,
-          "type": product.type,
-          "mass":product.mass,
-          "uploadBy": product.uploadBy,
-          "uploadDate": product.uploadDate,
-          "editDate": product.editDate
-        };
+    try {
+      // Cập nhật thông tin sản phẩm trong Firestore
+      Map<String, dynamic> productMap = {
+        "id": product.id,
+        "name": product.name,
+        "image": product.image,
+        "description": product.description,
+        "price": product.price,
+        "type": product.type,
+        "mass": product.mass,
+        "uploadBy": product.uploadBy,
+        "uploadDate": product.uploadDate,
+        "editDate": product.editDate
+      };
 
-        FirebaseFirestore.instance
-            .collection('PRODUCTS')
-            .doc(product.id)
-            .update(productMap);
+      await FirebaseFirestore.instance
+          .collection('PRODUCTS')
+          .doc(product.id)
+          .update(productMap);
 
-        return Future.value(true);
-      } on FirebaseException catch (e) {
-        CommonFunc.showToast("Đã có lỗi xảy ra.");
-      } catch (e) {
-        CommonFunc.showToast("Đã có lỗi xảy ra.");
-      }
-    } else {
-      try {
-        //Update product without image
-        Map<String, dynamic> productMap = {
-          "id": product.id,
-          "name": product.name,
-          "image": product.image,
-          "description": product.description,
-          "price": product.price,
-          "type": product.type,
-          "uploadBy": product.uploadBy,
-          "mass":product.mass,
-          "uploadDate": product.uploadDate,
-          "editDate": product.editDate
-        };
-
-        FirebaseFirestore.instance
-            .collection('PRODUCTS')
-            .doc(product.id)
-            .update(productMap);
-        return Future.value(true);
-      } on FirebaseException catch (e) {
-        CommonFunc.showToast("Đã có lỗi xảy ra.");
-      } catch (e) {
-        CommonFunc.showToast("Đã có lỗi xảy ra.");
-      }
+      return true;
+    } on FirebaseException catch (e) {
+      CommonFunc.showToast("Đã có lỗi xảy ra.");
+    } catch (e) {
+      CommonFunc.showToast("Đã có lỗi xảy ra.");
     }
-    return Future.value(false);
+  } else {
+    // Cập nhật thông tin sản phẩm khi không có hình ảnh mới
+    try {
+      Map<String, dynamic> productMap = {
+        "id": product.id,
+        "name": product.name,
+        "image": product.image,
+        "description": product.description,
+        "price": product.price,
+        "type": product.type,
+        "uploadBy": product.uploadBy,
+        "mass": product.mass,
+        "uploadDate": product.uploadDate,
+        "editDate": product.editDate
+      };
+
+      await FirebaseFirestore.instance
+          .collection('PRODUCTS')
+          .doc(product.id)
+          .update(productMap);
+      return true;
+    } on FirebaseException catch (e) {
+      CommonFunc.showToast("Đã có lỗi xảy ra.");
+    } catch (e) {
+      CommonFunc.showToast("Đã có lỗi xảy ra.");
+    }
   }
+  return false;
+}
+
+// Hàm xóa tất cả các ảnh trong thư mục `product/product.id`
+Future<void> deleteImagesInFirebaseStorage(String productFolder) async {
+  try {
+    final storageRef = FirebaseStorage.instance.ref().child(productFolder);
+    await storageRef.listAll().then((result) {
+      result.items.forEach((imageRef) async {
+        await imageRef.delete();
+      });
+    });
+  } on FirebaseException catch (e) {
+    print("Firebase Storage Error: ${e.toString()}");
+    throw e;
+  }
+}
 
   @override
   Future<bool> deleteProduct({required String productId}) async {
@@ -227,31 +241,36 @@ Future<void> uploadImagesToFirebaseStorage({
     return Future.value(false);
   }
 
+ 
   Future<List<Product>> searchProducts(String searchTerm) async {
-    List<Product> searchResults = [];
+  List<Product> searchResults = [];
 
-    try {
-      await FirebaseFirestore.instance
-          .collection("PRODUCTS")
-          .get()
-          .then((querySnapshot) {
-        for (var result in querySnapshot.docs) {
-          Product product = Product.fromJson(result.data());
+  try {
+    await FirebaseFirestore.instance
+        .collection("PRODUCTS")
+        .get()
+        .then((querySnapshot) {
+      for (var result in querySnapshot.docs) {
+        Product product = Product.fromJson(result.data());
 
-          // Chuyển tên sản phẩm và từ khóa tìm kiếm về chữ thường để so sánh không phân biệt chữ hoa chữ thường
-          String productNameLower = product.name.toLowerCase();
-          String searchTermLower = searchTerm.toLowerCase();
+        // Tách tên sản phẩm thành các từ riêng biệt
+        List<String> productNameWords =
+            product.name.toLowerCase().split(' ');
 
-          // Kiểm tra xem từ khóa có xuất hiện trong tên sản phẩm hay không
-          if (productNameLower.contains(searchTermLower)) {
-            searchResults.add(product);
-          }
+        // Chuyển từ khóa tìm kiếm về chữ thường để so sánh không phân biệt chữ hoa chữ thường
+        String searchTermLower = searchTerm.toLowerCase();
+
+        // Kiểm tra xem từ khóa có xuất hiện trong danh sách từ của tên sản phẩm hay không
+        if (productNameWords.contains(searchTermLower)) {
+          searchResults.add(product);
         }
-      });
-    } catch (error) {
-      print("searchProducts error: ${error.toString()}");
-    }
-
-    return searchResults;
+      }
+    });
+  } catch (error) {
+    print("searchProducts error: ${error.toString()}");
   }
+
+  return searchResults;
+}
+
 }

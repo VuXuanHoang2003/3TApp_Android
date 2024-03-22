@@ -69,7 +69,7 @@ class AuthRepoImpl with AuthRepo {
     }
     return null;
   }
-
+  
   @override
   // Future<bool> signUp({
   //   required String email,
@@ -660,4 +660,5 @@ Future<String?> getLatestImageURL(String userId) async {
       throw e; // Ném ra lỗi nếu có
     }
   }
+  
 }

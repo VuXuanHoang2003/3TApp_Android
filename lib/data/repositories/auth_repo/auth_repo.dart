@@ -57,4 +57,5 @@ abstract class AuthRepo {
   Future<void> logout();
   Future<String> signInWithPhoneNumber(String phoneNumber);
   Future<UserCredential> verifyOTP(String verificationId, String smsCode);
+  Future<List<String>> getUserInfoWidget(String email);
 }

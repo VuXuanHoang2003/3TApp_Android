@@ -74,51 +74,49 @@ class _AdminRootScreen extends State<AdminRootScreen> {
             ],
           ),
         ),
-       bottomNavigationBar: BottomNavigationBar(
-  items: <BottomNavigationBarItem>[
-    BottomNavigationBarItem(
-      icon: Icon(
-        Icons.production_quantity_limits,
-        color: Colors.green,
-      ),
-      label: AppLocalizations.of(context)?.product,
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(
-        Icons.point_of_sale_rounded,
-        color: Colors.green,
-      ),
-      label: AppLocalizations.of(context)?.orders,
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(
-        Icons.post_add_rounded,
-        color: Colors.green,
-      ),
-      label: AppLocalizations.of(context)?.post,
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(
-        Icons.chat_rounded,
-        color: Colors.green,
-      ),
-      label: AppLocalizations.of(context)?.chat,
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(
-        Icons.book_rounded,
-        color: Colors.green,
-      ),
-      label: AppLocalizations.of(context)?.statistics,
-    )
-  ],
-  currentIndex: _selectedIndex,
-  selectedItemColor: Colors.green,
-  onTap: _onItemTapped,
-),
-
+        bottomNavigationBar: BottomNavigationBar(
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.production_quantity_limits,
+                color: Colors.green,
+              ),
+              label: AppLocalizations.of(context)?.product,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.point_of_sale_rounded,
+                color: Colors.green,
+              ),
+              label: AppLocalizations.of(context)?.orders,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.post_add_rounded,
+                color: Colors.green,
+              ),
+              label: AppLocalizations.of(context)?.post,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.chat_rounded,
+                color: Colors.green,
+              ),
+              label: AppLocalizations.of(context)?.chat,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.book_rounded,
+                color: Colors.green,
+              ),
+              label: AppLocalizations.of(context)?.statistics,
+            )
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.green,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }
 }
-

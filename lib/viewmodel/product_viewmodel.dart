@@ -69,20 +69,7 @@ class ProductViewModel extends BaseViewModel {
     });
   }
 
-  // Future<void> addProduct(
-  //     {required Product product, required File? imageFile}) async {
-  //   await productRepo
-  //       .addProduct(product: product, imageFile: imageFile)
-  //       .then((value) async {
-  //     if (value == true) {
-  //       CommonFunc.showToast("Thêm thành công.");
-  //       await getAllProduct();
-  //       NotificationViewModel().newProductNotification();
-  //     }
-  //   }).onError((error, stackTrace) {
-  //     print("add fail");
-  //   });
-  // }
+ 
   Future<void> addProduct(
       {required Product product, required List<File> imageFiles}) async {
     await productRepo
@@ -100,9 +87,9 @@ class ProductViewModel extends BaseViewModel {
 
 
   Future<void> updateProduct(
-      {required Product product, required File? imageFile}) async {
+      {required Product product, required List<File> imageFiles}) async {
     await productRepo
-        .updateProduct(product: product, imageFile: imageFile)
+        .updateProduct(product: product, imageFiles: imageFiles)
         .then((value) async {
       if (value == true) {
         CommonFunc.showToast("Cập nhật thành công.");
@@ -137,7 +124,6 @@ Future<bool> isLessorThan(double mass, String productId) async {
   }
   Future<List<Product>> searchProduct(BuildContext context) async {
   String searchTerm = searchBarController.text.trim();
-  print("VM searchTerm: $searchTerm");
 
   if (searchTerm.isNotEmpty) {
     try {

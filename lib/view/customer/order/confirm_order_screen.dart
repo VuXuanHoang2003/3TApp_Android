@@ -117,7 +117,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
               children: [
                 Text(
                   "${AppLocalizations.of(context)?.productInfo}",
-                  style: TextStyle(color: Colors.black, fontSize: 14),
+                  style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
                 const Divider(
                   thickness: 0.5,
@@ -214,7 +214,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
         ),
         const SizedBox(height: 4), // Khoảng cách giữa giá và thể loại
         Text(
-          "${AppLocalizations.of(context)?.type}: ${CommonFunc.getSenDaNameByType(context,widget.product.type)}",
+          "${AppLocalizations.of(context)?.type}: ${CommonFunc.getSenDaNameByType(context, widget.product.type)}",
           textAlign: TextAlign.center,
           style: const TextStyle(
             color: Colors.black,
@@ -405,7 +405,7 @@ class _ConfirmOrderScreenState extends State<ConfirmOrderScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Close'),
+              child: Text('${AppLocalizations.of(context)?.close}'),
             ),
           ],
         );
