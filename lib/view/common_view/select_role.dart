@@ -44,6 +44,13 @@ class _SelectRole extends State<SelectRole> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Text(
+              'Bạn muốn đăng nhập với tư cách là:',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             ListTile(
               title: Text('${AppLocalizations.of(context)?.customer}'),
               leading: Radio<int>(
@@ -71,35 +78,37 @@ class _SelectRole extends State<SelectRole> {
             SizedBox(
               width: MediaQuery.of(context).size.width,
               child: CustomButton(
-                  onPressed: () {
-                    RolesType rolesType = RolesType.none;
-                    //Check selected roles
-                    if (selectedRole == 1) {
-                      rolesType = RolesType.customer;
-                    } else if (selectedRole == 2) {
-                      rolesType = RolesType.seller;
-                    } else {
-                      rolesType = RolesType.none;
-                    }
+                onPressed: () {
+                  RolesType rolesType = RolesType.none;
+                  //Check selected roles
+                  if (selectedRole == 1) {
+                    rolesType = RolesType.customer;
+                  } else if (selectedRole == 2) {
+                    rolesType = RolesType.seller;
+                  } else {
+                    rolesType = RolesType.none;
+                  }
 
-                    if (rolesType == RolesType.customer ||
-                        rolesType == RolesType.seller) {
-                      //set roles type and move to login screen
-                      moveToLoginScreen(rolesType);
-                    } else {
-                      Fluttertoast.showToast(
-                          msg: "${AppLocalizations.of(context)?.roleMsg}",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 1,
-                          backgroundColor: Colors.black45,
-                          textColor: Colors.white,
-                          fontSize: 12.0);
-                    }
-                  },
-                  text: "${AppLocalizations.of(context)?.confirm}",
-                  textColor: Colors.white,
-                  bgColor: Colors.blue),
+                  if (rolesType == RolesType.customer ||
+                      rolesType == RolesType.seller) {
+                    //set roles type and move to login screen
+                    moveToLoginScreen(rolesType);
+                  } else {
+                    Fluttertoast.showToast(
+                      msg: "Vui lòng chọn vai trò của bạn.",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.black45,
+                      textColor: Colors.white,
+                      fontSize: 12.0,
+                    );
+                  }
+                },
+                text: "Xác nhận",
+                textColor: Colors.white,
+                bgColor: Colors.blue,
+              ),
             )
           ],
         ),

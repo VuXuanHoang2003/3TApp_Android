@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:three_tapp_app/model/product.dart';
 import 'package:three_tapp_app/utils/common_func.dart';
 import 'package:three_tapp_app/view/common_view/product_details_screen.dart';
+import 'package:three_tapp_app/view/customer/order/confirm_order_screen.dart';
 import 'package:three_tapp_app/viewmodel/order_per_person_view_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -88,54 +89,61 @@ class _OrderPerPersonScreenState extends State<OrderPerPersonScreen> {
     return Row(
       children: [
         Text('$label ', style: TextStyle(fontSize: 18)),
-        Text(value,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Expanded(
+          child: Text(value, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        ),
       ],
     );
   }
 
-  Widget _buildOrdersList(List<Product> orders) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: orders.length,
-      itemBuilder: (context, index) {
-        final order = orders[index];
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ProductDetailsScreen(product: order)),
-            );
-          },
-          child: Card(
-            elevation: 3,
-            margin: EdgeInsets.symmetric(vertical: 8),
-            child: Padding(
-              padding: EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                      '${AppLocalizations.of(context)?.product}: ${order.name}',
-                      style: TextStyle(fontSize: 18, color: Colors.red)),
-                  SizedBox(height: 4),
-                  Text(
-                      '${AppLocalizations.of(context)?.productWeight}: ${order.mass} kg',
-                      style: TextStyle(fontSize: 16)),
-                  Text(
-                      '${AppLocalizations.of(context)?.type}: ${CommonFunc.getSenDaNameByType(context, order.type)}',
-                      style: TextStyle(fontSize: 16)),
-                  Text(
-                      '${AppLocalizations.of(context)?.price}: ${order.price} vnd',
-                      style: TextStyle(fontSize: 16)),
-                ],
-              ),
+
+Widget _buildOrdersList(List<Product> orders) {
+  if (orders.isEmpty) {
+    return Text('Người dùng này không có đơn hàng nào', style: TextStyle(fontSize: 18));
+  }
+  return ListView.builder(
+    shrinkWrap: true,
+    physics: NeverScrollableScrollPhysics(),
+    itemCount: orders.length,
+    itemBuilder: (context, index) {
+      final order = orders[index];
+      return GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: order)),
+          );
+        },
+        child: Card(
+          elevation: 3,
+          margin: EdgeInsets.symmetric(vertical: 8),
+          child: Padding(
+            padding: EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Sản phẩm: ${order.name}', style: TextStyle(fontSize: 18, color: Colors.red)),
+                SizedBox(height: 4),
+                Text('Khối lượng: ${order.mass} kg', style: TextStyle(fontSize: 16)),
+                Text('Loại: ${CommonFunc.getSenDaNameByType(context,order.type)}', style: TextStyle(fontSize: 16)),
+                Text('Giá: ${order.price} vnd', style: TextStyle(fontSize: 16)),
+                SizedBox(height: 8),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ConfirmOrderScreen(product: order)),
+                    );
+                  },
+                  child: Text('Mua', style: TextStyle(color: Colors.white)),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                ),
+              ],
             ),
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    },
+  );
+}
 }

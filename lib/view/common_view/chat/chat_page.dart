@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +12,14 @@ import 'package:three_tapp_app/viewmodel/chat_viewmodel.dart';
 class ChatPage extends StatefulWidget {
   final String receiveruserEmail;
   final String receiveruserID;
+  final Function reloadChatScreen;
 
+  
   const ChatPage({
     Key? key,
     required this.receiveruserEmail,
     required this.receiveruserID,
+    required this.reloadChatScreen,
   }) : super(key: key);
 
   @override
@@ -53,6 +55,7 @@ class _ChatPageState extends State<ChatPage> {
   void dispose() {
     _messageController.dispose();
     _videoPlayerController.dispose();
+    widget.reloadChatScreen();
     super.dispose();
   }
 
@@ -110,10 +113,10 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void sendMessage() async {
-    // Only send when there is something to send
-    if (_messageController.text.isNotEmpty ||
-        _selectedImage != null ||
-        _selectedVideo != null) {
+    // Trim the message text to remove leading and trailing whitespace
+    String trimmedMessage = _messageController.text.trim();
+  // Only send when there is something to send and it's not just whitespace
+    if (trimmedMessage.isNotEmpty || _selectedImage != null || _selectedVideo != null) {
       String? imageUrl;
       String? videoUrl;
 

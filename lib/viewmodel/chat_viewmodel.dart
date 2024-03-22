@@ -61,12 +61,6 @@ class ChatViewModel extends ChangeNotifier {
         print("No documents in chat_rooms");
         return [];
       }
-      for (DocumentSnapshot doc in chatRoomsSnapshot.docs) {
-        print("Document ID: ${doc.id}");
-        
-        // Thêm trường mới vào mỗi tài liệu
-        
-      }
       List<String> chatRoomIds = chatRoomsSnapshot.docs.map((doc) => doc.id).toList();
       //print("chatroomIds: $chatRoomIds");
       return chatRoomIds;

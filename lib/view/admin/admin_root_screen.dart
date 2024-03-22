@@ -92,13 +92,6 @@ class _AdminRootScreen extends State<AdminRootScreen> {
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.post_add_rounded,
-                color: Colors.green,
-              ),
-              label: AppLocalizations.of(context)?.post,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
                 Icons.chat_rounded,
                 color: Colors.green,
               ),

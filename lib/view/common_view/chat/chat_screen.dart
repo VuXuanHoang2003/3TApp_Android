@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:three_tapp_app/view/common_view/chat/chat_page.dart';
-import 'package:three_tapp_app/viewmodel/post_viewmodel.dart';
 import 'package:three_tapp_app/viewmodel/chat_viewmodel.dart'; // Import ChatViewModel
 
 class ChatScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _ChatScreenState();
+  _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final ChatViewModel _chatViewModel = ChatViewModel(); // Khởi tạo ChatViewModel
+  final ChatViewModel _chatViewModel = ChatViewModel();
+
+  void reloadChatScreen() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +27,31 @@ class _ChatScreenState extends State<ChatScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        automaticallyImplyLeading: false, // Tắt nút back
-        backgroundColor: Colors.blue, // Màu nền AppBar
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.blue,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: UserSearch(
+                  FirebaseFirestore.instance.collection('USERS').snapshots(),
+                  reloadChatScreen: reloadChatScreen,
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: _buildUserList(),
     );
   }
 
+
   Widget _buildUserList() {
     return FutureBuilder<List<String>>(
-      future: _getChatRoomIds(), // Thay đổi đây để gọi hàm _getChatRoomIds()
+      future: _getChatRoomIds(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -48,7 +66,6 @@ class _ChatScreenState extends State<ChatScreen> {
         }
 
         List<String> chatRoomIds = snapshot.data ?? [];
-        //print(chatRoomIds);
         return StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance.collection('USERS').snapshots(),
           builder: (context, snapshot) {
@@ -64,7 +81,8 @@ class _ChatScreenState extends State<ChatScreen> {
               );
             }
 
-            List<DocumentSnapshot> filteredUsers = _filterUsers(snapshot.data!.docs, chatRoomIds);
+            List<DocumentSnapshot> filteredUsers =
+                _filterUsers(chatRoomIds, snapshot.data!);
 
             return ListView(
               padding: EdgeInsets.all(16.0),
@@ -79,20 +97,25 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<List<String>> _getChatRoomIds() async {
-    // Lấy danh sách các ID của các tài liệu
-    List<String> chatRoomIds = await _chatViewModel.getChatRoomIds();    
-    // Trả về danh sách các ID
+    List<String> chatRoomIds = await _chatViewModel.getChatRoomIds();
     return chatRoomIds;
   }
 
-  List<DocumentSnapshot> _filterUsers(List<DocumentSnapshot> users, List<String> chatRoomIds) {
-    String currentUserId = FirebaseAuth.instance.currentUser!.uid;
-    // Lọc danh sách người dùng dựa trên điều kiện userId của người tham gia chat room không phải là userId hiện tại và userId nằm trong danh sách chatRoomIds
-    List<DocumentSnapshot> filteredUsers = users.where((user) {
-      String userId = user.id; // Sử dụng document.id thay vì truy cập vào userData
-      return userId != currentUserId;
-    }).toList();
-    //print(filteredUsers);
+  List<DocumentSnapshot> _filterUsers(
+      List<String> chatRoomIds, QuerySnapshot snapshot) {
+    String currentUserId = _auth.currentUser!.uid;
+    List<DocumentSnapshot> filteredUsers = [];
+    for (String chatRoomId in chatRoomIds) {
+      List<String> userIds = chatRoomId.split('_');
+      if (userIds.contains(currentUserId)) {
+        userIds.remove(currentUserId);
+        for (String userId in userIds) {
+          DocumentSnapshot userDoc =
+              snapshot.docs.firstWhere((doc) => doc.id == userId);
+          filteredUsers.add(userDoc);
+        }
+      }
+    }
     return filteredUsers;
   }
 
@@ -119,6 +142,7 @@ class _ChatScreenState extends State<ChatScreen> {
               builder: (context) => ChatPage(
                 receiveruserEmail: data['email'],
                 receiveruserID: document.id,
+                reloadChatScreen: reloadChatScreen,
               ),
             ),
           );
@@ -126,4 +150,99 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
+}
+
+class UserSearch extends SearchDelegate<DocumentSnapshot> {
+  final Stream<QuerySnapshot> userStream;
+  final Function reloadChatScreen;
+  UserSearch(this.userStream, {required this.reloadChatScreen});
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        reloadChatScreen();
+        Navigator.pop(context);
+      },
+    );
+  }
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return _buildUserList(context);
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return _buildUserList(context);
+  }
+
+  Widget _buildUserList(BuildContext context) {
+  return StreamBuilder<QuerySnapshot>(
+    stream: userStream,
+    builder: (context, snapshot) {
+      if (!snapshot.hasData) {
+        return Center(child: CircularProgressIndicator());
+      }
+      final results = snapshot.data!.docs.where(
+        (DocumentSnapshot doc) {
+          return doc['username']
+              .toLowerCase()
+              .contains(query.toLowerCase());
+        },
+      );
+      return ListView(
+        children: results
+            .map<Widget>((doc) => _buildUserListItem(context, doc, reloadChatScreen)) // Truyền vào reloadChatScreen ở đây
+            .toList(),
+      );
+    },
+  );
+}
+
+
+Widget _buildUserListItem(BuildContext context, DocumentSnapshot document, Function reloadChatScreen) { // Thêm biến reloadChatScreen
+  Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+  return Card(
+    elevation: 3.0,
+    margin: EdgeInsets.symmetric(vertical: 8.0),
+    child: ListTile(
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(data['avatarUrl'] ?? 'URL_MẶC_ĐỊNH'),
+      ),
+      title: Text(
+        data['username'],
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChatPage(
+              receiveruserEmail: data['email'],
+              receiveruserID: document.id,
+              reloadChatScreen: reloadChatScreen,
+            ),
+          ),
+        );
+      },
+    ),
+  );
+}
+
 }
