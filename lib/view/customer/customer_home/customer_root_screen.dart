@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:three_tapp_app/view/common_view/chat/chat_screen.dart';
-import 'package:three_tapp_app/view/common_view/map/home_map_view.dart';
+import 'package:three_tapp_app/view/common_view/map/address_list.dart';
 import '../blogs/blogs_screen.dart';
 import 'customer_home_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -17,7 +17,7 @@ class _CustomerRootScreen extends State<CustomerRootScreen> {
   static final List<Widget> _widgetOptions = <Widget>[
     CustomerHomeScreen(),
     ChatScreen(),
-    MapSample(),
+    AddressListScreen(),
   ];
 
   void _onItemTapped(int index) {

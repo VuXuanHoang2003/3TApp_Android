@@ -4,7 +4,6 @@ import 'package:three_tapp_app/view/admin/product_management_screen.dart';
 import 'package:three_tapp_app/view/admin/sales_management_screen.dart';
 import 'package:three_tapp_app/view/admin/statistic_screen.dart';
 import 'package:three_tapp_app/view/common_view/chat/chat_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../utils/common_func.dart';
 import '../customer/blogs/blogs_screen.dart';
@@ -19,7 +18,6 @@ class _AdminRootScreen extends State<AdminRootScreen> {
   static final List<Widget> _widgetOptions = <Widget>[
     ProductManagementScreen(),
     SalesManagementScreen(),
-    BlogsScreen(),
     ChatScreen(),
     StatisticScreen(),
   ];
@@ -75,35 +73,35 @@ class _AdminRootScreen extends State<AdminRootScreen> {
           ),
         ),
         bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
+          items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.production_quantity_limits,
                 color: Colors.green,
-              ),
-              label: AppLocalizations.of(context)?.product,
+                ),
+
+              label: 'Sản phẩm',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.point_of_sale_rounded,
                 color: Colors.green,
-              ),
-              label: AppLocalizations.of(context)?.orders,
+                ),
+              label: 'Bán hàng',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.chat_rounded,
                 color: Colors.green,
-              ),
-              label: AppLocalizations.of(context)?.chat,
+                ),
+              label: 'Chat',
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                Icons.book_rounded,
-                color: Colors.green,
-              ),
-              label: AppLocalizations.of(context)?.statistics,
-            )
+                icon: Icon(
+                  Icons.book_rounded,
+                  color: Colors.green,
+                ),
+                label: 'Thống kê')
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.green,
@@ -113,3 +111,4 @@ class _AdminRootScreen extends State<AdminRootScreen> {
     );
   }
 }
+
