@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
@@ -15,7 +16,7 @@ class AddressListScreen extends StatefulWidget {
 class _AddressListScreenState extends State<AddressListScreen> {
   late Future<QuerySnapshot<Map<String, dynamic>>> _usersCollection;
   Position? _currentPosition;
-
+  int _currentMax = 10;
   @override
   void initState() {
     super.initState();
@@ -123,7 +124,12 @@ class _AddressListScreenState extends State<AddressListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Danh sách người dùng theo địa chỉ'),
+        automaticallyImplyLeading: false,
+        title: const FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text('Danh sách người dùng theo địa chỉ'),
+        ),
+        backgroundColor: const Color.fromARGB(255, 71, 177, 230),
       ),
       body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
         future: _usersCollection,
@@ -153,16 +159,28 @@ class _AddressListScreenState extends State<AddressListScreen> {
         } else {
           List<String> sortedAddresses = snapshot.data ?? [];
           return ListView.builder(
-            itemCount: sortedAddresses.length,
+            itemCount: min(_currentMax, sortedAddresses.length) + 1, // +1 for the "Load More" button
             itemBuilder: (context, index) {
-              return _buildListTile(sortedAddresses, index);
+              if (index < min(_currentMax, sortedAddresses.length)) {
+                return _buildListTile(sortedAddresses, index);
+              } else if (index == _currentMax && _currentMax < sortedAddresses.length) {
+                return ElevatedButton(
+                  child: Text("Xem thêm"),
+                  onPressed: () {
+                    setState(() {
+                      _currentMax = sortedAddresses.length; // Display all items
+                    });
+                  },
+                );
+              } else {
+                return SizedBox.shrink(); // Return an empty widget if no more items to load
+              }
             },
           );
         }
       },
     );
   }
-
   Widget _buildListTile(List<String> sortedAddresses, int index) {
     return FutureBuilder<Location>(
       future: _currentPosition != null
@@ -170,9 +188,15 @@ class _AddressListScreenState extends State<AddressListScreen> {
           : null,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return ListTile(title: Text('Loading...'));
+          return const ListTile(
+            title: Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.0),
+              child: Text('Loading...'),
+              ),
+          );
         } else if (snapshot.hasError) {
-          return ListTile(title: Text('Error loading location'));
+          print('Error loading location: ${snapshot.error}');
+          return SizedBox.shrink();
         } else if (snapshot.hasData) {
           Location destinationLocation = snapshot.data!;
           double distanceInMeters = Geolocator.distanceBetween(
@@ -183,10 +207,16 @@ class _AddressListScreenState extends State<AddressListScreen> {
           );
           double distanceInKm = distanceInMeters / 1000;
           return Card(
+              elevation: 5, 
+              shadowColor: Colors.grey,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             child: ListTile(
               title: Text(sortedAddresses[index]),
               subtitle: Text('Khoảng cách: ${distanceInKm.toStringAsFixed(2)} km'),
-              leading: Icon(Icons.location_on),
+              leading: const Icon(
+                Icons.location_on,
+                color: Colors.blueGrey,
+              ),
               trailing: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -197,7 +227,11 @@ class _AddressListScreenState extends State<AddressListScreen> {
                   );
                 },
                 child: Text('Xem đơn'),
+                style: ElevatedButton.styleFrom(
+                //backgroundColor: Colors.blueGrey,
+                ),
               ),
+              
               onTap: () {
                 _onAddressTapped(sortedAddresses[index]);
               },
