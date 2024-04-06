@@ -27,12 +27,13 @@ class _CustomButtonBuyNow extends State<CustomButtonCreateOrder> {
       child: ElevatedButton(
         onPressed: widget.onClick,
         style: ElevatedButton.styleFrom(
-            elevation: 0, backgroundColor: widget.bgColor,
+            elevation: 0,
             side: BorderSide(
               color: widget.borderColor,
               width: 1,
             ),
             shadowColor: Colors.transparent,
+            primary: widget.bgColor,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
         child: Text(
           widget.title,

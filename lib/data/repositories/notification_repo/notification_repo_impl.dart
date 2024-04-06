@@ -63,7 +63,7 @@ class NotificationRepoImpl with NotificationRepo {
         }).catchError((error) {
           return Future.value(false);
         });
-    } on FirebaseException {
+    } on FirebaseException catch (e) {
       CommonFunc.showToast("Đã có lỗi xảy ra.");
     } catch (e) {
       CommonFunc.showToast("Đã có lỗi xảy ra.");

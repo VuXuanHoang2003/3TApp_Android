@@ -239,7 +239,7 @@ Future<void> uploadImagesToFirebaseStorage({
             .update(productMap);
 
         return Future.value(true);
-      } on FirebaseException {
+      } on FirebaseException catch (e) {
         CommonFunc.showToast("Đã có lỗi xảy ra.");
       } catch (e) {
         CommonFunc.showToast("Đã có lỗi xảy ra.");
@@ -265,7 +265,7 @@ Future<void> uploadImagesToFirebaseStorage({
             .doc(product.id)
             .update(productMap);
         return Future.value(true);
-      } on FirebaseException {
+      } on FirebaseException catch (e) {
         CommonFunc.showToast("Đã có lỗi xảy ra.");
       } catch (e) {
         CommonFunc.showToast("Đã có lỗi xảy ra.");
